@@ -88,7 +88,7 @@ public class ZombieManager : MonoBehaviour {
         _currentWave++;
         enabled = true;
     }
-    
+
     // ------ ZOMBIE SPANWING/RETURNING ------
     
     /// Spawns a zombie with random data from entries.
@@ -112,6 +112,7 @@ public class ZombieManager : MonoBehaviour {
 
     /// Returns given zombie to pool.
     public void ReturnZombie(ZombieBase zombie) {
+        
         OnUpdate -= zombie.UpdateLoop;
         OnFixedUpdate -= zombie.FixedUpdateLoop;
         _remainingZombies--;
