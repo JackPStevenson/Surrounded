@@ -8,13 +8,12 @@ using UnityEngine.AI;
 public class ZombieBase : Damageable {
     private ZombieManager _manager;
 
-    private NavMeshAgent _nav;
-
-    private Damageable _target;
-    private Vector2 lastTargetPos;
-
-
     private ZombieDataEntry _data;
+    
+    private Damageable _target;
+    private NavMeshAgent _nav;
+    
+    private Vector2 _lastTargetPos;
 
     // ------ START FUNCTIONS ------
 
@@ -25,24 +24,19 @@ public class ZombieBase : Damageable {
     }
 
     public void Initialize(ZombieDataEntry zombieData, Vector3 spawnPos) {
-        transform.position = spawnPos;
-        
+        // Update zombie's data, position, and current health.
         _data = zombieData;
+        transform.position = spawnPos;
         CurrentHealth = zombieData.maxHealth;
         
-        if(!_nav) _nav = GetComponent<NavMeshAgent>();
+        // Update nav agent and its speed.
+        TryGetComponent(out _nav);
         _nav.speed = zombieData.speed;
         
-        // Attempt to create visual element.
+        // Create visual element for zombie.
         Instantiate(zombieData.visualPrefab, transform);
-
         OnDeath += ReturnToPool;
-        
         SetActive(false);
-    }
-
-    private void OnDisable() {
-        
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -53,11 +47,9 @@ public class ZombieBase : Damageable {
 
     public void FixedUpdateLoop() {
         // If zombie has target and target moves, update nav destination.
-        if (_target) {
-            if (Vector3.Distance(lastTargetPos, _nav.destination) > 0.01f) {
-                lastTargetPos = _target.Position;
-                _nav.SetDestination(lastTargetPos);
-            }
+        if (_target && Vector3.Distance(_lastTargetPos, _nav.destination) > 0.01f) {
+            _lastTargetPos = _target.Position;
+            _nav.SetDestination(_lastTargetPos);
         }
     }
 
@@ -69,27 +61,23 @@ public class ZombieBase : Damageable {
     
     /// Returns zombie back to pool with its data erased. This should only be called by Zombie Manager script.
     public void ReturnToPool() {
-        _data = null;
+        if (IsInPool()) return;
         
+        _data = null;
+        OnDeath -= ReturnToPool;
         _manager.ReturnZombie(this);
     }
 
     // ------ HELPER FUNCTIONS ------
-
-    public void PlaceOnNavMesh(Vector3 pos) {
-        _nav.Warp(pos);
-    }
     
     public void SetTarget(Damageable target) { 
         _target = target;
-        lastTargetPos = _target.Position - Vector3.one;
+        _lastTargetPos = _target.Position - Vector3.one;
     }
     
     public void SetActive(bool active) {
         gameObject.SetActive(active);
     }
 
-    void OnDestroy() {
-        Debug.LogWarning("ZombieBase should not be destroyed on its own. Instead, return it to pool.");
-    }
+    public bool IsInPool() => !_data;
 }
