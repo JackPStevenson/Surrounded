@@ -2,25 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {
-    Intermission,
-    InProgress,
-    Dead
-}
-
 public class GameManager : MonoBehaviour {
-    public delegate void GameStateDelegate(GameState gameState);
     public GameStateDelegate OnGameStateChanged;
+    public IntDelegate OnWaveStart;
+    public IntDelegate OnWaveComplete;
     
     public static GameManager Instance;
     private ZombieManager _zombieManager;
     private GameState _gameState = GameState.Intermission;
 
-    
-    [Header("General")]
-    public float intermissionTime = 5;
     private int _currentWave = 1;
     
+    // Parameters
+    [Header("General")]
+    public float intermissionTime = 5;
     
     
     // ------ START FUNCTIONS ------
@@ -53,4 +48,5 @@ public class GameManager : MonoBehaviour {
     // ------ HELPER FUNCTIONS ------
     
     public GameState GetGameState() => _gameState;
+    public int GetCurrentWave() => _currentWave;
 }

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public delegate void Vector2Delegate(Vector2 input);
 
 public class InputManager : MonoBehaviour {
     public static InputManager Instance;

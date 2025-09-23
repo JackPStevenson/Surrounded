@@ -7,13 +7,13 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class ZombieManager : MonoBehaviour {
-    public delegate void GenericDelegate();
     public GenericDelegate OnUpdate;
     public GenericDelegate OnFixedUpdate;
 
     public static ZombieManager Instance;
 
     private ZombiePool _zombiePool;
+    private WaveManager _waveManager;
 
     [Header("References")]
     public GameObject zombieBasePrefab;
@@ -25,6 +25,7 @@ public class ZombieManager : MonoBehaviour {
     public Transform[] spawnPoints;
     public ZombieDataEntry[] zombieDataEntries;
     private int _activeZombies;
+    private int _spawnRandSeed = 0;
     
     // ------ START FUNCTIONS ------
 
@@ -34,7 +35,7 @@ public class ZombieManager : MonoBehaviour {
     }
 
     void Start() {
-        enabled = false;
+        _waveManager = WaveManager.Instance;
     }
     
     // ------ UPDATE FUNCTIONS ------
@@ -52,6 +53,9 @@ public class ZombieManager : MonoBehaviour {
     /// Destroys all zombies in or made from pool.
     public void DepletePool() {
         _zombiePool.DepletePool();
+        
+        OnUpdate = null;
+        OnFixedUpdate = null;
     }
 
     // ------ ZOMBIE SPAWNING/RETURNING ------
@@ -61,11 +65,11 @@ public class ZombieManager : MonoBehaviour {
         ZombieDataEntry data = GetZombieData(currentWave, out int index);
         if (!data) return null;
 
-        return SpawnZombie(index);
+        return SpawnZombieSpecific(index);
     }
     
     /// Spawns a zombie type with data at given data index.
-    public ZombieBase SpawnZombie(int dataIndex) {
+    private ZombieBase SpawnZombieSpecific(int dataIndex) {
         ZombieDataEntry data = zombieDataEntries[Mathf.Clamp(dataIndex, 0, zombieDataEntries.Length - 1)];
 
         Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
@@ -87,15 +91,14 @@ public class ZombieManager : MonoBehaviour {
         OnFixedUpdate -= zombie.FixedUpdateLoop;
 
         _zombiePool.Push(zombie);
-            
+        
         _activeZombies--;
     }
     
     // ------ HELPER FUNCTIONS ------
-    
-    /// Attempts to get a random zombie data entry that can be spawned this wave.
-    private ZombieDataEntry GetZombieData(int currentWave) {
-        return GetZombieData(currentWave, out int placeholder);
+
+    public int GetActiveZombies() {
+        return _activeZombies;
     }
     
     /// Attempts to get a random zombie data entry that can be spawned this wave.
@@ -117,8 +120,11 @@ public class ZombieManager : MonoBehaviour {
         // Only continue if at least 1 entry was found.
         if(validEntries.Count <= 0) return null;
 
-        // Select a random number and loop through each valid entry.
+        // Select a random number and loop through each valid entry. Ensure seed is incremented.
+        Random.InitState(_spawnRandSeed);
         float rand = Random.Range(0, totalWeight);
+        _spawnRandSeed++;
+        
         foreach (int i in validEntries) {
             ZombieDataEntry zombie = zombieDataEntries[i];
             
@@ -132,9 +138,5 @@ public class ZombieManager : MonoBehaviour {
         // Return final valid entry as a failsafe in case something wrong happens.
         selectedIndex = validEntries.Count - 1;
         return zombieDataEntries[validEntries[^1]];
-    }
-
-    public void GetActiveZombies() {
-        
     }
 }
