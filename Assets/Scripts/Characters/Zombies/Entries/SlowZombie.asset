@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b88512e7e467e3d479e8f1f46c37d52e, type: 3}
-  m_Name: Gugugh
+  m_Script: {fileID: 11500000, guid: 0c8c80cadbf033842b3bf8305c9a3b9f, type: 3}
+  m_Name: SlowZombie
   m_EditorClassIdentifier: 
-  attackType: 0
+  visualPrefab: {fileID: 9058431072282217707, guid: 96942307100deb64ca87b5935fb42f0b,
+    type: 3}
+  maxHealth: 2
+  speed: 0.76
   damage: 1
-  energyCost: 0
-  energyRegenSpeed: 0
-  radius: 0.05
+  minimumSpawnWave: 0
+  spawnWeight: 1

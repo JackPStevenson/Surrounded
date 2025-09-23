@@ -6,21 +6,29 @@ using UnityEngine.Serialization;
 public class WaveManager : MonoBehaviour {
     public IntDelegate OnTrickleSpawn;
     /// boolVal is true if horde is last one of this wave.
-    public IntBoolDelegate OnHordeSpawn;
+    public IntBoolDelegate OnHordeSpawnNotify;
+    public IntIntFloatDelegate OnHordeSpawn;
+    public GenericDelegate OnAllZombiesDead;
 
     public static WaveManager Instance;
+    private GameManager _gameManager;
     private ZombieManager _zombieManager;
 
-    private int _currentWave;
+    private int _currentWave = 1;
 
     [Header("General")]
     public float startingWaveDuration = 10;
     public float waveDurationRampPerWave = 2.5f;
-    private bool _spawningCompleted = false;
+    public bool _isSpawning = false;
+    public bool _isWaveCompleted = true;
 
     [Header("Trickle")]
     public float startingTrickleSpawnDelay = 1.5f;
-    public float trickleSpawnDelayRampPerWave = 0.01f;
+    /// How much (as percentage) faster trickle delay should be relative to last wave.
+    [Range(0, 100)]
+    public float trickleRatePercentIncreasePerWave = 11f;
+    [Min(0)]
+    public float trickleRateDelayMinimum = 0.25f;
 
     [Header("Hordes")]
     public int startingHordeCount = 10;
@@ -28,61 +36,115 @@ public class WaveManager : MonoBehaviour {
     public float minimumWaveDurationPerHorde = 10;
     [Space]
     public float hordeStartDelay = 1.5f;
-    
+    public float hordeIndividualZombieSpawnDelay = 0.1f;
+
     private float _waveStartTime;
     private float _lastTrickleSpawn;
     private int _hordesSpawned = 0;
 
-    private void Awake() {
+    // ------ START FUNCTIONS ------
+
+    void Awake() {
         Instance = this;
     }
 
     void Start() {
+        _gameManager = GameManager.Instance;
         _zombieManager = ZombieManager.Instance;
+
+        _gameManager.OnGameStateChanged += OnGameStateChanged;
     }
+
+    // ------ UPDATE FUNCTIONS ------
 
     void FixedUpdate() {
-        if (_spawningCompleted) return;
+        // Failsafe.
+        if (_isWaveCompleted) return;
 
-        // Calculate total number of hordes this wave the time between them.
+        // Calculate current wave duration and total number of hordes this wave.
         float currentWaveDuration = GetWaveDuration();
         int hordesThisWave = Mathf.FloorToInt(currentWaveDuration / startingWaveDuration);
-        float hordeSpawnDelay = currentWaveDuration / hordesThisWave;
+        
+        // Calculate delay between each horde and time each horde will take to spawn all its zombies.
+        float delayBetweenHordes = currentWaveDuration / hordesThisWave;
+        float hordeTimeToFullySpawn = hordeStartDelay + (GetHordeSize() * hordeIndividualZombieSpawnDelay);
 
-        
-        
-        if (_lastTrickleSpawn + startingTrickleSpawnDelay <= Time.time) {
+        // If spawning is still enabled and time for another trickle spawn elapses, spawn a trickle zombie.
+        if (_isSpawning && _lastTrickleSpawn + GetTrickleSpawnDelay() <= Time.time ) {
             OnTrickleSpawn?.Invoke(_currentWave);
+            
+            _lastTrickleSpawn = Time.time;
         }
 
-        // Spawn a horde when enough time has elapsed.
-        if (_waveStartTime + (hordeSpawnDelay * (_hordesSpawned + 1)) <= Time.time) {
-            bool isLastHorde = _waveStartTime + currentWaveDuration <= Time.time;
+        // Spawn a horde if spawning is still active and enough time has elapsed between now and last one.
+        if (_isSpawning && _waveStartTime + (delayBetweenHordes * (_hordesSpawned + 1)) <= Time.time) {
+            _hordesSpawned++;
+            
+            // Calculate whether this is last horde, then spawn it.
+            bool isLastHorde = _hordesSpawned >= hordesThisWave;
             StartCoroutine(SpawnHordeDelayed(isLastHorde));
             
-            if (_waveStartTime + currentWaveDuration <= Time.time)
-                ToggleSpawning(_currentWave, false);
+            print("Horde");
+
+            // If this is last horde, stop spawning.
+            if (isLastHorde) _isSpawning = false;
+        }
+
+        // Calculate when final horde will fully spawn.
+        if (_waveStartTime + currentWaveDuration + hordeTimeToFullySpawn <= Time.time) {
+            print("ded?");
+            // If all zombies are dead, send a message through OnAllZombiesDead delegate.
+            if (_zombieManager.GetActiveZombies() <= 0) {
+                print("ded");
+                ToggleWave(false);
+                OnAllZombiesDead?.Invoke();
+            }
         }
     }
 
+    // ------ EVENT FUNCTIONS ------
+
     private IEnumerator SpawnHordeDelayed(bool isLastHorde) {
+        OnHordeSpawnNotify?.Invoke(_currentWave, isLastHorde);
+
         yield return new WaitForSeconds(hordeStartDelay);
-        OnHordeSpawn?.Invoke(_currentWave, isLastHorde);
-    }
 
-    private float GetWaveDuration() {
-        return startingWaveDuration + (waveDurationRampPerWave * (_currentWave - 1));
+        OnHordeSpawn?.Invoke(_currentWave, GetHordeSize(), hordeIndividualZombieSpawnDelay);
     }
-
-    public void ToggleSpawning(int currentWave, bool isEnabled) {
+    
+    private void OnGameStateChanged(GameState gameState, int currentWave) {
         _currentWave = currentWave;
-        enabled = isEnabled;
+        
+        ToggleWave(gameState is GameState.InProgress);
+    }
 
-        _spawningCompleted = !isEnabled;
+    private void ToggleWave(bool isEnabled) {
+        enabled = isEnabled;
+        
+        _isSpawning = isEnabled;
+        _isWaveCompleted = !isEnabled;
 
         if (isEnabled) {
             _waveStartTime = Time.time;
             _hordesSpawned = 0;
         }
+    }
+    
+    // ------ HELPER FUNCTIONS ------
+
+    private float GetWaveDuration() {
+        return startingWaveDuration + (waveDurationRampPerWave * (_currentWave - 1));
+    }
+
+    private int GetHordeSize() {
+        return startingHordeCount + (hordeCountRampPerWave * (_currentWave - 1));
+    }
+
+    private float GetTrickleSpawnDelay() {
+        // Calculate how much shorter current spawn delay should be relative to starting spawn delay.
+        float percentToBase = 1 + (trickleRatePercentIncreasePerWave / 100);
+        float expInv = Mathf.Pow(percentToBase, _currentWave);
+
+        return Mathf.Max(expInv, trickleRateDelayMinimum);
     }
 }

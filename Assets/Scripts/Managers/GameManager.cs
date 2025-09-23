@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    public GameStateDelegate OnGameStateChanged;
-    public IntDelegate OnWaveStart;
-    public IntDelegate OnWaveComplete;
+    public GameStateIntDelegate OnGameStateChanged;
     
     public static GameManager Instance;
-    private ZombieManager _zombieManager;
     private GameState _gameState = GameState.Intermission;
+    
+    private WaveManager _waveManager;
 
     private int _currentWave = 1;
     
     // Parameters
     [Header("General")]
     public float intermissionTime = 5;
+
+    private float _lastIntermission;
     
     
     // ------ START FUNCTIONS ------
@@ -25,7 +26,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        _zombieManager = ZombieManager.Instance;
+        _waveManager = WaveManager.Instance;
+        _waveManager.OnAllZombiesDead += OnAllZombiesDead;
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -35,14 +37,37 @@ public class GameManager : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        
+        if (_gameState is not GameState.Intermission) return;
+
+        if (_lastIntermission + intermissionTime < Time.time) SetGameState(GameState.InProgress);
     }
     
     // ------ EVENT FUNCTIONS ------
+
+    private void OnAllZombiesDead() {
+        SetGameState(GameState.Intermission);
+    }
+    
+    private void OnPlayerDeath() {
+        SetGameState(GameState.Dead);
+    }
     
     private void SetGameState(GameState newState) {
         _gameState = newState;
-        OnGameStateChanged?.Invoke(_gameState);
+        print(_gameState + " " + _currentWave);
+        
+        switch (newState) {
+            case GameState.Intermission:
+                _lastIntermission = Time.time;
+                break;
+            case GameState.InProgress:
+                _currentWave++;
+                break;
+            case GameState.Dead:
+                break;
+        }
+        
+        OnGameStateChanged?.Invoke(_gameState, _currentWave);
     }
 
     // ------ HELPER FUNCTIONS ------

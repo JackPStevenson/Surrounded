@@ -1483,6 +1483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75920fe72a4c5534182ecd6ccaada59f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intermissionTime: 3
 --- !u!4 &262111261
 Transform:
   m_ObjectHideFlags: 0
@@ -4184,6 +4185,7 @@ GameObject:
   - component: {fileID: 571837280}
   - component: {fileID: 571837279}
   - component: {fileID: 571837278}
+  - component: {fileID: 571837282}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -4274,12 +4276,28 @@ Transform:
   m_GameObject: {fileID: 571837277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5, y: 0.5, z: -1}
+  m_LocalPosition: {x: -3, y: 0.5, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 3.0893}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &571837282
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571837277}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &582349145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8691,6 +8709,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b675b6a8a7b16640a5353897081ae3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingWaveDuration: 6
+  waveDurationRampPerWave: 2.5
+  _isSpawning: 1
+  _isWaveCompleted: 0
+  startingTrickleSpawnDelay: 1.5
+  trickleRatePercentIncreasePerWave: 11
+  trickleRateDelayMinimum: 0.25
+  startingHordeCount: 10
+  hordeCountRampPerWave: 4
+  minimumWaveDurationPerHorde: 10
+  hordeStartDelay: 1.5
+  hordeIndividualZombieSpawnDelay: 0.2
 --- !u!4 &1445033843
 Transform:
   m_ObjectHideFlags: 0
@@ -11880,6 +11910,8 @@ MonoBehaviour:
   - {fileID: 1944760171}
   zombieDataEntries:
   - {fileID: 11400000, guid: 04f91dddd4d9ab948ae2e060bfff2218, type: 2}
+  - {fileID: 11400000, guid: 22776c052bd2ae742931aaf7ddb3b622, type: 2}
+  - {fileID: 11400000, guid: 8bfbd226cdd320b489c0cc6f3706bbef, type: 2}
 --- !u!4 &1906975049
 Transform:
   m_ObjectHideFlags: 0

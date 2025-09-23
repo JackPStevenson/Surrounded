@@ -45,7 +45,6 @@ public class WeaponManager : MonoBehaviour {
         
         // Only continue if something was hit.
         int hitObjCount = Physics.OverlapSphereNonAlloc(worldPos, currentWeapon.radius, _hitObjects, hitMask);
-        print(hitObjCount);
         
         
         debugTracker.position = worldPos;

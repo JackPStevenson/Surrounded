@@ -33,7 +33,6 @@ public class ZombiePool {
     /// Returns given zombie back to pool.
     public void Push(ZombieBase zombie) {
         _zombieStack.Push(zombie);
-        Debug.Log(zombie);
         zombie.SetActive(false);
     }
 
@@ -57,12 +56,9 @@ public class ZombiePool {
     /// Resets pool to minimum size.
     public void DepletePool() {
         // Call all zombies back into pool and delete them.
-        Debug.Log("Zombies before" + _zombieStack.Count);
         OnPoolDeplete?.Invoke();
-        Debug.Log("Zombies after" + _zombieStack.Count);
         while (_zombieStack.Count > 0) {
             Object.Destroy(_zombieStack.Pop().gameObject);
-            Debug.Log(_zombieStack.Count);
         }
 
         // Remove all references to now deleted zombies.

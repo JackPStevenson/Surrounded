@@ -36,6 +36,10 @@ public class ZombieManager : MonoBehaviour {
 
     void Start() {
         _waveManager = WaveManager.Instance;
+        
+        _waveManager.OnHordeSpawn += SpawnZombieHorde;
+        _waveManager.OnTrickleSpawn += SpawnZombieRandom;
+        _waveManager.OnAllZombiesDead += DepletePool;
     }
     
     // ------ UPDATE FUNCTIONS ------
@@ -61,7 +65,13 @@ public class ZombieManager : MonoBehaviour {
     // ------ ZOMBIE SPAWNING/RETURNING ------
     
     /// Spawns a zombie with random data from entries based on current wave.
-    public ZombieBase SpawnZombieRandom(int currentWave) {
+    public void SpawnZombieRandom(int currentWave) {
+        GetZombieData(currentWave, out int index);
+        SpawnZombieSpecific(index);
+    }
+    
+    /// Spawns a zombie with random data from entries based on current wave and returns spawned zombie.
+    public ZombieBase SpawnZombieRandomWithReturn(int currentWave) {
         ZombieDataEntry data = GetZombieData(currentWave, out int index);
         if (!data) return null;
 
@@ -84,14 +94,24 @@ public class ZombieManager : MonoBehaviour {
         
         return z;
     }
+    
+    public void SpawnZombieHorde(int currentWave, int count, float delayBetweenSpawns) {
+        StartCoroutine(SpawnHordeTapered(currentWave, count, delayBetweenSpawns));
+    }
 
+    private IEnumerator SpawnHordeTapered(int currentWave, int count, float delayBetweenSpawns) {
+        for (int i = 0; i < count; i++) {
+            SpawnZombieRandomWithReturn(currentWave);
+            yield return new WaitForSeconds(delayBetweenSpawns);
+        }
+    }
+    
     /// Returns given zombie to pool.
     public void ReturnZombie(ZombieBase zombie) {
         OnUpdate -= zombie.UpdateLoop;
         OnFixedUpdate -= zombie.FixedUpdateLoop;
 
         _zombiePool.Push(zombie);
-        
         _activeZombies--;
     }
     
