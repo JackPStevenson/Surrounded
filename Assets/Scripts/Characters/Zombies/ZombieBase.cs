@@ -21,6 +21,7 @@ public class ZombieBase : Damageable {
         base.Start();
         
         _manager = ZombieManager.Instance;
+        OnDeath += ReturnToPool;
     }
 
     public void Initialize(ZombieDataEntry zombieData, Vector3 spawnPos) {
@@ -35,7 +36,6 @@ public class ZombieBase : Damageable {
         
         // Create visual element for zombie.
         Instantiate(zombieData.visualPrefab, transform);
-        OnDeath += ReturnToPool;
         SetActive(false);
     }
 
@@ -58,13 +58,12 @@ public class ZombieBase : Damageable {
     
     
     // ------ POOLING ------
-    
+
     /// Returns zombie back to pool with its data erased. This should only be called by Zombie Manager script.
     public void ReturnToPool() {
         if (IsInPool()) return;
-        
+
         _data = null;
-        OnDeath -= ReturnToPool;
         _manager.ReturnZombie(this);
     }
 

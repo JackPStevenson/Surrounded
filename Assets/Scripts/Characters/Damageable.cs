@@ -24,7 +24,11 @@ public class Damageable : MonoBehaviour {
     public void DealDamage(float damage) {
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
         OnDamaged?.Invoke(damage, CurrentHealth);
-        
         if(CurrentHealth <= 0) OnDeath?.Invoke();
+    }
+
+    public void Kill() {
+        CurrentHealth = 0;
+        OnDeath?.Invoke();
     }
 }

@@ -33,6 +33,7 @@ public class ZombiePool {
     /// Returns given zombie back to pool.
     public void Push(ZombieBase zombie) {
         _zombieStack.Push(zombie);
+        Debug.Log(zombie);
         zombie.SetActive(false);
     }
 
@@ -40,7 +41,7 @@ public class ZombiePool {
 
     /// Doubles the size of the zombie pool.
     void ExpandPool() {
-        // Add however many zombies are needed to make list 
+        // Add however many zombies are needed to make list.
         int zombiesToAdd = Mathf.Max(_totalZombies, MinimumZombies);
         for (int i = 0; i < zombiesToAdd; i++) {
             // Create a zombie, add zombie's return method to pool's delegate, initialize it, and add zombie to stack.
@@ -48,6 +49,7 @@ public class ZombiePool {
             OnPoolDeplete += z.ReturnToPool;
             Push(z);
         }
+        
 
         _totalZombies += zombiesToAdd;
     }
@@ -55,11 +57,19 @@ public class ZombiePool {
     /// Resets pool to minimum size.
     public void DepletePool() {
         // Call all zombies back into pool and delete them.
+        Debug.Log("Zombies before" + _zombieStack.Count);
         OnPoolDeplete?.Invoke();
-        for (int i = 0; i < _zombieStack.Count; i++)
+        Debug.Log("Zombies after" + _zombieStack.Count);
+        while (_zombieStack.Count > 0) {
             Object.Destroy(_zombieStack.Pop().gameObject);
-        
+            Debug.Log(_zombieStack.Count);
+        }
+
         // Remove all references to now deleted zombies.
         OnPoolDeplete = null;
+    }
+
+    public void RemoveFromPool(ZombieBase zombie) {
+        OnPoolDeplete -= zombie.ReturnToPool;
     }
 }

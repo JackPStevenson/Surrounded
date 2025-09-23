@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameState {
-    Menu,
-    GameIntermission,
-    GameInProgress,
-    GameEnded
+    Intermission,
+    InProgress,
+    Dead
 }
 
 public class GameManager : MonoBehaviour {
+    public delegate void GameStateDelegate(GameState gameState);
+    public GameStateDelegate OnGameStateChanged;
+    
     public static GameManager Instance;
     private ZombieManager _zombieManager;
+    private GameState _gameState = GameState.Intermission;
+
     
-    private GameState _gameState = GameState.Menu;
+    [Header("General")]
+    public float intermissionTime = 5;
+    private int _currentWave = 1;
+    
+    
     
     // ------ START FUNCTIONS ------
 
@@ -33,6 +41,13 @@ public class GameManager : MonoBehaviour {
 
     void FixedUpdate() {
         
+    }
+    
+    // ------ EVENT FUNCTIONS ------
+    
+    private void SetGameState(GameState newState) {
+        _gameState = newState;
+        OnGameStateChanged?.Invoke(_gameState);
     }
 
     // ------ HELPER FUNCTIONS ------
