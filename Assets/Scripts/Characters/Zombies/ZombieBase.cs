@@ -28,6 +28,8 @@ public class ZombieBase : Damageable {
         // Update zombie's data, position, and current health.
         _data = zombieData;
         transform.position = spawnPos;
+        
+        maxHealth = _data.maxHealth;
         CurrentHealth = zombieData.maxHealth;
         
         // Update nav agent and its speed.

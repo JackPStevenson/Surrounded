@@ -11,7 +11,7 @@ public class WeaponManager : MonoBehaviour {
 
     [Header("Weapons")]
     public Transform debugTracker;
-    private WeaponBase[] _playerWeapons;
+    public WeaponBase[] _playerWeapons;
     private int _currentWeapon = 0;
     
     private Camera _camera;
@@ -23,6 +23,8 @@ public class WeaponManager : MonoBehaviour {
         _input.TouchPressDelegate += TouchPressAction;
         _input.TouchPositionDelegate += SwipeAction;
         _input.TouchReleaseDelegate += TouchReleaseAction;
+        
+        _playerWeapons[0].SetHitMask(hitMask);
     }
 
     void Update() {
