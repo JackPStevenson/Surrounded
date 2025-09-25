@@ -7,24 +7,22 @@ public class WeaponManager : MonoBehaviour {
     
     [Header("Physics")]
     public LayerMask hitMask;
-    public float attackTestHeight = 1;
+    public float tapDistanceFromCamera = 10;
 
     [Header("Weapons")]
-    public WeaponDataEntry currentWeapon;
     public Transform debugTracker;
+    private WeaponBase[] _playerWeapons;
+    private int _currentWeapon = 0;
     
     private Camera _camera;
-    
-    private Collider[] _hitObjects;
 
     void Start() {
         _camera = Camera.main;
         
         _input = InputManager.Instance;
-        _input.TouchPressDelegate += TapAttack;
-        _input.TouchPositionDelegate += SwipeAttack;
-        
-        _hitObjects = new Collider[250];
+        _input.TouchPressDelegate += TouchPressAction;
+        _input.TouchPositionDelegate += SwipeAction;
+        _input.TouchReleaseDelegate += TouchReleaseAction;
     }
 
     void Update() {
@@ -32,48 +30,25 @@ public class WeaponManager : MonoBehaviour {
     }
 
 
-    void TapAttack(Vector2 input) {
-        // Only do tap attack if current weapon attacks that way.
-        if (currentWeapon.attackType is not AttackType.Tap) return;
-        
-        // Convert screen-space touch location to viewport position above floor.
-        Vector3 viewPos = _camera.ScreenToViewportPoint(input);
-        viewPos.z = _camera.transform.position.y - attackTestHeight;
-        
-        // Convert viewport position above ground to world position.
-        Vector3 worldPos = _camera.ViewportToWorldPoint(viewPos);
-        
-        // Only continue if something was hit.
-        int hitObjCount = Physics.OverlapSphereNonAlloc(worldPos, currentWeapon.radius, _hitObjects, hitMask);
-        
-        
-        debugTracker.position = worldPos;
-        if(hitObjCount <= 0) return;
-
-        ZombieBase z;
-        for (int i = 0 ; i < hitObjCount; i++) {
-            if (!_hitObjects[i].TryGetComponent(out z)) continue;
-            z.DealDamage(currentWeapon.damage);
-        }
-        
-        
-        Array.Clear(_hitObjects, 0 , hitObjCount);
+    void TouchPressAction(Vector2 input) {
+        _playerWeapons[_currentWeapon].OnTouchPress(TouchToWorldPoint(input));
     }
     
-    void SwipeAttack(Vector2 input) {
-        // Only do tap attack if current weapon attacks that way.
-        if (currentWeapon.attackType is not AttackType.Tap) return;
-        
-        // Convert screen-space touch location to viewport position above floor.
-        Vector3 viewPos = _camera.ScreenToViewportPoint(input);
-        viewPos.z = _camera.transform.position.y - attackTestHeight;
-        
-        // Convert viewport position above ground to world position.
-        Vector3 worldPos = _camera.ViewportToWorldPoint(viewPos);
+    void SwipeAction(Vector2 input) {
+        _playerWeapons[_currentWeapon].OnSwipe(TouchToWorldPoint(input));
+    }
+    
+    void TouchReleaseAction(Vector2 input) {
+        _playerWeapons[_currentWeapon].OnTouchRelease(TouchToWorldPoint(input));
     }
 
-    public void SetCurrentWeapon(WeaponDataEntry newWeapon) {
-        currentWeapon = newWeapon;
+    /// Converts a point on screen to a world point
+    Vector3 TouchToWorldPoint(Vector2 screenPos) {
+        // Convert screen position to viewport position with set distance away from camera.
+        Vector3 viewPos = _camera.ScreenToViewportPoint(screenPos);
+        viewPos.z = tapDistanceFromCamera;
         
+        // Return world position from converted view position.
+        return _camera.ViewportToWorldPoint(viewPos);
     }
 }
