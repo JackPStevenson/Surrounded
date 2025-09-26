@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: df579a7d11492a146bbea76eb8a98a6b
+guid: 90c46046d6708aa4abdb4fffcf1c23b0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -81,14 +81,14 @@ ModelImporter:
     serializedVersion: 3
     human: []
     skeleton:
-    - name: LargeModel(Clone)
+    - name: SkinnyModel(Clone)
       parentName: 
-      position: {x: -0, y: 0, z: 0}
+      position: {x: -13.419848, y: -5.2688626e-17, z: -0.03166467}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftLimbs
-      parentName: LargeModel(Clone)
-      position: {x: -0, y: 0, z: 0}
+      parentName: SkinnyModel(Clone)
+      position: {x: 4.291049, y: 8.881784e-16, z: 0.03166467}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftLegs
@@ -96,19 +96,19 @@ ModelImporter:
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: Thigh1
+    - name: Thigh
       parentName: LeftLegs
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+      position: {x: -5.1733904, y: 1.8560783, z: -0.026506508}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: Calf1
+    - name: Foot
       parentName: LeftLegs
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+      position: {x: -5.183616, y: 0.22382364, z: -0.20754573}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: Foot1
+    - name: Calf
       parentName: LeftLegs
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+      position: {x: -5.162262, y: 1.04035, z: -0.14464813}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: LeftArm
@@ -123,27 +123,22 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Hand
       parentName: Left
-      position: {x: 1.3828094, y: 2.9570534, z: -0.052949283}
+      position: {x: -3.97944, y: 2.9267287, z: -0.12042801}
+      rotation: {x: 0.6087614, y: -0, z: -0, w: 0.7933533}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm
+      parentName: Left
+      position: {x: -4.4353404, y: 2.9313674, z: -0.1216873}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: LeftBicep
-      parentName: LeftArm
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+    - name: Bicep
+      parentName: Left
+      position: {x: -4.849917, y: 2.953356, z: -0.08611879}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: LeftForearm
-      parentName: LeftArm
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: group1
-      parentName: LeftLimbs
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: -1, y: 1, z: 1}
     - name: RightLimbs
-      parentName: LargeModel(Clone)
-      position: {x: -0, y: 0, z: 0}
+      parentName: SkinnyModel(Clone)
+      position: {x: 4.291049, y: 8.881784e-16, z: 0.03166467}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: -1, y: 1, z: 1}
     - name: RightLegs
@@ -151,19 +146,19 @@ ModelImporter:
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: RightFoot
+    - name: Calf
       parentName: RightLegs
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+      position: {x: 5.562237, y: 1.04035, z: -0.14464813}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: RightThigh
+    - name: Thigh
       parentName: RightLegs
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+      position: {x: 5.5511084, y: 1.8560783, z: -0.026506508}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: RightCalf
+    - name: Foot
       parentName: RightLegs
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+      position: {x: 5.5408826, y: 0.22382364, z: -0.20754573}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RightArm
@@ -171,54 +166,34 @@ ModelImporter:
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: RightHand
+    - name: Left
       parentName: RightArm
-      position: {x: 1.3987923, y: 2.9852521, z: -0.057335515}
+      position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: RightForearm
-      parentName: RightArm
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+    - name: Hand
+      parentName: Left
+      position: {x: 6.744809, y: 2.9267287, z: -0.12042801}
+      rotation: {x: 0.6087614, y: -0, z: -0, w: 0.7933533}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Forearm
+      parentName: Left
+      position: {x: 6.288909, y: 2.9313674, z: -0.1216873}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: RightBicep
-      parentName: RightArm
-      position: {x: -0.0002459347, y: -0.0024491076, z: -0.35846123}
+    - name: Bicep
+      parentName: Left
+      position: {x: 5.874582, y: 2.953356, z: -0.08611879}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Head
-      parentName: LargeModel(Clone)
-      position: {x: -0, y: 3.610928, z: -0.00039553642}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: polySurface1
-      parentName: Head
-      position: {x: -0.0047682496, y: 0.14988601, z: -0.01591775}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: polySurface2
-      parentName: Head
-      position: {x: -0.0047682496, y: 0.0000046544264, z: 0.00008422695}
+      parentName: SkinnyModel(Clone)
+      position: {x: -0.00009775162, y: 3.574024, z: 0.026965216}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Torso
-      parentName: LargeModel(Clone)
-      position: {x: 0.097605854, y: 2.6618757, z: -0.29721668}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: polySurface3
-      parentName: Torso
-      position: {x: -0.097605854, y: -2.6618757, z: 0.29721668}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: polySurface4
-      parentName: Torso
-      position: {x: -0.097605854, y: -2.6618757, z: 0.29721668}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Strap
-      parentName: LargeModel(Clone)
-      position: {x: -0.0047682496, y: 3.3203793, z: 0.1521246}
+      parentName: SkinnyModel(Clone)
+      position: {x: -1.0712004, y: 2.6040497, z: -0.007903665}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
