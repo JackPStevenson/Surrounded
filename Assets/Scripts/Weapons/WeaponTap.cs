@@ -1,31 +1,24 @@
 using UnityEngine;
 
 public class WeaponTap : WeaponBase {
-    void Start() {
+    // ------ UPDATE METHODS ------
 
+    protected override void OnFixedUpdate(float deltaTime) {
+        
     }
 
-    void FixedUpdate() {
-        _currentEnergy = Mathf.Clamp01(_currentEnergy + (Time.fixedDeltaTime * energyRegenRate));
-    }
+    // ------ EVENT METHODS ------
     
     protected override void TouchPressAction(Vector3 pos) {
+        // Only proceed if any zombies are in range of tap.
         ZombieBase[] hitZombies = FindZombiesInSphere(pos, range, penetration, _hitMask);
         if (hitZombies == null) return;
         
+        // 
         if (TryUseEnergy(energyCost)) {
-            
-            for (int i = 0; i < hitZombies.Length; i++) {
-                hitZombies[i].DealDamage(damage);
+            foreach (ZombieBase t in hitZombies) {
+                t.DealDamage(damage);
             }
         }
-    }
-    
-    protected override void SwipeAction(Vector3 pos) {
-        
-    }
-    
-    protected override void TouchReleaseAction(Vector3 pos) {
-        
     }
 }

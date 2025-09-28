@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
     public GameStateIntDelegate OnGameStateChanged;
-    
     public static GameManager Instance;
-    private GameState _gameState = GameState.Intermission;
     
     private WaveManager _waveManager;
+    private PoorSoul _poorSoul;
 
+    private GameState _gameState = GameState.Intermission;
     private int _currentWave = 1;
+    private float _lastIntermission;
     
     // Parameters
     [Header("General")]
     public float intermissionTime = 5;
-
-    private float _lastIntermission;
     
     
     // ------ START FUNCTIONS ------
@@ -28,6 +27,9 @@ public class GameManager : MonoBehaviour {
     void Start() {
         _waveManager = WaveManager.Instance;
         _waveManager.OnAllZombiesDead += OnAllZombiesDead;
+        
+        _poorSoul = PoorSoul.Instance;
+        _poorSoul.OnDeath += OnPlayerDeath;
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -74,4 +76,5 @@ public class GameManager : MonoBehaviour {
     
     public GameState GetGameState() => _gameState;
     public int GetCurrentWave() => _currentWave;
+    public PoorSoul GetPoorSoul() => _poorSoul;
 }

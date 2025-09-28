@@ -1,16 +1,16 @@
+using System;
 using UnityEngine;
 
-public class PoorSoul : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+public class PoorSoul : Damageable {
+    public static PoorSoul Instance;
+    
+    // ------ START METHODS ------
+    
+    void Awake() {
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    protected override void OnStart() {
+
     }
 }
