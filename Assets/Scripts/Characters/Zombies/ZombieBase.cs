@@ -17,9 +17,7 @@ public class ZombieBase : Damageable {
 
     // ------ START FUNCTIONS ------
 
-    new void Start() {
-        base.Start();
-        
+    protected override void OnStart() {
         _manager = ZombieManager.Instance;
         OnDeath += ReturnToPool;
     }

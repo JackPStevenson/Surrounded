@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class InputManager : MonoBehaviour {
     public static InputManager Instance;
 
@@ -12,14 +11,18 @@ public class InputManager : MonoBehaviour {
     public Vector2Delegate TouchPressDelegate;
     public Vector2Delegate TouchReleaseDelegate;
     public Vector2Delegate TouchPositionDelegate;
-
-
+    
     // Swiping
     public Vector2 SwipeVector { get; private set; }
     public Vector2 SwipeDirection { get { return SwipeVector.normalized; } }
     public float SwipeDistance { get { return SwipeVector.magnitude; } }
     public Vector2Delegate SwipeDelegate;
-
+    
+    // Shaking
+    public Vector3 ShakeVector { get; private set; }
+    public float ShakeStrength { get { return ShakeVector.magnitude; } }
+    public Vector3Delegate ShakeDelegate;
+    
     // ------ START METHODS ------
 
     private void Awake() {
@@ -28,9 +31,19 @@ public class InputManager : MonoBehaviour {
 
     // ------ EVENT METHODS ------
 
+    private void OnTouchPress(InputValue value) {
+        IsTouching = true;
+        TouchPressDelegate?.Invoke(LastTouchPosition);
+    }
+    
     private void OnTouchPosition(InputValue value) {
         LastTouchPosition = value.Get<Vector2>();
         TouchPositionDelegate?.Invoke(LastTouchPosition);
+    }
+    
+    private void OnTouchRelease(InputValue value) {
+        IsTouching = false;
+        TouchReleaseDelegate?.Invoke(LastTouchPosition);
     }
 
     private void OnSwipe(InputValue value) {
@@ -38,13 +51,9 @@ public class InputManager : MonoBehaviour {
         SwipeDelegate?.Invoke(SwipeVector);
     }
 
-    private void OnTouchPress(InputValue value) {
-        IsTouching = true;
-        TouchPressDelegate?.Invoke(LastTouchPosition);
+    private void OnShake(InputValue value) {
+        ShakeVector = value.Get<Vector3>();
+        ShakeDelegate?.Invoke(ShakeVector);
     }
     
-    private void OnTouchRelease(InputValue value) {
-        IsTouching = false;
-        
-    }
 }

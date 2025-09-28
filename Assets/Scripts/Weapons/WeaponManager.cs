@@ -16,6 +16,8 @@ public class WeaponManager : MonoBehaviour {
     
     private Camera _camera;
 
+    // ------ START METHODS ------
+    
     void Start() {
         _camera = Camera.main;
         
@@ -26,11 +28,8 @@ public class WeaponManager : MonoBehaviour {
         
         _playerWeapons[0].SetHitMask(hitMask);
     }
-
-    void Update() {
-
-    }
-
+    
+    // ------ ACTION METHODS ------
 
     void TouchPressAction(Vector2 input) {
         _playerWeapons[_currentWeapon].OnTouchPress(TouchToWorldPoint(input));
@@ -43,6 +42,8 @@ public class WeaponManager : MonoBehaviour {
     void TouchReleaseAction(Vector2 input) {
         _playerWeapons[_currentWeapon].OnTouchRelease(TouchToWorldPoint(input));
     }
+    
+    // ------ HELPER METHODS ------
 
     /// Converts a point on screen to a world point
     Vector3 TouchToWorldPoint(Vector2 screenPos) {
