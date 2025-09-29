@@ -16,6 +16,7 @@ public class Damageable : MonoBehaviour {
     [Header("General")]
     public float maxHealth;
     protected float CurrentHealth;
+    public bool destroyOnDeath = false;
 
     // ------ START METHODS ------
     
@@ -40,10 +41,14 @@ public class Damageable : MonoBehaviour {
         if(skinnedRenderers.Length > 0)
             foreach (SkinnedMeshRenderer r in skinnedRenderers)
                 r.material.SetFloat(LastDamageFlash, Time.time);
-        
-        if (CurrentHealth <= 0)
+
+        if (CurrentHealth <= 0) {
             OnDeath?.Invoke();
-        
+            
+            if(destroyOnDeath)
+                Destroy(gameObject);
+        }
+
         return CurrentHealth;
     }
 
