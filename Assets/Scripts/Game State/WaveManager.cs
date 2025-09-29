@@ -14,6 +14,8 @@ public class WaveManager : MonoBehaviour {
     private GameManager _gameManager;
     private ZombieManager _zombieManager;
 
+    private Damageable _mainTarget;
+    
     private int _currentWave = 1;
 
     [Header("General")]
@@ -144,5 +146,16 @@ public class WaveManager : MonoBehaviour {
         float expInv = Mathf.Pow(percentToBase, _currentWave);
 
         return Mathf.Max(expInv, trickleRateDelayMinimum);
+    }
+    
+    public Damageable GetMainTarget() => _mainTarget;
+    
+    public void SetMainTarget(Damageable mainTarget) {
+        _mainTarget = mainTarget;
+        
+        // Do this just in case this class's start method is called after GameManager's.
+        if(!_zombieManager) _zombieManager = ZombieManager.Instance;
+        
+        _zombieManager.SetMainTarget(_mainTarget);
     }
 }

@@ -14,7 +14,6 @@ public class WeaponTap : WeaponBase {
         ZombieBase[] hitZombies = FindZombiesInSphere(pos, range, penetration, _hitMask);
         if (hitZombies == null) return;
         
-        // 
         if (TryUseEnergy(energyCost)) {
             foreach (ZombieBase t in hitZombies) {
                 t.DealDamage(damage);

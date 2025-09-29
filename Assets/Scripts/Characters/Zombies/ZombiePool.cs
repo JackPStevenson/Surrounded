@@ -23,10 +23,10 @@ public class ZombiePool {
     // ------ PUSH/POP ------
 
     /// Gets a zombie from pool.
-    public ZombieBase Pop(ZombieDataEntry zombieData, Vector3 spawnPos) {
+    public ZombieBase Pop(ZombieDataEntry zombieData, Vector3 spawnPos, Damageable mainTarget) {
         if (_zombieStack.Count <= 0) ExpandPool();
         ZombieBase z = _zombieStack.Pop();
-        z.Initialize(zombieData, spawnPos);
+        z.Initialize(zombieData, spawnPos, mainTarget);
         return z;
     }
 

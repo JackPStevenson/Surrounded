@@ -8,7 +8,15 @@ public delegate void FloatFloatDelegate(float float1Val, float float2Val);
 public delegate void IntIntFloatDelegate(int int1Val, int int2Val, float floatVal);
 public delegate void Vector2Delegate(Vector2 input);
 public delegate void Vector3Delegate(Vector3 input);
+public delegate void ZombieStateDelegate(ZombieState zombieState);
 public delegate void GameStateIntDelegate(GameState gameState, int intVal);
+
+public enum ZombieState {
+    Approaching,
+    Charging,
+    AttackingSideTarget,
+    AttackingMainTarget
+}
 
 public enum GameState {
     Intermission,
