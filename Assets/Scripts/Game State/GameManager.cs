@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
         
         _poorSoul = PoorSoul.Instance;
         _poorSoul.OnDeath += OnPlayerDeath;
+        
+        _waveManager.SetMainTarget(_poorSoul);
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -56,7 +58,6 @@ public class GameManager : MonoBehaviour {
     
     private void SetGameState(GameState newState) {
         _gameState = newState;
-        print(_gameState + " " + _currentWave);
         
         switch (newState) {
             case GameState.Intermission:

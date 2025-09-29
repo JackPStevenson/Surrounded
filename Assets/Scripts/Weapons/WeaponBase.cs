@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour {
-    
-    
     protected bool _isPressing;
     protected Vector3 _touchPressPos;
     protected Vector3 _swipePos;
@@ -15,7 +13,6 @@ public abstract class WeaponBase : MonoBehaviour {
     
     [Header("General")]
     public float damage = 10;
-    public bool spreadDamageAcrossHitEnemies = false;
     public float range = 10;
     public int penetration = 1;
 
@@ -93,6 +90,8 @@ public abstract class WeaponBase : MonoBehaviour {
         // Create array with new length if current hit array's length is smaller from required.
         if(_hitObjsTemp == null || _hitObjsTemp.Length != maxZombies)
             _hitObjsTemp = new Collider[Mathf.Min(maxZombies, 512)];
+        else
+            Array.Clear(_hitObjsTemp, 0, _hitObjsTemp.Length);
         
         // Only continue if any colliders were hit.
         int hitObjs = Physics.OverlapSphereNonAlloc(pos, radius, _hitObjsTemp, hitMask);
@@ -100,10 +99,11 @@ public abstract class WeaponBase : MonoBehaviour {
 
         // Look through each collider and add colliders attached to zombies to a list.
         List<ZombieBase> hitZombies = new List<ZombieBase>();
-        for (int i = 0 ; i < hitObjs; i++)
+        for (int i = 0; i < hitObjs; i++) {
             if (_hitObjsTemp[i].TryGetComponent(out ZombieBase z))
                 hitZombies.Add(z);
-        
+        }
+
         // Return hit zombies array if any zombies were hit. Otherwise, return null.
         return hitZombies.Count == 0 ? null : hitZombies.ToArray();
     }

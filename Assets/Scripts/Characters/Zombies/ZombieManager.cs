@@ -19,7 +19,8 @@ public class ZombieManager : MonoBehaviour {
     public GameObject zombieBasePrefab;
 
     [Header("Targeting")]
-    public Damageable mainTarget;
+    public float _targetPosDeviation = 1.5f;
+    Damageable _mainTarget;
 
     [Header("Spawning")]
     public Transform[] spawnPoints;
@@ -83,12 +84,12 @@ public class ZombieManager : MonoBehaviour {
         ZombieDataEntry data = zombieDataEntries[Mathf.Clamp(dataIndex, 0, zombieDataEntries.Length - 1)];
 
         Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        ZombieBase z = _zombiePool.Pop(data, spawn.position);
-        z.SetTarget(mainTarget);
+        ZombieBase z = _zombiePool.Pop(data, spawn.position, _mainTarget);
         
         OnUpdate += z.UpdateLoop;
         OnFixedUpdate += z.FixedUpdateLoop;
         z.SetActive(true);
+        z.SetTargetPosDeviation(_targetPosDeviation);
         
         _activeZombies++;
         
@@ -159,4 +160,6 @@ public class ZombieManager : MonoBehaviour {
         selectedIndex = validEntries.Count - 1;
         return zombieDataEntries[validEntries[^1]];
     }
+    
+    public void SetMainTarget(Damageable newTarget) => _mainTarget = newTarget;
 }
