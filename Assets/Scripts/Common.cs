@@ -48,11 +48,11 @@ public static class Common {
         HitZombies.Clear();
 
         int hitObjs = Physics.OverlapSphereNonAlloc(pos, radius, HitColliders, hitMask);
-        
+        if(hitObjs < 1) return null;
         
         // Look through each collider and add any zombies found to a list.
         int colIndex = 0;
-        while ((colIndex < hitObjs) && (HitZombies.Count >= maxZombies)) {
+        while ((colIndex < hitObjs) && (HitZombies.Count < maxZombies)) {
             if (HitColliders[colIndex].TryGetComponent(out ZombieBase z))
                 HitZombies.Add(z);
             

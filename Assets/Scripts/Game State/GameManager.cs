@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     private PoorSoul _poorSoul;
 
     private GameState _gameState = GameState.Intermission;
-    private int _currentWave = 1;
+    private int _currentWave;
     private float _lastIntermission;
 
     [Header("General")]
@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
         _poorSoul.OnDeath += loseMenu.Enable;
         
         _waveManager.SetMainTarget(_poorSoul);
+
+        SetGameState(GameState.Intermission);
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -65,10 +67,10 @@ public class GameManager : MonoBehaviour {
         
         switch (newState) {
             case GameState.Intermission:
+                _currentWave = Mathf.Max(_currentWave + 1, 1);
                 _lastIntermission = Time.time;
                 break;
             case GameState.InProgress:
-                _currentWave++;
                 break;
             case GameState.Dead:
                 break;
@@ -79,7 +81,8 @@ public class GameManager : MonoBehaviour {
 
     // ------ HELPER FUNCTIONS ------
     
+    public float GetRemainingIntermission() => Mathf.Max(intermissionTime - (Time.time - _lastIntermission));
     public GameState GetGameState() => _gameState;
-    public int GetCurrentWave() => _currentWave;
+    public int GetCurrentWave() => Mathf.Max(_currentWave, 1);
     public PoorSoul GetPoorSoul() => _poorSoul;
 }

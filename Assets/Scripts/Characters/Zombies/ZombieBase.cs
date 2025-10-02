@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(NavMeshAgent))]
 public class ZombieBase : Damageable {
     public ZombieStateDelegate OnZombieStateChanged;
+    public GenericDelegate OnAttack;
     
     private const float CharacterRadius = 0.4f;
     
@@ -20,6 +21,7 @@ public class ZombieBase : Damageable {
     private LayerMask _sideTargetMask;
     
     private NavMeshAgent _nav;
+    private ZombieVisual _visual;
     
     private Vector3 _moveToPos;
     private Vector3 _lastTargetPos;
@@ -51,11 +53,6 @@ public class ZombieBase : Damageable {
         _nav.speed = zombieData.speed;
         ChangeZombieState(ZombieState.Approaching, false);
         
-        
-        // Create visual element for zombie.
-        Instantiate(zombieData.visualPrefab, transform);
-        SetActive(false);
-        
         // Calculate how far zombie should be from target (with slight variance to reduce pileups).
         _attackRange = (CharacterRadius * 2) + (_data.attackRange * Random.Range(0.9f, 1f));
         _nav.stoppingDistance = 0.0f;
@@ -63,6 +60,16 @@ public class ZombieBase : Damageable {
             _lastTargetPos = _mainTarget.Position + Vector3.up * 5;
         
         _sideTargetMask = LayerMask.GetMask("Barricade");
+        
+        // Create visual element for zombie.
+        Instantiate(zombieData.visualPrefab, transform).TryGetComponent(out _visual);
+        if (_visual) {
+            _visual.SetZombie(this);
+            renderers = _visual.renderers;
+            skinnedRenderers = _visual.skinnedRenderers;
+        }
+        
+        SetActive(false);
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -112,9 +119,11 @@ public class ZombieBase : Damageable {
             // --- ATTACKING SIDE TARGET MODE ---
             case ZombieState.AttackingSideTarget:
                 _nav.speed = 0;
-                
-                if (_sideTarget)
+
+                if (_sideTarget) {
                     TryAttack(_sideTarget, true);
+                    OnAttack?.Invoke();
+                }
                 else
                     ChangeZombieState(ZombieState.Approaching);
                 break;
@@ -122,8 +131,11 @@ public class ZombieBase : Damageable {
             // --- ATTACKING MAIN TARGET MODE ---
             case ZombieState.AttackingMainTarget:
                 _nav.speed = 0;
-                
-                if (_mainTarget) TryAttack(_mainTarget, true);
+
+                if (_mainTarget) {
+                    TryAttack(_mainTarget, true);
+                    OnAttack?.Invoke();
+                }
                 break;
         }
     }
@@ -204,7 +216,11 @@ public class ZombieBase : Damageable {
     public void ReturnToPool() {
         if (IsInPool()) return;
 
+        Destroy(_visual.gameObject);
         _data = null;
+        _visual = null;
+        renderers = null;
+        skinnedRenderers = null;
         _manager.ReturnZombie(this);
     }
 
@@ -232,4 +248,8 @@ public class ZombieBase : Damageable {
     public float SetTargetPosDeviation(float newDeviation) => _targetApproachPosDistance = newDeviation;
     
     public ZombieState GetZombieState() => _zombieState;
+    
+    public float GetMaxSpeed() => _nav.speed;
+    public float GetCurrentSpeed() => _nav.velocity.magnitude;
+    
 }
