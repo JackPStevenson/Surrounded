@@ -120,10 +120,8 @@ public class ZombieBase : Damageable {
             case ZombieState.AttackingSideTarget:
                 _nav.speed = 0;
 
-                if (_sideTarget) {
+                if (_sideTarget)
                     TryAttack(_sideTarget, true);
-                    OnAttack?.Invoke();
-                }
                 else
                     ChangeZombieState(ZombieState.Approaching);
                 break;
@@ -132,10 +130,8 @@ public class ZombieBase : Damageable {
             case ZombieState.AttackingMainTarget:
                 _nav.speed = 0;
 
-                if (_mainTarget) {
+                if (_mainTarget)
                     TryAttack(_mainTarget, true);
-                    OnAttack?.Invoke();
-                }
                 break;
         }
     }
@@ -204,6 +200,8 @@ public class ZombieBase : Damageable {
         if (_lastAttack + _data.attackInterval > Time.time) return;
         float healthLeft = target.DealDamage(_data.attackDamage);
         _lastAttack = Time.time;
+        
+        OnAttack?.Invoke();
 
         // If target dies and stop on death is false, continue moving zombie.
         if (healthLeft > 0 || stopOnDeath) return;
@@ -215,8 +213,8 @@ public class ZombieBase : Damageable {
     /// Returns zombie back to pool with its data erased. This should only be called by Zombie Manager script.
     public void ReturnToPool() {
         if (IsInPool()) return;
-
-        Destroy(_visual.gameObject);
+        
+        if(_visual) Destroy(_visual.gameObject);
         _data = null;
         _visual = null;
         renderers = null;

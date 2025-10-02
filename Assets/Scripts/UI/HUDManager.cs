@@ -17,6 +17,7 @@ public class HUDManager : MonoBehaviour
     public GameObject _HordeText;
     public Slider _waveProgressSlider;
     public TMP_Text _waveProgressText;
+    public Slider _healthSlider;
 
     void Awake() {
         Instance = this;
@@ -33,6 +34,7 @@ public class HUDManager : MonoBehaviour
     }
 
     void Update() {
+        _healthSlider.value = _poorSoul.GetCurrentHealth() / _poorSoul.maxHealth;
         switch (_gameManager.GetGameState()) {
             case GameState.Intermission:
                 _waveProgressText.text = "Wave " + _gameManager.GetCurrentWave() + " in " + Mathf.Ceil(_gameManager.GetRemainingIntermission());
