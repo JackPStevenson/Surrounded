@@ -11,7 +11,7 @@ public class WeaponTap : WeaponBase {
     
     protected override void TouchPressAction(Vector3 pos) {
         // Only proceed if any zombies are in range of tap.
-        ZombieBase[] hitZombies = FindZombiesInSphere(pos, range, penetration, _hitMask);
+        ZombieBase[] hitZombies = Common.FindZombiesInSphere(pos, range, penetration, _hitMask);
         if (hitZombies == null) return;
         
         if (TryUseEnergy(energyCost)) {

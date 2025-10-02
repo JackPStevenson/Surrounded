@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour {
     private GameState _gameState = GameState.Intermission;
     private int _currentWave = 1;
     private float _lastIntermission;
+
+    [Header("General")]
+    public MenuBase loseMenu;
     
     // Parameters
     [Header("General")]
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour {
         
         _poorSoul = PoorSoul.Instance;
         _poorSoul.OnDeath += OnPlayerDeath;
+        _poorSoul.OnDeath += loseMenu.Enable;
         
         _waveManager.SetMainTarget(_poorSoul);
     }

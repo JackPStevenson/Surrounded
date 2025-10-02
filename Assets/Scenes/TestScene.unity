@@ -1741,6 +1741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75920fe72a4c5534182ecd6ccaada59f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loseMenu: {fileID: 1267493511}
   intermissionTime: 3
 --- !u!4 &262111261
 Transform:
@@ -2287,7 +2288,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 288904152}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1693246985}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &288904152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7681,13 +7694,14 @@ GameObject:
   - component: {fileID: 1267493508}
   - component: {fileID: 1267493510}
   - component: {fileID: 1267493509}
+  - component: {fileID: 1267493511}
   m_Layer: 5
-  m_Name: Death
+  m_Name: Lose Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1267493508
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7747,6 +7761,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1267493507}
   m_CullTransparentMesh: 1
+--- !u!114 &1267493511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267493507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53bc9c467dc602746a7112bc5f9a60b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1275288638
 Mesh:
   m_ObjectHideFlags: 0

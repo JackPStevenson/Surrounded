@@ -51,16 +51,18 @@ public class ZombieBase : Damageable {
         _nav.speed = zombieData.speed;
         ChangeZombieState(ZombieState.Approaching, false);
         
-        // Calculate how far zombie should be from target (with slight variance to reduce pileups).
-        _attackRange = (CharacterRadius * 2) + (_data.attackRange * Random.Range(0.9f, 1f));
-        _nav.stoppingDistance = 0.0f;
-        _lastTargetPos = _mainTarget.Position + Vector3.up * 5;
-        
-        _sideTargetMask = LayerMask.GetMask("Barricade");
         
         // Create visual element for zombie.
         Instantiate(zombieData.visualPrefab, transform);
         SetActive(false);
+        
+        // Calculate how far zombie should be from target (with slight variance to reduce pileups).
+        _attackRange = (CharacterRadius * 2) + (_data.attackRange * Random.Range(0.9f, 1f));
+        _nav.stoppingDistance = 0.0f;
+        if(_mainTarget)
+            _lastTargetPos = _mainTarget.Position + Vector3.up * 5;
+        
+        _sideTargetMask = LayerMask.GetMask("Barricade");
     }
 
     // ------ UPDATE FUNCTIONS ------
