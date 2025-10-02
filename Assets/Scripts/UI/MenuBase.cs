@@ -1,19 +1,29 @@
+using System;
 using UnityEngine;
 
 public class MenuBase : MonoBehaviour {
-    private RectTransform _rect;
+    public RectTransform Rect { get; private set; }
+    public Vector2 Position { get => Rect.anchoredPosition; set => Rect.anchoredPosition = value; }
     
-    public Vector2 Position;
+    // ------ START METHODS ------
     
-    
-    
-    void Start()
-    {
+    void Awake() {
+        Rect = GetComponent<RectTransform>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
+    
+    void Start() {
         
     }
+    
+    // ------ UPDATE METHODS ------
+    
+    void Update() {
+        
+    }
+    
+    // ------ EVENT METHODS ------
+    
+    public void Enable() => SetActive(true);
+    public void Disable() => SetActive(false);
+    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
 }
