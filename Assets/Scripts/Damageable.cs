@@ -36,11 +36,13 @@ public class Damageable : MonoBehaviour {
 
         if(renderers.Length > 0)
             foreach (MeshRenderer r in renderers)
-                r.material.SetFloat(LastDamageFlash, Time.time);
+                if(r)
+                    r.material.SetFloat(LastDamageFlash, Time.time);
         
         if(skinnedRenderers.Length > 0)
             foreach (SkinnedMeshRenderer r in skinnedRenderers)
-                r.material.SetFloat(LastDamageFlash, Time.time);
+                if(r)
+                    r.material.SetFloat(LastDamageFlash, Time.time);
 
         if (CurrentHealth <= 0) {
             OnDeath?.Invoke();
