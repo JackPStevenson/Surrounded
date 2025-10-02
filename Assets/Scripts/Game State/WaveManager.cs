@@ -55,6 +55,8 @@ public class WaveManager : MonoBehaviour {
         _zombieManager = ZombieManager.Instance;
 
         _gameManager.OnGameStateChanged += OnGameStateChanged;
+        
+        ToggleWave(false);
     }
 
     // ------ UPDATE FUNCTIONS ------
@@ -85,8 +87,6 @@ public class WaveManager : MonoBehaviour {
             // Calculate whether this is last horde, then spawn it.
             bool isLastHorde = _hordesSpawned >= hordesThisWave;
             StartCoroutine(SpawnHordeDelayed(isLastHorde));
-            
-            print("Horde");
 
             // If this is last horde, stop spawning.
             if (isLastHorde) _isSpawning = false;
@@ -115,10 +115,10 @@ public class WaveManager : MonoBehaviour {
     private void OnGameStateChanged(GameState gameState, int currentWave) {
         _currentWave = currentWave;
         
-        ToggleWave(gameState is GameState.InProgress);
+        ToggleWave(gameState == GameState.InProgress);
     }
 
-    private void ToggleWave(bool isEnabled) {
+    public void ToggleWave(bool isEnabled) {
         enabled = isEnabled;
         
         _isSpawning = isEnabled;
@@ -143,10 +143,14 @@ public class WaveManager : MonoBehaviour {
     private float GetTrickleSpawnDelay() {
         // Calculate how much shorter current spawn delay should be relative to starting spawn delay.
         float percentToBase = 1 + (trickleRatePercentIncreasePerWave / 100);
-        float expInv = Mathf.Pow(percentToBase, _currentWave);
-
-        return Mathf.Max(expInv, trickleRateDelayMinimum);
+        float expInv = Mathf.Pow(1 / percentToBase, _currentWave);
+        
+        // Make sure new delay approaches but never reaches given minimum delay.
+        float newDelay = (startingTrickleSpawnDelay - trickleRateDelayMinimum) * expInv;
+        return newDelay + trickleRateDelayMinimum;
     }
+    
+    public float GetHordeSpawnTime() => hordeStartDelay + (GetHordeSize() * hordeIndividualZombieSpawnDelay);
     
     public Damageable GetMainTarget() => _mainTarget;
     
@@ -158,4 +162,6 @@ public class WaveManager : MonoBehaviour {
         
         _zombieManager.SetMainTarget(_mainTarget);
     }
+
+    public float GetWaveProgress() => Mathf.Clamp01((Time.time - _waveStartTime) / (GetWaveDuration() + GetHordeSpawnTime()));
 }

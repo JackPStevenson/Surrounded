@@ -27,7 +27,7 @@ public class Damageable : MonoBehaviour {
 
     protected virtual void OnStart(){}
     
-    // ------ EVENT METHODS ------as
+    // ------ EVENT METHODS ------
 
     /// Deals damage based on given value. If damageable's health drops below 0, OnDeath will be invoked. Returns remaining health.
     public float DealDamage(float damage) {
@@ -56,4 +56,7 @@ public class Damageable : MonoBehaviour {
         CurrentHealth = 0;
         OnDeath?.Invoke();
     }
+    
+    // ------ HELPER METHODS ------
+    public float GetCurrentHealth() => CurrentHealth;
 }
