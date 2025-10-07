@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public delegate void GenericDelegate();
@@ -27,45 +28,95 @@ public enum GameState {
 }
 
 public static class Common {
-    private const int HitCollidersSize = 512;
+    private const int HitListSize = 512;
     
-
+    
     // ------ TEMP LISTS ------
-    
-    // Make hit lists lazy to reduce memory footprint and to have them only initialize when needed.
-    readonly static Lazy<Collider[]> LazyHitColliders = new Lazy<Collider[]>(() => new Collider[HitCollidersSize]);
-    readonly static Lazy<List<ZombieBase>> LazyHitZombies = new Lazy<List<ZombieBase>>(() => new List<ZombieBase>());
-    static Collider[] HitColliders => LazyHitColliders.Value;
-    static List<ZombieBase> HitZombies => LazyHitZombies.Value;
 
+    readonly static Collider[] HitColListTemp = new Collider[HitListSize]; 
+    readonly static Collider[] HitColList = new Collider[HitListSize];
+    readonly static Damageable[] HitDamList = new Damageable[HitListSize];
+    readonly static Damageable[] EmptyHitDamList = Array.Empty<Damageable>();
+    
+    private static int queryStamp;
 
     // ------ DETECTION FUNCTIONS ------
-    
-    /// Tries to find all zombies in radius around given point using given hitMask. No more than maxZombies zombies will be returned.
-    public static ZombieBase[] FindZombiesInSphere(Vector3 pos, float radius, int maxZombies, LayerMask hitMask) {
-        // Clear hit lists of any previous hit results.
-        Array.Clear(HitColliders, 0, HitCollidersSize);
-        HitZombies.Clear();
 
-        int hitObjs = Physics.OverlapSphereNonAlloc(pos, radius, HitColliders, hitMask);
-        if(hitObjs < 1) return null;
-        
-        // Look through each collider and add any zombies found to a list.
-        int colIndex = 0;
-        while ((colIndex < hitObjs) && (HitZombies.Count < maxZombies)) {
-            if (HitColliders[colIndex].TryGetComponent(out ZombieBase z))
-                HitZombies.Add(z);
-            
-            colIndex++;
+    /// Tries to find all Damageables in radius around given point using given hitMask. No more than maxDamageables damageables will be returned.
+    public static Damageable[] FindDamageablesInSphere(Vector3 point, float radius, int maxDamageables, LayerMask hitMask) {
+        // Check if any objects were found in range of point. Return empty array if nothing was found.
+        int hitCols = Physics.OverlapSphereNonAlloc(point, radius, HitColList, hitMask);
+        if (hitCols < 1) return EmptyHitDamList;
+
+        // Look through each collider hit. Stop loop early if hit damageables reaches limit.
+        int hitDams = 0;
+        for (int i = 0; i < hitCols && hitDams < maxDamageables; i++) {
+            // If hit collider's root has damageable component, add it to damageables array.
+            Collider c = HitColList[i];
+            if(c == null) continue;
+            if (!c.transform.root.TryGetComponent(out Damageable d)) continue;
+
+            HitDamList[hitDams] = d;
+            hitDams++;
         }
 
-        // Return hit zombies array if any zombies were hit. Otherwise, return null.
-        return HitZombies.Count == 0 ? null : HitZombies.ToArray();
+        // Return hit damageables. If none were hit, return empty array.
+        if (hitDams == 0) return EmptyHitDamList;
+
+        Damageable[] result = new Damageable[hitDams];
+        Array.Copy(HitDamList, result, hitDams);
+        return result;
     }
 
+    /// Tries to find all Damageables in radius around path made from given points using given hitMask. No more than maxDamageables damageables will be returned.
+    public static Damageable[] FindDamageablesAlongPath(Vector3[] points, float radius, int maxDamageables, LayerMask hitMask) {
+        // Handle special cases when path length is < 2.
+        switch (points.Length) {
+            // If path has 0 points, return empty array.
+            case 0: return EmptyHitDamList;
+            // If path only has 1 point, simply find damageables in sphere instead.
+            case 1: return FindDamageablesInSphere(points[0], radius, maxDamageables, hitMask);
+        }
+
+        // Loop through each path segment. Stop loop early if hit damageables reaches limit.
+        int hitCols = 0, hitDams = 0;
+        for (int i = 0; i < points.Length - 1 && hitDams < maxDamageables; i++) {
+            // Check if any colliders were found in range of path segment. Skip to next segment if nothing was found.
+            Vector3 p1 = points[i], p2 = points[i + 1];
+            int hitColsTemp = Physics.OverlapCapsuleNonAlloc(p1, p2, radius, HitColListTemp, hitMask, QueryTriggerInteraction.Ignore);
+            if(hitColsTemp == 0) continue;
+
+            // Loop through each collider found on segment.
+            for (int j = 0; j < hitColsTemp; j++) {
+                // Add collider to hit array so it can be temporarily disabled to prevent redundant hits.
+                Collider c = HitColListTemp[j];
+                HitColList[hitCols] = HitColListTemp[j];
+                c.enabled = false;
+                hitCols++;
+                
+                // If hit collider's root has damageable component, add it to array.
+                if (!c.transform.root.TryGetComponent(out Damageable d)) continue;
+                HitDamList[hitDams] = d;
+                hitDams++;
+            }
+        }
+
+        // Reenable hit colliders that were previously disabled during path search.
+        for (int i = 0 ; i < hitCols; i++) HitColList[i].enabled = true;
+
+        // Return hit damageables. If none were hit, return empty array.
+        if (hitDams == 0) return EmptyHitDamList;
+
+        Damageable[] result = new Damageable[hitDams];
+        Array.Copy(HitDamList, result, hitDams);
+        return result;
+    }
+    
     // ------ HELPER FUNCTIONS ------
+    
     /// Converts a 3d position to a top-down position.
     public static Vector2 ToTopDownPos(Vector3 pos) => new Vector2(pos.x, pos.z);
     /// Converts a top-down position to a 3d position.
     public static Vector3 To3dPos(Vector2 topDown) => new Vector3(topDown.x, 0, topDown.y);
+    
 }

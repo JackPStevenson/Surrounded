@@ -9,11 +9,12 @@ public abstract class WeaponBase : MonoBehaviour {
     protected Vector3 _touchReleasePos;
     protected Vector3 _swipeStrength;
 
-    protected LayerMask _hitMask;
+    [Header("Physics")]
+    public LayerMask hitMask;
     
     [Header("General")]
-    public float damage = 10;
-    public float range = 10;
+    public float damage = 0.5f;
+    public float range = 0.5f;
     public int penetration = 1;
 
     [Header("Energy")]
@@ -22,6 +23,15 @@ public abstract class WeaponBase : MonoBehaviour {
     public float energyCost = 1;
     
     protected float _currentEnergy;
+    
+    // ------ UPDATE FUNCTIONS ------
+
+    void Start() {
+
+        OnStart();
+    }
+    
+    protected virtual void OnStart() {}
     
     // ------ UPDATE FUNCTIONS ------
     
@@ -60,8 +70,6 @@ public abstract class WeaponBase : MonoBehaviour {
 
         ShakeAction(strength);
     }
-    
-    public void SetHitMask(LayerMask mask) => _hitMask = mask;
 
     // ------ ACTION FUNCTIONS ------
 

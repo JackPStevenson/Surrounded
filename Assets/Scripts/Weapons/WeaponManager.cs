@@ -5,9 +5,10 @@ using UnityEngine.Serialization;
 public class WeaponManager : MonoBehaviour {
     private InputManager _input;
     
-    [Header("Physics")]
-    public LayerMask hitMask;
-    public float tapDistanceFromCamera = 10;
+    [Header("Tap Point")]
+    public float floorHeight = 0;
+    public float tapOffsetTowardsCamera = 0;
+    public float tapHeightOffset = 0.5f;
 
     [Header("Weapons")]
     public Transform debugTracker;
@@ -15,18 +16,18 @@ public class WeaponManager : MonoBehaviour {
     private int _currentWeapon = 0;
     
     private Camera _camera;
+    private Plane _floor;
 
     // ------ START METHODS ------
     
     void Start() {
         _camera = Camera.main;
+        _floor = new Plane(Vector3.up, Vector3.up * floorHeight);
         
         _input = InputManager.Instance;
         _input.TouchPressDelegate += TouchPressAction;
         _input.TouchPositionDelegate += SwipeAction;
         _input.TouchReleaseDelegate += TouchReleaseAction;
-        
-        _playerWeapons[0].SetHitMask(hitMask);
     }
     
     // ------ ACTION METHODS ------
@@ -45,13 +46,15 @@ public class WeaponManager : MonoBehaviour {
     
     // ------ HELPER METHODS ------
 
-    /// Converts a point on screen to a world point
+    /// Converts screen space tap to a world point. Returns Vector3.one * -1024 if tap didn't hit ground plane.
     Vector3 TouchToWorldPoint(Vector2 screenPos) {
-        // Convert screen position to viewport position with set distance away from camera.
-        Vector3 viewPos = _camera.ScreenToViewportPoint(screenPos);
-        viewPos.z = tapDistanceFromCamera;
+        // Convert screen position to world-space ray.
+        Ray tapRay = _camera.ScreenPointToRay(screenPos);
+
+        // Only continue if ray hits floor plane. Otherwise, return fallback value.
+        if (!_floor.Raycast(tapRay, out float dist)) return Vector3.one * -1024;
         
-        // Return world position from converted view position.
-        return _camera.ViewportToWorldPoint(viewPos);
+        // Return world-space position modified by offsets.
+        return tapRay.GetPoint(dist - tapOffsetTowardsCamera) + (Vector3.up * tapHeightOffset);
     }
 }

@@ -154,7 +154,7 @@ public partial class @InputAction_Player: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""1cd1a97e-064c-44bb-8e18-64328b750e0f"",
                     ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": ""Press(pressPoint=0.05)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Touch"",
                     ""action"": ""TouchPress"",
