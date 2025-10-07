@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ZombieVisual : MonoBehaviour {
@@ -20,7 +21,7 @@ public class ZombieVisual : MonoBehaviour {
     public void SetZombie(ZombieBase newZombie) {
         _zombie = newZombie;
         _zombie.OnDeath += OnDeath;
-        _zombie.OnDamaged += OnDamaged;
+        //_zombie.OnDamaged += OnDamaged;
         _zombie.OnAttack += OnAttack;
     }
     
@@ -37,8 +38,14 @@ public class ZombieVisual : MonoBehaviour {
         zombieAnimator.SetTrigger(Death);
     }
     
-    void OnDamaged(float damageTaken, float healthLeft) {
-        // Entirely optional.
-        zombieAnimator.SetTrigger(Damaged);
+    // void OnDamaged(float damageTaken, float healthLeft) {
+    //     // Entirely optional.
+    //     zombieAnimator.SetTrigger(Damaged);
+    // }
+
+    private void OnDestroy() {
+        _zombie.OnDeath -= OnDeath;
+        //_zombie.OnDamaged += OnDamaged;
+        _zombie.OnAttack -= OnAttack;
     }
 }
