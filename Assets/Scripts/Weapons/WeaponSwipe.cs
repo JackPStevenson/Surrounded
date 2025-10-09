@@ -13,6 +13,7 @@ public class WeaponSwipe : WeaponBase {
     
     protected override void OnStart() {
         _swipePoints = new List<Vector3>();
+        debugLine.positionCount = 0;
     }
     
     // ------ UPDATE METHODS ------
@@ -32,8 +33,12 @@ public class WeaponSwipe : WeaponBase {
         
         debugLine.SetPosition(debugLine.positionCount - 1, pos);
     }
+    protected override void ShakeAction(Vector3 strength) {
+        Debug.Log(strength.magnitude);
+    } 
 
     protected override void TouchReleaseAction(Vector3 pos) {
+        if (_swipePoints.Count <= 1) return;
         // Only proceed if any zombies are in range of tap.
         Damageable[] hitDamageables = Common.FindDamageablesAlongPath(_swipePoints.ToArray(), range, penetration, hitMask);
         
