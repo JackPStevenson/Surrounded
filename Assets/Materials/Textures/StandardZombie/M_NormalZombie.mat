@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6037514115058642141
+--- !u!114 &-9078319019208820791
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TankyZombie
+  m_Name: M_NormalZombie
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -41,11 +41,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: e49fdbe1f4088c340a1807a00967fec9, type: 3}
+        m_Texture: {fileID: 2800000, guid: d7f74dcdfcf072d4e9ba1e878528ad05, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 9fa74c9b3b01fa3469b1ccc40ada47e2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4300efa114036064d865ef8f3906305b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -65,11 +65,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e49fdbe1f4088c340a1807a00967fec9, type: 3}
+        m_Texture: {fileID: 2800000, guid: d7f74dcdfcf072d4e9ba1e878528ad05, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: a3721cf4a6268b746a13eb8535815ced, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3d52db910e7615842b0c11b59c50dba0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
