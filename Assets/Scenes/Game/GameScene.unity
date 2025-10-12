@@ -9339,7 +9339,8 @@ MonoBehaviour:
   range: 0.5
   penetration: 9999
   energyRegenRate: 1
-  energyCost: 0.25
+  energyCost: 0.65
+  maxPathDistance: 5
   debugLine: {fileID: 1111441624}
 --- !u!1 &1336207373
 GameObject:

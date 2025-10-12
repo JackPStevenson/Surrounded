@@ -118,5 +118,10 @@ public static class Common {
     public static Vector2 ToTopDownPos(Vector3 pos) => new Vector2(pos.x, pos.z);
     /// Converts a top-down position to a 3d position.
     public static Vector3 To3dPos(Vector2 topDown) => new Vector3(topDown.x, 0, topDown.y);
-    
+
+    // Performs smooth interpolation between from and to independently of framerate.
+    public static float SmoothLerp(float from, float to, float remainderAfter1Second, float deltaTime) {
+        return ((from - to) * Mathf.Pow(remainderAfter1Second, deltaTime)) + to;
+    }
+
 }

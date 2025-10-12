@@ -4,106 +4,115 @@ using UnityEngine.Serialization;
 
 public class WeaponSwipe : WeaponBase {
     private const float MinSwipeDistance = 0.75f;
-    
+
+    [Header("Swiping")]
+    public float maxPathDistance = 5;
+
     [Header("Debug")]
     public LineRenderer debugLine;
 
     private bool _usedAttackThisSwipe = false;
-    
-    private List<Vector3> _swipePoints;
-    float lastPointTime = -100;
-    
+
+    private List<Vector3> _pathPoints;
+    private float _currentPathDistance;
+
     // ------ START METHODS ------
-    
+
     protected override void OnStart() {
-        _swipePoints = new List<Vector3>();
+        _pathPoints = new List<Vector3>();
         debugLine.positionCount = 0;
     }
-    
+
     // ------ UPDATE METHODS ------
 
     protected override void OnFixedUpdate(float deltaTime) {
-        
+
     }
 
     // ------ EVENT METHODS ------
 
     protected override void SwipeAction(Vector3 pos) {
-        // Stop trying to add points if attack has already been performed.
+        // Only continue if weapon has not yet attacked during current swipe.
         if (_usedAttackThisSwipe) return;
-
-        // If weapon doesn't have enough energy to continue swiping, try to add one last point and attack early.
-        if (!HasEnoughEnergy() && _swipePoints.Count > 0) {
-            if (IsNewPointValid(pos, true)) AddPoint(pos);
-            
-            TrySwipeAttack();
+        
+        // Only continue if path already exists. If it doesn't, try to add first point if weapon has enough energy.
+        if (GetPathSize() == 0) {
+            if (TryUseEnergy(energyCost)) TryAddPoint(pos, true);
             return;
         }
         
-        // If weapon has enough energy and pos is valid, add it to path.
-         if (IsNewPointValid(pos)) {
-             if(_swipePoints.Count > 0)
-                 print(Vector3.Distance(_swipePoints[^1], pos) + " " + GetCurrentEnergy() );
-            AddPoint(pos);
-            
-            //  Only consume energy if path has >= 1 points to prevent wasting energy on swipe attempts that go nowhere.
-            if(_swipePoints.Count > 0)
-                TryUseEnergy(energyCost);
+        // Create variables for new point to be added and whether its addition will push path length to max distance.
+        Vector3 newPoint = pos;
+        bool pathReachedMaxDistance = false;
 
-            // If addition of this point to path depletes energy, attack early.
-            if (!HasEnoughEnergy())
-                TrySwipeAttack();
+        // If new point will make path reach max distance, move new point closer to path's last point to ensure path length with new point won't exceed max distance.
+        float possiblePathDistance = _currentPathDistance + Vector3.Distance(_pathPoints[^1], newPoint);
+        if (possiblePathDistance >= maxPathDistance) {
+            newPoint = (_pathPoints[^1] - newPoint).normalized * (possiblePathDistance - maxPathDistance);
+            pathReachedMaxDistance = true;
         }
+        
+        // Attempt to add new point to list. If path reaches max distance with new point, forcefully add it and do attack early.
+        TryAddPoint(newPoint, pathReachedMaxDistance);
+        if (pathReachedMaxDistance) TrySwipeAttack();
     }
 
     protected override void TouchReleaseAction(Vector3 pos) {
-        // If weapon hasn't yet attacked 
-        if (!_usedAttackThisSwipe) {
-            if (IsNewPointValid(pos, true)) AddPoint(pos);
-            TrySwipeAttack();
-        }
-
+        // If weapon hasn't yet attacked, do attack.
+        if (!_usedAttackThisSwipe) TrySwipeAttack();
+    
+        // Ensure attack buffer is turned off once swipe concludes.
         _usedAttackThisSwipe = false;
     }
 
     private void TrySwipeAttack() {
         // Only proceed if at least 2 swipe points are in array. 
-        if (_swipePoints.Count >= 2) {
-
-            // Only proceed if any zombies are in range of tap.
-            Damageable[] hitDamageables = Common.FindDamageablesAlongPath(_swipePoints.ToArray(), range, penetration, hitMask);
-            if (hitDamageables != null) {
-
-                if (TryUseEnergy(energyCost)) {
-                    foreach (Damageable d in hitDamageables) {
-                        d.DealDamage(damage);
-                    }
-                }
-            }
+        if (_pathPoints.Count > 1) {
+            // Try to find zombies along path and damage to all zombies found.
+            Damageable[] hitDamageables = Common.FindDamageablesAlongPath(_pathPoints.ToArray(), range, penetration, hitMask);
+            if (hitDamageables != null)
+                foreach (Damageable d in hitDamageables)
+                    d.DealDamage(damage);
         }
+
+        // Clear path points, reset current path distance, and set attack buffer to true.
+        if(debugLine) debugLine.positionCount = 0;
+        _pathPoints.Clear();
         
-        debugLine.positionCount = 0;
-        _swipePoints.Clear();
-        
+        _currentPathDistance = 0;
         _usedAttackThisSwipe = true;
     }
 
-    /// Returns whether given point can be added to path.
-    bool IsNewPointValid(Vector3 newPoint, bool willBeLastPoint = false) {
-        // (BEGINNING POINT) Return true if new point will be the first in path and isn't going to be last point. This establishes the path's first point.
-        if (_swipePoints.Count == 0 && !willBeLastPoint) return true;
-        // (MIDDLE POINTS) Return true if new point will be far enough away from last point in path. This ensures points have proper spacing between one another.
-        if (Vector3.Distance(_swipePoints[^1], newPoint) >= MinSwipeDistance) return true;
-        // (END POINT) Return true if point will be last in path and path has at least 2 other points. This prevents player from simply 'tapping' with swipe.
-        if (willBeLastPoint && _swipePoints.Count >= 2) return true;
-        // Return false if point is not valid.
-        return false;
+    // ------ HELPER METHODS ------
+
+    /// Returns amount of points currently on path.
+    int GetPathSize() => _pathPoints.Count;
+
+    /// Tries to add given point to path. Returns whether given point can be added to path.
+    bool TryAddPoint(Vector3 newPoint, bool forceAddPoint = false) {
+        if (!forceAddPoint && !IsNewPointValid(newPoint)) return false;
+
+        _currentPathDistance += AddPoint(newPoint);
+        return true;
     }
 
-    /// Adds a point to path.
-    void AddPoint(Vector3 newPoint) {
-        _swipePoints.Add(newPoint);
+    /// Returns whether given point can be added to path. Can optionally ignore distance check if path is already established (>= 2 path points).
+    bool IsNewPointValid(Vector3 newPoint) {
+        // True if new point is the first in path.
+        if (_pathPoints.Count == 0) return true;
+        // True if new point is far enough away from most recent point added.
+        return Vector3.Distance(_pathPoints[^1], newPoint) >= MinSwipeDistance;
+        // False if new point is not valid.
+    }
+
+    /// Adds a point to path. Returns distance between newly added point and previous one on path.
+    float AddPoint(Vector3 newPoint) {
+        _pathPoints.Add(newPoint);
+
         debugLine.positionCount += 1;
         debugLine.SetPosition(debugLine.positionCount - 1, newPoint);
+
+        // Return distance between new point and previous point if path already has a point. Return 0 otherwise.
+        return GetPathSize() > 1 ? Vector3.Distance(_pathPoints[^2], _pathPoints[^1]) : 0;
     }
 }
