@@ -9338,8 +9338,9 @@ MonoBehaviour:
   damage: 0.75
   range: 0.5
   penetration: 9999
-  energyRegenRate: 555
-  energyCost: 0.016
+  energyRegenRate: 1
+  energyCost: 0.65
+  maxPathDistance: 5
   debugLine: {fileID: 1111441624}
 --- !u!1 &1336207373
 GameObject:
@@ -10298,7 +10299,7 @@ MonoBehaviour:
   tapHeightOffset: 0
   debugTracker: {fileID: 905696729}
   _playerWeapons:
-  - {fileID: 223957303}
+  - {fileID: 1335279498}
   - {fileID: 416075370}
 --- !u!4 &1392724291
 Transform:

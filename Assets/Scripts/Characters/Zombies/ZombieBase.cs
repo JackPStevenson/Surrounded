@@ -51,6 +51,7 @@ public class ZombieBase : Damageable {
         // Update nav agent and its speed and engage approach mode.
         TryGetComponent(out _nav);
         _nav.speed = zombieData.speed;
+        _nav.updateRotation = false;
         ChangeZombieState(ZombieState.Approaching, false);
         
         // Calculate how far zombie should be from target (with slight variance to reduce pileups).
@@ -64,7 +65,7 @@ public class ZombieBase : Damageable {
         // Create visual element for zombie.
         Instantiate(zombieData.visualPrefab, transform).TryGetComponent(out _visual);
         if (_visual) {
-            _visual.SetZombie(this);
+            _visual.Initialize(this);
             renderers = _visual.renderers;
             skinnedRenderers = _visual.skinnedRenderers;
         }
@@ -75,23 +76,24 @@ public class ZombieBase : Damageable {
     // ------ UPDATE FUNCTIONS ------
 
     public void UpdateLoop() {
-
+        
     }
 
     public void FixedUpdateLoop() {
+        if (_visual) _visual.FixedUpdateLoop();
+        
         if (!_mainTarget)
             return;
         
         // If target moves too far from last recorded target position, update nav destination.
         if (Vector3.Distance(_lastTargetPos, _mainTarget.Position) > 0.1f)
             UpdateMoveToPos();
-        
-        if(_nav.pathPending)
-            return;
+
+        if (_nav.pathPending) return;
         
         // Always check for side targets since they can be placed at any moment.
         CheckForSideTarget();
-
+        
         switch (_zombieState) {
             // --- APPROACH MODE ---
             default: case ZombieState.Approaching:
@@ -161,6 +163,7 @@ public class ZombieBase : Damageable {
 
     void ChangeZombieState(ZombieState newState, bool changeTargetPos = true) {
         _zombieState = newState;
+        _lastAttack = Time.time;
         
         if(changeTargetPos)
             UpdateMoveToPos();
@@ -185,9 +188,10 @@ public class ZombieBase : Damageable {
             checkDist = Mathf.Min(GetDistanceToMainTarget());
         }
         
-        // Only proceed if side target was found and has damageable component.
+        // Only proceed if side target was found, has damageable component, and isn't zombie's current main or side target.
         if (!Physics.CapsuleCast(Position, capsuleTop, CharacterRadius, targetDir, out RaycastHit hit, checkDist, _sideTargetMask)) return;
         if (!hit.transform.TryGetComponent(out Damageable d)) return;
+        if (d == _mainTarget || d == _sideTarget) return;
         
         // Have zombie start attacking side target.
         _sideTarget = d;
@@ -248,6 +252,5 @@ public class ZombieBase : Damageable {
     public ZombieState GetZombieState() => _zombieState;
     
     public float GetMaxSpeed() => _nav.speed;
-    public float GetCurrentSpeed() => _nav.velocity.magnitude;
-    
+    public Vector3 GetVelocity() => _nav.velocity;
 }

@@ -27,7 +27,6 @@ public abstract class WeaponBase : MonoBehaviour {
     // ------ UPDATE FUNCTIONS ------
 
     void Start() {
-
         OnStart();
     }
     
@@ -83,11 +82,15 @@ public abstract class WeaponBase : MonoBehaviour {
     // ------ HELPER FUNCTIONS ------
 
     public float GetCurrentEnergy() => _currentEnergy;
+    
+    /// Returns whether weapon has at least given amount of energy.
+    protected bool HasEnoughEnergy(float energyNeeded) => _currentEnergy >= energyNeeded;
 
-    /// Tries to consume given amount of energy from current energy. Returns whether consumption was successful
+    /// Tries to consume given amount of energy from current energy. Returns whether consumption was successful.
     public bool TryUseEnergy(float energyNeeded) {
-        if (!(_currentEnergy >= energyNeeded)) return false;
-        _currentEnergy -= energyNeeded;
+        if (!HasEnoughEnergy(energyNeeded)) return false;
+
+        ModifyEnergy(-energyNeeded);
         return true;
     }
     

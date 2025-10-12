@@ -282,6 +282,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 3a37784378c4e0d49ba352a7f2d4b143, type: 2}
     - target: {fileID: 5866666021909216657, guid: 29ec8d65b9e9f9d4c9de87d3b0af32d3,
         type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 29ec8d65b9e9f9d4c9de87d3b0af32d3,
+        type: 3}
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
