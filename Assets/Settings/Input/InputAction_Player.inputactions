@@ -25,15 +25,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Swipe",
-                    "type": "Value",
-                    "id": "73a48c74-79b8-435d-802f-a5055ca9e019",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "TouchPosition",
                     "type": "Value",
                     "id": "c5c17e23-ccac-4931-a557-bac5c33033b0",
@@ -47,6 +38,15 @@
                     "type": "Value",
                     "id": "58fa31de-7beb-4aac-a0ba-8fa620f899d5",
                     "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ShakeDebug",
+                    "type": "Button",
+                    "id": "c9621f95-539a-4dc4-ab14-819409e3942b",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -88,23 +88,23 @@
                 },
                 {
                     "name": "",
-                    "id": "d3a297be-b392-4cb9-9a12-230e1f787727",
-                    "path": "<Touchscreen>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Touch",
-                    "action": "Swipe",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ecfb6b56-adf8-4442-8d73-9e88701d36bc",
                     "path": "<Accelerometer>/acceleration",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch",
                     "action": "Shake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4eafc65f-e813-499d-8307-c444651cf068",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touch;Keyboard&Mouse",
+                    "action": "ShakeDebug",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

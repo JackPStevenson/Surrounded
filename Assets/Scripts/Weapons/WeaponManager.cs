@@ -28,6 +28,7 @@ public class WeaponManager : MonoBehaviour {
         _input.TouchPressDelegate += TouchPressAction;
         _input.TouchPositionDelegate += SwipeAction;
         _input.TouchReleaseDelegate += TouchReleaseAction;
+        _input.ShakeDelegate += ShakeAction;
     }
     
     // ------ ACTION METHODS ------
@@ -42,6 +43,10 @@ public class WeaponManager : MonoBehaviour {
     
     void TouchReleaseAction(Vector2 input) {
         _playerWeapons[_currentWeapon].OnTouchRelease(TouchToWorldPoint(input));
+    }
+    
+    void ShakeAction() {
+        _playerWeapons[_currentWeapon].OnShake();
     }
     
     // ------ HELPER METHODS ------

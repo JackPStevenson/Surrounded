@@ -95,7 +95,7 @@ public class WaveManager : MonoBehaviour {
         // Calculate when final horde will fully spawn.
         if (_waveStartTime + currentWaveDuration + hordeTimeToFullySpawn <= Time.time) {
             // If all zombies are dead, send a message through OnAllZombiesDead delegate.
-            if (_zombieManager.GetActiveZombies() <= 0) {
+            if (_zombieManager.GetActiveZombieCount() <= 0) {
                 ToggleWave(false);
                 OnAllZombiesDead?.Invoke();
             }

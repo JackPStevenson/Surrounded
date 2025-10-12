@@ -25,7 +25,7 @@ public class ZombieManager : MonoBehaviour {
     [Header("Spawning")]
     public Transform[] spawnPoints;
     public ZombieDataEntry[] zombieDataEntries;
-    private int _activeZombies;
+    private List<ZombieBase> _activeZombies;
     private int _spawnRandSeed = 0;
     
     // ------ START FUNCTIONS ------
@@ -33,6 +33,7 @@ public class ZombieManager : MonoBehaviour {
     void Awake() {
         Instance = this;
         _zombiePool = new ZombiePool(zombieBasePrefab);
+        _activeZombies = new List<ZombieBase>();
     }
 
     void Start() {
@@ -58,6 +59,7 @@ public class ZombieManager : MonoBehaviour {
     /// Destroys all zombies in or made from pool.
     public void DepletePool() {
         _zombiePool.DepletePool();
+        _activeZombies.Clear();
         
         OnUpdate = null;
         OnFixedUpdate = null;
@@ -91,7 +93,7 @@ public class ZombieManager : MonoBehaviour {
         z.SetActive(true);
         z.SetTargetPosDeviation(_targetPosDeviation);
         
-        _activeZombies++;
+        _activeZombies.Add(z);
         
         return z;
     }
@@ -113,14 +115,13 @@ public class ZombieManager : MonoBehaviour {
         OnFixedUpdate -= zombie.FixedUpdateLoop;
 
         _zombiePool.Push(zombie);
-        _activeZombies--;
+        _activeZombies.Remove(zombie);
     }
     
     // ------ HELPER FUNCTIONS ------
 
-    public int GetActiveZombies() {
-        return _activeZombies;
-    }
+    public ZombieBase[] GetActiveZombies() => _activeZombies.ToArray();
+    public int GetActiveZombieCount() => _activeZombies.Count;
     
     /// Attempts to get a random zombie data entry that can be spawned this wave.
     private ZombieDataEntry GetZombieData(int currentWave, out int selectedIndex) {
