@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public delegate void GenericDelegate();
 public delegate void IntDelegate(int value);
@@ -29,15 +30,16 @@ public enum GameState {
 
 public static class Common {
     private const int HitListSize = 512;
-    
-    
+
+
     // ------ TEMP LISTS ------
 
-    readonly static Collider[] HitColListTemp = new Collider[HitListSize]; 
+    readonly static Collider[] HitColListTemp = new Collider[HitListSize];
     readonly static Collider[] HitColList = new Collider[HitListSize];
     readonly static Damageable[] HitDamList = new Damageable[HitListSize];
+    readonly static List<int> IndexList = new List<int>();
     readonly static Damageable[] EmptyHitDamList = Array.Empty<Damageable>();
-    
+
     private static int queryStamp;
 
     // ------ DETECTION FUNCTIONS ------
@@ -53,7 +55,7 @@ public static class Common {
         for (int i = 0; i < hitCols && hitDams < maxDamageables; i++) {
             // If hit collider's root has damageable component, add it to damageables array.
             Collider c = HitColList[i];
-            if(c == null) continue;
+            if (c == null) continue;
             if (!c.transform.root.TryGetComponent(out Damageable d)) continue;
 
             HitDamList[hitDams] = d;
@@ -84,7 +86,7 @@ public static class Common {
             // Check if any colliders were found in range of path segment. Skip to next segment if nothing was found.
             Vector3 p1 = points[i], p2 = points[i + 1];
             int hitColsTemp = Physics.OverlapCapsuleNonAlloc(p1, p2, radius, HitColListTemp, hitMask, QueryTriggerInteraction.Ignore);
-            if(hitColsTemp == 0) continue;
+            if (hitColsTemp == 0) continue;
 
             // Loop through each collider found on segment.
             for (int j = 0; j < hitColsTemp; j++) {
@@ -93,7 +95,7 @@ public static class Common {
                 HitColList[hitCols] = HitColListTemp[j];
                 c.enabled = false;
                 hitCols++;
-                
+
                 // If hit collider's root has damageable component, add it to array.
                 if (!c.transform.root.TryGetComponent(out Damageable d)) continue;
                 HitDamList[hitDams] = d;
@@ -102,7 +104,7 @@ public static class Common {
         }
 
         // Reenable hit colliders that were previously disabled during path search.
-        for (int i = 0 ; i < hitCols; i++) HitColList[i].enabled = true;
+        for (int i = 0; i < hitCols; i++) HitColList[i].enabled = true;
 
         // Return hit damageables. If none were hit, return empty array.
         if (hitDams == 0) return EmptyHitDamList;
@@ -111,9 +113,31 @@ public static class Common {
         Array.Copy(HitDamList, result, hitDams);
         return result;
     }
-    
+
+    /// Returns a random assortment of zombies from given array. Returns no more than specified maximum if zombie array is larger than given maximum.
+    public static Damageable[] GetRandomDamageablesInList(Damageable[] zombies, int maxZombies) {
+        // If max zombies is below 1, return null.
+        if (maxZombies < 1) return null;
+        // If max zombies is either higher than array size.
+        if (maxZombies >= zombies.Length) return zombies;
+
+        // Add each index of zombie array to a list.
+        IndexList.Clear();
+        for (int i = 0; i < zombies.Length; i++) IndexList.Add(i);
+
+        // Add zombies to list at random up to given maximum.
+        Damageable[] result = new Damageable[maxZombies];
+        for (int i = 0; i < maxZombies; i++) {
+            int index = IndexList[Random.Range(0, IndexList.Count)];
+            result[i] = zombies[index];
+            IndexList.RemoveAt(index);
+        }
+
+        return result;
+    }
+
     // ------ HELPER FUNCTIONS ------
-    
+
     /// Converts a 3d position to a top-down position.
     public static Vector2 ToTopDownPos(Vector3 pos) => new Vector2(pos.x, pos.z);
     /// Converts a top-down position to a 3d position.
@@ -124,4 +148,8 @@ public static class Common {
         return ((from - to) * Mathf.Pow(remainderAfter1Second, deltaTime)) + to;
     }
 
+    // Performs smooth interpolation between from and to independently of framerate.
+    public static Vector3 SmoothLerp(Vector3 from, Vector3 to, float remainderAfter1Second, float deltaTime) {
+        return ((from - to) * Mathf.Pow(remainderAfter1Second, deltaTime)) + to;
+    }
 }

@@ -23,12 +23,6 @@ public class WeaponSwipe : WeaponBase {
         debugLine.positionCount = 0;
     }
 
-    // ------ UPDATE METHODS ------
-
-    protected override void OnFixedUpdate(float deltaTime) {
-
-    }
-
     // ------ EVENT METHODS ------
 
     protected override void SwipeAction(Vector3 pos) {

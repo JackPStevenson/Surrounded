@@ -8,6 +8,8 @@ public abstract class WeaponBase : MonoBehaviour {
     protected Vector3 _swipePos;
     protected Vector3 _touchReleasePos;
     protected Vector3 _swipeStrength;
+    
+    protected ZombieManager _zombieManager;
 
     [Header("Physics")]
     public LayerMask hitMask;
@@ -27,6 +29,7 @@ public abstract class WeaponBase : MonoBehaviour {
     // ------ UPDATE FUNCTIONS ------
 
     void Start() {
+        _zombieManager = ZombieManager.Instance;
         OnStart();
     }
     
@@ -64,10 +67,8 @@ public abstract class WeaponBase : MonoBehaviour {
         TouchReleaseAction(pos);
     }
 
-    public void OnShake(Vector3 strength) {
-        _swipeStrength = strength;
-
-        ShakeAction(strength);
+    public void OnShake() {
+        ShakeAction();
     }
 
     // ------ ACTION FUNCTIONS ------
@@ -75,7 +76,7 @@ public abstract class WeaponBase : MonoBehaviour {
     protected virtual void TouchPressAction(Vector3 pos) { }
     protected virtual void SwipeAction(Vector3 pos) { }
     protected virtual void TouchReleaseAction(Vector3 pos) { }
-    protected virtual void ShakeAction(Vector3 strength) { }
+    protected virtual void ShakeAction() { }
 
 
     
@@ -96,6 +97,4 @@ public abstract class WeaponBase : MonoBehaviour {
     
     /// Directly modifies energy value. For most cases, use TryUseEnergy instead.
     public void ModifyEnergy(float value) => _currentEnergy = Mathf.Clamp01(_currentEnergy + value);
-    
-
 }
