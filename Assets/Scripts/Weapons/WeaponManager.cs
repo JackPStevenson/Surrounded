@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WeaponManager : MonoBehaviour {
+    public readonly static float MinSwipeDistance = 0.75f;
     private InputManager _input;
     
     [Header("Tap Point")]
@@ -12,8 +14,9 @@ public class WeaponManager : MonoBehaviour {
 
     [Header("Weapons")]
     public Transform debugTracker;
+    public WeaponBase[] _tapWeapons;
     public WeaponBase[] _playerWeapons;
-    private int _currentWeapon = 0;
+    public int[] activeWeapons = {0, 1, 2};
     
     private Camera _camera;
     private Plane _floor;
@@ -34,20 +37,34 @@ public class WeaponManager : MonoBehaviour {
     // ------ ACTION METHODS ------
 
     void TouchPressAction(Vector2 input) {
-        _playerWeapons[_currentWeapon].OnTouchPress(TouchToWorldPoint(input));
+        // Loop through each active weapon index and pass input to active weapons if their indexes are valid.
+        foreach (int index in activeWeapons)
+            if (index < _playerWeapons.Length && index > -1)
+                _playerWeapons[index].OnTouchPress(TouchToWorldPoint(input));
+        
     }
     
     void SwipeAction(Vector2 input) {
-        _playerWeapons[_currentWeapon].OnSwipe(TouchToWorldPoint(input));
+        // Loop through each active weapon index and pass input to active weapons if their indexes are valid.
+        foreach (int index in activeWeapons)
+            if (index < _playerWeapons.Length && index > -1)
+                _playerWeapons[index].OnSwipe(TouchToWorldPoint(input));
     }
     
     void TouchReleaseAction(Vector2 input) {
-        _playerWeapons[_currentWeapon].OnTouchRelease(TouchToWorldPoint(input));
+        // Loop through each active weapon index and pass input to active weapons if their indexes are valid.
+        foreach (int index in activeWeapons)
+            if (index < _playerWeapons.Length && index > -1)
+                _playerWeapons[index].OnTouchRelease(TouchToWorldPoint(input));
     }
     
     void ShakeAction() {
-        _playerWeapons[_currentWeapon].OnShake();
+        // Loop through each active weapon index and pass input to active weapons if their indexes are valid.
+        foreach (int index in activeWeapons)
+            if (index < _playerWeapons.Length && index > -1)
+                _playerWeapons[index].OnShake();
     }
+    
     
     // ------ HELPER METHODS ------
 

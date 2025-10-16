@@ -116,6 +116,7 @@ public class ZombieManager : MonoBehaviour {
 
         _zombiePool.Push(zombie);
         _activeZombies.Remove(zombie);
+        
     }
     
     // ------ HELPER FUNCTIONS ------

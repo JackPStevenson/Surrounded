@@ -3,18 +3,18 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WeaponSwipe : WeaponBase {
-    private const float MinSwipeDistance = 0.75f;
-
     [Header("Swiping")]
     public float maxPathDistance = 5;
-
+    public float MaxSafePathDist => Mathf.Max(maxPathDistance, WeaponManager.MinSwipeDistance);
+    
     [Header("Debug")]
     public LineRenderer debugLine;
 
-    private bool _usedAttackThisSwipe = false;
-
     private List<Vector3> _pathPoints;
-    private float _currentPathDistance;
+    int PointCount => _pathPoints.Count;
+    Vector3 LastPoint => PointCount > 0 ? _pathPoints[^1] : Vector3.zero;
+    
+    private float _currentPathLength;
 
     // ------ START METHODS ------
 
@@ -26,37 +26,45 @@ public class WeaponSwipe : WeaponBase {
     // ------ EVENT METHODS ------
 
     protected override void SwipeAction(Vector3 pos) {
-        // Only continue if weapon has not yet attacked during current swipe.
-        if (_usedAttackThisSwipe) return;
+        // Only continue if weapon is enabled and has not yet attacked during current swipe.
+        if (!enabled || _attackUsed) return;
         
-        // Only continue if path already exists. If it doesn't, try to add first point if weapon has enough energy.
-        if (GetPathSize() == 0) {
-            if (TryUseEnergy(energyCost)) TryAddPoint(pos, true);
+        // Only continue if path already exists.
+        if (PointCount < 1) {
+            // If path doesn't exist, add first point. Reset it just in case any straggling values were left behind.
+            ResetPath();
+            AddPoint(pos);
             return;
         }
         
-        // Create variables for new point to be added and whether its addition will push path length to max distance.
-        Vector3 newPoint = pos;
-        bool pathReachedMaxDistance = false;
-
-        // If new point will make path reach max distance, move new point closer to path's last point to ensure path length with new point won't exceed max distance.
-        float possiblePathDistance = _currentPathDistance + Vector3.Distance(_pathPoints[^1], newPoint);
-        if (possiblePathDistance >= maxPathDistance) {
-            newPoint = (_pathPoints[^1] - newPoint).normalized * (possiblePathDistance - maxPathDistance);
-            pathReachedMaxDistance = true;
+        // Only continue if point will be valid on path or if point will complete path.
+        bool pathCompletedWithPoint = WillPointFinishPath(pos, out Vector3 adjutedPos);
+        if (!WillPointBeValid(adjutedPos) && !pathCompletedWithPoint) return;
+        
+        // Try to use energy to create a valid path.
+        if (PointCount < 2){
+            // If weapon has enough energy, add point to make path valid.
+            if (TryUseEnergy(energyCost)) AddPoint(adjutedPos);
+            // If path could not be made valid, cancel weapon's attack for this swipe.
+            else {
+                ResetPath(true);
+                return;
+            }
         }
         
-        // Attempt to add new point to list. If path reaches max distance with new point, forcefully add it and do attack early.
-        TryAddPoint(newPoint, pathReachedMaxDistance);
-        if (pathReachedMaxDistance) TrySwipeAttack();
+        // Add point to path. If path is now complete, perform attack early.
+        AddPoint(adjutedPos);
+        if (pathCompletedWithPoint) TrySwipeAttack();
     }
 
     protected override void TouchReleaseAction(Vector3 pos) {
+        if(!enabled) return;
+        
         // If weapon hasn't yet attacked, do attack.
-        if (!_usedAttackThisSwipe) TrySwipeAttack();
+        if (!_attackUsed) TrySwipeAttack();
     
         // Ensure attack buffer is turned off once swipe concludes.
-        _usedAttackThisSwipe = false;
+        _attackUsed = false;
     }
 
     private void TrySwipeAttack() {
@@ -69,44 +77,57 @@ public class WeaponSwipe : WeaponBase {
                     d.DealDamage(damage);
         }
 
-        // Clear path points, reset current path distance, and set attack buffer to true.
-        if(debugLine) debugLine.positionCount = 0;
-        _pathPoints.Clear();
-        
-        _currentPathDistance = 0;
-        _usedAttackThisSwipe = true;
+        // Reset path and mark attack as used.
+        ResetPath(true);
     }
 
     // ------ HELPER METHODS ------
 
-    /// Returns amount of points currently on path.
-    int GetPathSize() => _pathPoints.Count;
-
-    /// Tries to add given point to path. Returns whether given point can be added to path.
-    bool TryAddPoint(Vector3 newPoint, bool forceAddPoint = false) {
-        if (!forceAddPoint && !IsNewPointValid(newPoint)) return false;
-
-        _currentPathDistance += AddPoint(newPoint);
+    /// Returns whether given point can be added to path. Can optionally ignore distance check if path is already established (>= 2 path points).
+    bool WillPointBeValid(Vector3 point) {
+        // True if new point is the first in path.
+        if (PointCount == 0) return true;
+        // True if new point is far enough away from most recent point added. False if new point is not valid.
+        return Vector3.Distance(point, LastPoint) >= WeaponManager.MinSwipeDistance;
+    }
+    
+    // Returns whether point will make path's length reach maximum allowed. Additionally, returns point adjusted to make path not exceed path limit.
+    bool WillPointFinishPath(Vector3 point, out Vector3 adjustedPos) {
+        adjustedPos = point;
+        // Record distance between new point and last path point along with new path distance with new point.
+        float distDelta = Vector3.Distance(point, LastPoint);
+        float newDistWithPoint = _currentPathLength + distDelta;
+        
+        // If path distance with new point reaches path limit, adjust point so path's length won't exceed max and return true.
+        if (newDistWithPoint < MaxSafePathDist) return false;
+        adjustedPos = LastPoint + (point - LastPoint).normalized * (newDistWithPoint - MaxSafePathDist);
         return true;
     }
 
-    /// Returns whether given point can be added to path. Can optionally ignore distance check if path is already established (>= 2 path points).
-    bool IsNewPointValid(Vector3 newPoint) {
-        // True if new point is the first in path.
-        if (_pathPoints.Count == 0) return true;
-        // True if new point is far enough away from most recent point added.
-        return Vector3.Distance(_pathPoints[^1], newPoint) >= MinSwipeDistance;
-        // False if new point is not valid.
+    /// Adds a point to path. Returns distance between newly added point and previous one on path.
+    void AddPoint(Vector3 point) {
+        // Increment path length based on distance from last point on path to new point.
+        if (PointCount > 0) _currentPathLength += Vector3.Distance(point, LastPoint);
+        _pathPoints.Add(point);
+
+        if (!debugLine) return;
+        debugLine.positionCount += 1;
+        debugLine.SetPosition(debugLine.positionCount - 1, point);
     }
 
-    /// Adds a point to path. Returns distance between newly added point and previous one on path.
-    float AddPoint(Vector3 newPoint) {
-        _pathPoints.Add(newPoint);
+    /// Resets path and visuals. Optionally expends current attack.
+    void ResetPath(bool markAttackUsed = false) {
+        if(debugLine) debugLine.positionCount = 0;
+        _pathPoints.Clear();
+        
+        _currentPathLength = 0;
 
-        debugLine.positionCount += 1;
-        debugLine.SetPosition(debugLine.positionCount - 1, newPoint);
+        if (markAttackUsed)
+            _attackUsed = true;
+    }
 
-        // Return distance between new point and previous point if path already has a point. Return 0 otherwise.
-        return GetPathSize() > 1 ? Vector3.Distance(_pathPoints[^2], _pathPoints[^1]) : 0;
+    protected override void OnToggleWeapon(bool enabled) {
+        ResetPath();
+        _attackUsed = false;
     }
 }

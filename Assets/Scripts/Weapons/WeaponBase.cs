@@ -24,6 +24,7 @@ public abstract class WeaponBase : MonoBehaviour {
     [Range(0, 1)]
     public float energyCost = 1;
     
+    protected bool _attackUsed = false;
     protected float _currentEnergy;
     
     // ------ UPDATE FUNCTIONS ------
@@ -77,11 +78,18 @@ public abstract class WeaponBase : MonoBehaviour {
     protected virtual void SwipeAction(Vector3 pos) { }
     protected virtual void TouchReleaseAction(Vector3 pos) { }
     protected virtual void ShakeAction() { }
-
+    
+    protected virtual void OnToggleWeapon(bool enabled) { }
 
     
     // ------ HELPER FUNCTIONS ------
 
+    public void ToggleWeapon(bool enabled) {
+        this.enabled = enabled;
+        
+        OnToggleWeapon(enabled);
+    }
+    
     public float GetCurrentEnergy() => _currentEnergy;
     
     /// Returns whether weapon has at least given amount of energy.

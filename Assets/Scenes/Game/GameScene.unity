@@ -10299,9 +10299,12 @@ MonoBehaviour:
   tapOffsetTowardsCamera: 0
   tapHeightOffset: 0
   debugTracker: {fileID: 905696729}
+  _tapWeapons: []
   _playerWeapons:
+  - {fileID: 63342864}
+  - {fileID: 1335279498}
   - {fileID: 223957303}
-  - {fileID: 416075370}
+  activeWeapons: 000000000100000002000000
 --- !u!4 &1392724291
 Transform:
   m_ObjectHideFlags: 0
