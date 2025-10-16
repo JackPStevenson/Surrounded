@@ -70,6 +70,13 @@ public class PlayerStats : MonoBehaviour
         zombiesSquashedByType[(int)type].squashedTotal += (int)amt;
     }
 
+    // pass through a ZombieSquashedData to add its squashed total to the player's 
+    public void IncreaseZombiesSquashed(ZombieSquashedData zData)
+    {
+        // get the corresponding zombie data and increase the amount squashed
+        zombiesSquashedByType[(int)zData.type].squashedTotal += (int)zData.squashedTotal;
+    }
+
     // Sets the number of zombies squashed for a specific type of zombie
     public void SetZombiesSquashed(ZombieType type, uint amt)
     {
