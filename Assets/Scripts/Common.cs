@@ -16,10 +16,8 @@ public delegate void ZombieStateDelegate(ZombieState zombieState);
 public delegate void GameStateIntDelegate(GameState gameState, int intVal);
 
 public enum ZombieState {
-    Approaching,
-    Charging,
-    AttackingSideTarget,
-    AttackingMainTarget
+    Moving,
+    Attacking
 }
 
 public enum GameState {

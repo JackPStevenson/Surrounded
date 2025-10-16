@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 public class ZombieVisual : MonoBehaviour {
+    private readonly static int LastDamageFlash = Shader.PropertyToID("_Last_Damage_Flash");
     private readonly static int MoveSpeed = Animator.StringToHash("MoveSpeed");
     private readonly static int Attack = Animator.StringToHash("OnAttack");
     private readonly static int Death = Animator.StringToHash("OnDeath");
@@ -22,7 +23,7 @@ public class ZombieVisual : MonoBehaviour {
     public void Initialize(ZombieBase newZombie) {
         _zombie = newZombie;
         _zombie.OnDeath += OnDeath;
-        //_zombie.OnDamaged += OnDamaged;
+        _zombie.OnDamaged += OnDamaged;
         _zombie.OnAttack += OnAttack;
     }
 
@@ -53,11 +54,19 @@ public class ZombieVisual : MonoBehaviour {
 
     void OnDamaged(float damageTaken, float healthLeft) {
         //zombieAnimator.SetTrigger(Damaged);
+        FlashDamage();
     }
 
     private void OnDestroy() {
         _zombie.OnDeath -= OnDeath;
         _zombie.OnDamaged -= OnDamaged;
         _zombie.OnAttack -= OnAttack;
+    }
+
+    // ------ VISUAL METHODS ------
+    
+    private void FlashDamage() {
+        foreach (MeshRenderer r in renderers) r?.material.SetFloat(LastDamageFlash, Time.time);
+        foreach (SkinnedMeshRenderer r in skinnedRenderers) r?.material.SetFloat(LastDamageFlash, Time.time);
     }
 }

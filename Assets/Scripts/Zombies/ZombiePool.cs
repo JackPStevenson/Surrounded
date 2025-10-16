@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class ZombiePool {
     private const int MinimumZombies = 4;
+    
+    // --- CONTENTS ---
+    private int _totalZombies;
+    private readonly Stack<ZombieBase> _zombieStack;
+    private readonly GameObject _zombieBasePrefab;
 
+    // --- DELEGATES ---
     public delegate void GenericDelegate();
     public GenericDelegate OnPoolDeplete;
-
-    private int _totalZombies;
-
-    private Stack<ZombieBase> _zombieStack;
-    private GameObject _zombieBasePrefab;
 
     // ------ CONSTRUCTOR ------
 
@@ -23,10 +24,10 @@ public class ZombiePool {
     // ------ PUSH/POP ------
 
     /// Gets a zombie from pool.
-    public ZombieBase Pop(ZombieDataEntry zombieData, Vector3 spawnPos, Damageable mainTarget) {
+    public ZombieBase Pop(ZombieDataEntry zombieData, Vector3 spawnPos, Damageable mainTarget, LayerMask sideTargetMask) {
         if (_zombieStack.Count <= 0) ExpandPool();
         ZombieBase z = _zombieStack.Pop();
-        z.Initialize(zombieData, spawnPos, mainTarget);
+        z.Initialize(zombieData, spawnPos, mainTarget, sideTargetMask);
         return z;
     }
 
@@ -44,12 +45,12 @@ public class ZombiePool {
         int zombiesToAdd = Mathf.Max(_totalZombies, MinimumZombies);
         for (int i = 0; i < zombiesToAdd; i++) {
             // Create a zombie, add zombie's return method to pool's delegate, initialize it, and add zombie to stack.
-            ZombieBase z = Object.Instantiate(_zombieBasePrefab).GetComponent<ZombieBase>();
+            Object.Instantiate(_zombieBasePrefab).TryGetComponent(out ZombieBase z);
             OnPoolDeplete += z.ReturnToPool;
+            z.SetId(_zombieStack.Count);
             Push(z);
         }
         
-
         _totalZombies += zombiesToAdd;
     }
 
