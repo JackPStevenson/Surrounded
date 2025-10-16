@@ -1,14 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class ZombieManager : MonoBehaviour {
     public GenericDelegate OnUpdate;
-    public GenericDelegate OnFixedUpdate;
+    public IntDelegate OnFixedUpdate;
 
     public static ZombieManager Instance;
 
@@ -20,6 +17,7 @@ public class ZombieManager : MonoBehaviour {
 
     [Header("Targeting")]
     public float _targetPosDeviation = 1.5f;
+    public LayerMask _sideTargetMask;
     Damageable _mainTarget;
 
     [Header("Spawning")]
@@ -27,10 +25,13 @@ public class ZombieManager : MonoBehaviour {
     public ZombieDataEntry[] zombieDataEntries;
     private List<ZombieBase> _activeZombies;
     private int _spawnRandSeed = 0;
+
+    private int _zombieTick;
     
     // ------ START FUNCTIONS ------
 
     void Awake() {
+        _zombieTick = 0;
         Instance = this;
         _zombiePool = new ZombiePool(zombieBasePrefab);
         _activeZombies = new List<ZombieBase>();
@@ -51,7 +52,8 @@ public class ZombieManager : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        OnFixedUpdate?.Invoke();
+        OnFixedUpdate?.Invoke(_zombieTick);
+        _zombieTick++;
     }
 
     // ------ EVENT FUNCTIONS ------
@@ -86,12 +88,12 @@ public class ZombieManager : MonoBehaviour {
         ZombieDataEntry data = zombieDataEntries[Mathf.Clamp(dataIndex, 0, zombieDataEntries.Length - 1)];
 
         Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        ZombieBase z = _zombiePool.Pop(data, spawn.position, _mainTarget);
+        ZombieBase z = _zombiePool.Pop(data, spawn.position, _mainTarget, _sideTargetMask);
         
         OnUpdate += z.UpdateLoop;
         OnFixedUpdate += z.FixedUpdateLoop;
         z.SetActive(true);
-        z.SetTargetPosDeviation(_targetPosDeviation);
+        z.SetPrimaryTargetDistThreshold(_targetPosDeviation);
         
         _activeZombies.Add(z);
         

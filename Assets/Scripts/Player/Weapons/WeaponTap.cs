@@ -24,11 +24,11 @@ public class WeaponTap : WeaponBase {
 
     protected override void SwipeAction(Vector3 pos) {
         // Only continue if attack has not been used yet.
-        if (_attackUsed) return;
+        if (AttackUsed) return;
 
         // If swipe point strays too far from start point, 
         if (IsPointTooFarFromStart(pos))
-            _attackUsed = true;
+            AttackUsed = true;
     }
 
     protected override void TouchReleaseAction(Vector3 pos) {

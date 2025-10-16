@@ -27,7 +27,7 @@ public class WeaponSwipe : WeaponBase {
 
     protected override void SwipeAction(Vector3 pos) {
         // Only continue if weapon is enabled and has not yet attacked during current swipe.
-        if (!enabled || _attackUsed) return;
+        if (!enabled || AttackUsed) return;
         
         // Only continue if path already exists.
         if (PointCount < 1) {
@@ -61,10 +61,10 @@ public class WeaponSwipe : WeaponBase {
         if(!enabled) return;
         
         // If weapon hasn't yet attacked, do attack.
-        if (!_attackUsed) TrySwipeAttack();
+        if (!AttackUsed) TrySwipeAttack();
     
         // Ensure attack buffer is turned off once swipe concludes.
-        _attackUsed = false;
+        AttackUsed = false;
     }
 
     private void TrySwipeAttack() {
@@ -123,11 +123,11 @@ public class WeaponSwipe : WeaponBase {
         _currentPathLength = 0;
 
         if (markAttackUsed)
-            _attackUsed = true;
+            AttackUsed = true;
     }
 
     protected override void OnToggleWeapon(bool enabled) {
         ResetPath();
-        _attackUsed = false;
+        AttackUsed = false;
     }
 }

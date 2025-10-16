@@ -23,9 +23,10 @@ public abstract class WeaponBase : MonoBehaviour {
     public float energyRegenRate = 1;
     [Range(0, 1)]
     public float energyCost = 1;
-    
-    protected bool _attackUsed = false;
-    protected float _currentEnergy;
+
+    protected bool Active;
+    protected bool AttackUsed = false;
+    protected float CurrentEnergy;
     
     // ------ UPDATE FUNCTIONS ------
 
@@ -39,7 +40,7 @@ public abstract class WeaponBase : MonoBehaviour {
     // ------ UPDATE FUNCTIONS ------
     
     void FixedUpdate() {
-        _currentEnergy = Mathf.Clamp01(_currentEnergy + (Time.fixedDeltaTime * energyRegenRate));
+        CurrentEnergy = Mathf.Clamp01(CurrentEnergy + (Time.fixedDeltaTime * energyRegenRate));
         
         OnFixedUpdate(Time.fixedDeltaTime);
     }
@@ -79,21 +80,21 @@ public abstract class WeaponBase : MonoBehaviour {
     protected virtual void TouchReleaseAction(Vector3 pos) { }
     protected virtual void ShakeAction() { }
     
-    protected virtual void OnToggleWeapon(bool enabled) { }
+    protected virtual void OnToggleWeapon(bool isEnabled) { }
 
     
     // ------ HELPER FUNCTIONS ------
 
-    public void ToggleWeapon(bool enabled) {
-        this.enabled = enabled;
-        
-        OnToggleWeapon(enabled);
+    public void ToggleWeapon(bool isEnabled) {
+        if (Active == isEnabled) return;
+        Active = isEnabled;
+        OnToggleWeapon(Active);
     }
     
-    public float GetCurrentEnergy() => _currentEnergy;
+    public float GetCurrentEnergy() => CurrentEnergy;
     
     /// Returns whether weapon has at least given amount of energy.
-    protected bool HasEnoughEnergy(float energyNeeded) => _currentEnergy >= energyNeeded;
+    protected bool HasEnoughEnergy(float energyNeeded) => CurrentEnergy >= energyNeeded;
 
     /// Tries to consume given amount of energy from current energy. Returns whether consumption was successful.
     public bool TryUseEnergy(float energyNeeded) {
@@ -104,5 +105,5 @@ public abstract class WeaponBase : MonoBehaviour {
     }
     
     /// Directly modifies energy value. For most cases, use TryUseEnergy instead.
-    public void ModifyEnergy(float value) => _currentEnergy = Mathf.Clamp01(_currentEnergy + value);
+    public void ModifyEnergy(float value) => CurrentEnergy = Mathf.Clamp01(CurrentEnergy + value);
 }

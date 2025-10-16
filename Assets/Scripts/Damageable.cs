@@ -33,25 +33,15 @@ public class Damageable : MonoBehaviour {
     public float DealDamage(float damage) {
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
         OnDamaged?.Invoke(damage, CurrentHealth);
-
-        if(renderers.Length > 0)
-            foreach (MeshRenderer r in renderers)
-                if(r)
-                    r.material.SetFloat(LastDamageFlash, Time.time);
         
-        if(skinnedRenderers.Length > 0)
-            foreach (SkinnedMeshRenderer r in skinnedRenderers)
-                if(r)
-                    r.material.SetFloat(LastDamageFlash, Time.time);
+        foreach (MeshRenderer r in renderers) r?.material.SetFloat(LastDamageFlash, Time.time);
+        foreach (SkinnedMeshRenderer r in skinnedRenderers) r?.material.SetFloat(LastDamageFlash, Time.time);
 
-        if (CurrentHealth <= 0) {
-            OnDeath?.Invoke();
+        if (CurrentHealth > 0) return CurrentHealth;
+        OnDeath?.Invoke();
             
-            if(destroyOnDeath)
-                Destroy(gameObject);
-        }
-
-        return CurrentHealth;
+        if(destroyOnDeath) Destroy(gameObject);
+        return 0;
     }
 
     public void Kill() {
