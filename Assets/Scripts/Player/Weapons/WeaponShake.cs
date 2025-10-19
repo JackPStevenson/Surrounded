@@ -4,10 +4,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class WeaponShake : WeaponBase {
+    public GenericDelegate OnShakeDelegate;
+    
     PoorSoul _poorSoul;
 
     // ------ START FUNCTIONS ------
-
+    
+    private WeaponDataShake _weaponDataShake;
+    protected override bool TryParseData() {
+        if (weaponData.GetType() != typeof(WeaponDataShake)) return false;
+        _weaponDataShake = (WeaponDataShake) weaponData;
+        return true;
+    }
+    
     protected override void OnStart() {
         _poorSoul = PoorSoul.Instance;
     }
@@ -15,19 +24,25 @@ public class WeaponShake : WeaponBase {
     // ------ EVENT FUNCTIONS ------
 
     protected override void ShakeAction() {
-        // Only continue if weapon has enough energy.
-        if (!HasEnoughEnergy(energyCost)) return;
+        // Only do shake if weapon hasn't attacked yet.
+        if (!AttackUsed) TryShakeAction();
+        
+        // Ensure attack buffer is turned off once swipe concludes.
+        AttackUsed = false;
+    }
+
+    private void TryShakeAction() {
+        AttackUsed = true;
         
         // Try to find damageables within given range of poor soul. If poor soul reference is invalid, use world center instead.
         Vector3 centerPos = _poorSoul ? _poorSoul.Position : Vector3.zero;
-        Damageable[] damageables = Common.FindDamageablesInSphere(centerPos, range, penetration, hitMask);
-        //Damageable[] rand = Common.GetRandomDamageablesInList(damageables, penetration, hitMask);
+        Damageable[] damageables = Common.FindDamageablesInSphere(centerPos, Range, Penetration, HitMask);
         
-        // If any damageables were found, use weapon energy and damage them.
-        if(damageables.Length == 0) return;
-        TryUseEnergy(energyCost);
-        foreach (Damageable d in damageables)
-            d.DealDamage(damage);
-
+        // If weapon has enough energy, use it and damage found enemies.
+        if(!TryUseEnergy(EnergyCost)) return;
+        
+        foreach (Damageable d in damageables) d.DealDamage(Damage);
+        OnDamageablesHitDelegate?.Invoke(damageables);
+        OnShakeDelegate?.Invoke();
     }
 }

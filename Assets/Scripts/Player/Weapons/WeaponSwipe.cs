@@ -3,13 +3,15 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WeaponSwipe : WeaponBase {
-    [Header("Swiping")]
-    public float maxPathDistance = 5;
-    public float MaxSafePathDist => Mathf.Max(maxPathDistance, WeaponManager.MinSwipeDistance);
+    public Vector3sDelegate OnSwipeDelegate;
+    
+    // --- DATA REFERENCES ---
+    public float MaxPathDistance => Mathf.Max(_weaponDataSwipe.maxPathDistance, WeaponManager.MinSwipeDistance);
     
     [Header("Debug")]
     public LineRenderer debugLine;
 
+    // --- PATH ---
     private List<Vector3> _pathPoints;
     int PointCount => _pathPoints.Count;
     Vector3 LastPoint => PointCount > 0 ? _pathPoints[^1] : Vector3.zero;
@@ -18,6 +20,13 @@ public class WeaponSwipe : WeaponBase {
 
     // ------ START METHODS ------
 
+    private WeaponDataSwipe _weaponDataSwipe;
+    protected override bool TryParseData() {
+        if (weaponData.GetType() != typeof(WeaponDataSwipe)) return false;
+        _weaponDataSwipe = (WeaponDataSwipe) weaponData;
+        return true;
+    }
+    
     protected override void OnStart() {
         _pathPoints = new List<Vector3>();
         debugLine.positionCount = 0;
@@ -44,7 +53,7 @@ public class WeaponSwipe : WeaponBase {
         // Try to use energy to create a valid path.
         if (PointCount < 2){
             // If weapon has enough energy, add point to make path valid.
-            if (TryUseEnergy(energyCost)) AddPoint(adjutedPos);
+            if (TryUseEnergy(EnergyCost)) AddPoint(adjutedPos);
             // If path could not be made valid, cancel weapon's attack for this swipe.
             else {
                 ResetPath(true);
@@ -68,16 +77,22 @@ public class WeaponSwipe : WeaponBase {
     }
 
     private void TrySwipeAttack() {
+        AttackUsed = true;
+        
         // Only proceed if at least 2 swipe points are in array. 
-        if (_pathPoints.Count > 1) {
-            // Try to find zombies along path and damage to all zombies found.
-            Damageable[] hitDamageables = Common.FindDamageablesAlongPath(_pathPoints.ToArray(), range, penetration, hitMask);
-            if (hitDamageables != null)
-                foreach (Damageable d in hitDamageables)
-                    d.DealDamage(damage);
+        if (_pathPoints.Count <= 1) {
+            ResetPath(true);
+            return;
         }
 
-        // Reset path and mark attack as used.
+        // Try to find zombies along path and damage to all zombies found.
+        Damageable[] damageables = Common.FindDamageablesAlongPath(_pathPoints.ToArray(), Range, Penetration, HitMask);
+        
+        // If any damageables were found, damage them.
+        foreach (Damageable d in damageables) d.DealDamage(Damage);
+        OnDamageablesHitDelegate?.Invoke(damageables);
+        OnSwipeDelegate?.Invoke(_pathPoints.ToArray());
+        
         ResetPath(true);
     }
 
@@ -99,8 +114,8 @@ public class WeaponSwipe : WeaponBase {
         float newDistWithPoint = _currentPathLength + distDelta;
         
         // If path distance with new point reaches path limit, adjust point so path's length won't exceed max and return true.
-        if (newDistWithPoint < MaxSafePathDist) return false;
-        adjustedPos = LastPoint + (point - LastPoint).normalized * (newDistWithPoint - MaxSafePathDist);
+        if (newDistWithPoint < MaxPathDistance) return false;
+        adjustedPos = LastPoint + (point - LastPoint).normalized * (newDistWithPoint - MaxPathDistance);
         return true;
     }
 

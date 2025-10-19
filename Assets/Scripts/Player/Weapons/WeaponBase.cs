@@ -3,44 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour {
-    protected bool _isPressing;
-    protected Vector3 _touchPressPos;
-    protected Vector3 _swipePos;
-    protected Vector3 _touchReleasePos;
-    protected Vector3 _swipeStrength;
+    public DamageablesDelegate OnDamageablesHitDelegate;
     
-    protected ZombieManager _zombieManager;
-
-    [Header("Physics")]
-    public LayerMask hitMask;
+    // --- DATA ENTRY ---
+    [Header("Weapon Data")]
+    public WeaponDataTypes weaponData;
+    // private WeaponDataTypes _weaponData; // Make this match your weapon's actual type.
     
-    [Header("General")]
-    public float damage = 0.5f;
-    public float range = 0.5f;
-    public int penetration = 1;
-
-    [Header("Energy")]
-    public float energyRegenRate = 1;
-    [Range(0, 1)]
-    public float energyCost = 1;
-
+    // --- DATA REFERENCES ---
+    public LayerMask HitMask => weaponData.hitMask;
+    public float Damage => weaponData.damage;
+    public float Range => weaponData.range;
+    public int Penetration => weaponData.penetration;
+    
+    public float EnergyRegenRate => weaponData.energyRegenRate;
+    public float EnergyCost => weaponData.energyCost;
+    
+    // --- CURRENT STATE ---
     protected bool Active;
-    protected bool AttackUsed = false;
     protected float CurrentEnergy;
+    protected bool AttackUsed = false;
     
     // ------ UPDATE FUNCTIONS ------
 
     void Start() {
-        _zombieManager = ZombieManager.Instance;
+        if (!weaponData || !TryParseData()) {
+            Debug.LogError("Unable to parse data to weapon's type.");
+            enabled = false;
+            return;
+        }
+        
         OnStart();
     }
-    
+
+    protected abstract bool TryParseData();
     protected virtual void OnStart() {}
     
     // ------ UPDATE FUNCTIONS ------
     
     void FixedUpdate() {
-        CurrentEnergy = Mathf.Clamp01(CurrentEnergy + (Time.fixedDeltaTime * energyRegenRate));
+        CurrentEnergy = Mathf.Clamp01(CurrentEnergy + (Time.fixedDeltaTime * EnergyRegenRate));
         
         OnFixedUpdate(Time.fixedDeltaTime);
     }
@@ -50,22 +52,15 @@ public abstract class WeaponBase : MonoBehaviour {
     // ------ EVENT FUNCTIONS ------
     
     public void OnTouchPress(Vector3 pos) {
-        _isPressing = true;
-        _touchPressPos = pos;
-        _touchReleasePos = Vector3.zero;
-        
         TouchPressAction(pos);
+        
     }
     
     public void OnSwipe(Vector3 pos) {
         SwipeAction(pos);
-        _swipePos = pos;
     }
     
     public void OnTouchRelease(Vector3 pos) {
-        _isPressing = false;
-        _touchReleasePos = pos;
-        
         TouchReleaseAction(pos);
     }
 
@@ -90,8 +85,6 @@ public abstract class WeaponBase : MonoBehaviour {
         Active = isEnabled;
         OnToggleWeapon(Active);
     }
-    
-    public float GetCurrentEnergy() => CurrentEnergy;
     
     /// Returns whether weapon has at least given amount of energy.
     protected bool HasEnoughEnergy(float energyNeeded) => CurrentEnergy >= energyNeeded;

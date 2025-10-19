@@ -6,8 +6,9 @@ using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class ZombieBase : Damageable {
+public class ZombieBase : Damageable, IStatusHandling {
     private readonly int TicksPerPhysicsCheck = 4;
+    
     public int ZombieId {get; private set;}
     
     private const float CharacterRadius = 0.4f;
@@ -17,9 +18,16 @@ public class ZombieBase : Damageable {
     
     private ZombieState _zombieState = ZombieState.Moving;
     
+    // --- ISTATUSHANDLING ---
+    public FloatDelegate OnStatusDamageDelegate { get; }
+    List<StatusEffect> IStatusHandling.StatusEffects { get; }
+    float IStatusHandling.SpeedMod { get; set; }
+    float IStatusHandling.DamageMod { get; set; }
+    float IStatusHandling.ResistMod { get; set; }
+    
     // --- GLOBAL REFERENCES ---
     private ZombieManager _manager;
-    private ZombieDataEntry _data;
+    private ZombieDataTypes _data;
     
     // --- COMPONENTS ---
     private NavMeshAgent _nav;
@@ -28,7 +36,7 @@ public class ZombieBase : Damageable {
     
     // --- MOVEMENT ---
     private Vector3 _navTargetPos;
-    private float _primaryTargetDistThreshold;
+    private float _approachDistance;
     private bool _isApproaching;
     
     // --- TARGETING ---
@@ -46,7 +54,7 @@ public class ZombieBase : Damageable {
         OnDeath += ReturnToPool;
     }
 
-    public void Initialize(ZombieDataEntry zombieData, Vector3 spawnPos, Damageable poorSoul, LayerMask sideTargetMask) {
+    public void Initialize(ZombieDataTypes zombieData, Vector3 spawnPos, float approachDist, Damageable poorSoul, LayerMask sideTargetMask) {
         // --- CONSTRUCTOR INPUTS ---
         _data = zombieData;
         transform.position = spawnPos;
@@ -64,12 +72,13 @@ public class ZombieBase : Damageable {
         
         // --- TARGETING ---
         // Make attack range measure distance between the closest point on each capsule. Add random offset to reduce zombie clumping.
+        _currentTarget = null;
         _attackRange = (CharacterRadius * 2) + (_data.attackRange * Random.Range(0.8f, 1f));
         
         // Make agent's first target point randomly offset from primary target to make zombie pathing more interesting.
-        Vector2 approachOffset = Random.insideUnitCircle.normalized * (_primaryTargetDistThreshold + (CharacterRadius * 2));
+        _approachDistance = approachDist;
+        Vector2 approachOffset = Random.insideUnitCircle.normalized * (_approachDistance + (CharacterRadius * 2));
         _navTargetPos = _poorSoul.Position + new Vector3(approachOffset.x, 0, approachOffset.y);
-        Agent.SetDestination(_navTargetPos);
         _isApproaching = true;
         
         // --- VISUAL ---
@@ -80,8 +89,11 @@ public class ZombieBase : Damageable {
         ChangeZombieState(ZombieState.Moving, false);
         SetActive(false);
     }
-    
-    public void SetId(int id) => ZombieId = id;
+
+    public void SetId(int id) {
+        ZombieId = id;
+        gameObject.name = "Zombie " + ZombieId; 
+    }
     
     // ------ GENERAL ------
 
@@ -90,8 +102,8 @@ public class ZombieBase : Damageable {
         _lastAttack = Time.time;
         
         // Update agent based on current state. If desired, forcefully update agent target.
-        Agent.stoppingDistance = _isApproaching ? 0f : _attackRange; 
-        Agent.isStopped = _zombieState is ZombieState.Attacking;
+        Agent.stoppingDistance = _isApproaching ? 0f : _attackRange;
+        if(Agent.hasPath) Agent.isStopped = _zombieState is ZombieState.Attacking;
         if (forceUpdateNavTarget) UpdateAgentTarget();
         
         OnZombieStateChanged?.Invoke(_zombieState);
@@ -103,20 +115,22 @@ public class ZombieBase : Damageable {
 
     public void FixedUpdateLoop(int tick) {
         if (_visual) _visual.FixedUpdateLoop(); // Update visual if zombie has one.
-        if (!_poorSoul) return; // Only continue if poor soul is still alive.
+        
+        
+        if (!_poorSoul || _nav.pathPending || !_nav.isOnNavMesh) return; // Only continue if poor soul is still alive and zombie isn't processing a path..
 
         // If target moves too far from last recorded target position, update nav destination.
-        if (Vector3.Distance(_navTargetPos, _poorSoul.Position) > 0.15f)
+        if (Vector3.Distance(_navTargetPos, _poorSoul.Position) > 0.15f || Agent.destination != _navTargetPos)
             UpdateAgentTarget();
 
-        // If zombie is allowed to do physics checks, check for possible damageables in the way. If one is found, make zombie attack it.
+        // If zombie is allowed to do physics check this tick, check for possible damageables in the way. If one is found, make zombie attack it.
         if (CheckIfPhysicsTick(tick) && CheckForSideTargets())
-                ChangeZombieState(ZombieState.Attacking);
+            ChangeZombieState(ZombieState.Attacking);
 
         // Perform logic based on current zombie state.
         switch (_zombieState) {
             default:
-            case ZombieState.Moving: ApproachingBehavior(); break;
+            case ZombieState.Moving: MovingBehavior(); break;
             case ZombieState.Attacking: AttackingBehavior(); break;
         }
     }
@@ -131,23 +145,31 @@ public class ZombieBase : Damageable {
 
     // ------ BEHAVIORS ------
 
-    void ApproachingBehavior() {
-        if (_isApproaching) {
-            // Check if zombie has either reached approach point or gotten close enough to player.
-            bool closeToApproachPos = Agent.remainingDistance <= 0.25f;
-            bool closeToPrimaryTarget = GetDistanceToMainTarget() <= _primaryTargetDistThreshold * 1.1f;
+    public void ProcessEffects() {
+        
+    }
 
+    void MovingBehavior() {
+        if (_isApproaching && Agent.hasPath) {
+            // Check if zombie has either reached approach point or gotten close enough to player.
+            bool closeToApproachPos = Agent.remainingDistance <= 0.1f;
+            bool closeToPrimaryTarget = GetDistanceToPoorSoul() <= _approachDistance * 1.1f;
+            
             // If either above criteria are true, start directly moving towards main target.
             if (closeToApproachPos || closeToPrimaryTarget)
                 _isApproaching = false;
         }
+
+        // If close enough to poor soul and not targeting anything else, start attacking poor soul.
+        if (GetDistanceToPoorSoul(true, true) <= 0 && !_currentTarget) _currentTarget = _poorSoul;
         
-        if(GetDistanceToMainTarget(true, true) <= 0)
-            ChangeZombieState(ZombieState.Attacking);
+        // Make sure that zombie starts attacking if they have a target.
+        if(_currentTarget) ChangeZombieState(ZombieState.Attacking);
     }
     
     void AttackingBehavior() {
-        if (Mathf.Approximately(TryAttack(), 0))
+        // If current target no longer exists or is killed by zombie, switch back to moving.  
+        if (!_currentTarget || Mathf.Approximately(TryAttack(), 0))
             ChangeZombieState(ZombieState.Moving);
     }
 
@@ -156,8 +178,8 @@ public class ZombieBase : Damageable {
     // Updates agent target position and stopping distance. 
     void UpdateAgentTarget() {
         if(!_isApproaching) _navTargetPos = _poorSoul.Position;
-        _nav.stoppingDistance = _isApproaching ? 0f : _attackRange;
-        _nav.SetDestination(_navTargetPos);
+        Agent.stoppingDistance = _isApproaching ? 0f : _attackRange;
+        Agent.SetDestination(_navTargetPos);
     }
     
     // ------ TARGETING ------
@@ -174,7 +196,7 @@ public class ZombieBase : Damageable {
 
         // If zombie is approaching, check towards their move direction. Otherwise, check towards their main target.
         Vector3 targetDir = _isApproaching ? _nav.desiredVelocity.normalized : (_poorSoul.Position - Position).normalized;
-        float checkDist = _isApproaching ? 0.1f : Mathf.Min(GetDistanceToMainTarget(), _attackRange);
+        float checkDist = _isApproaching ? 0.1f : Mathf.Min(GetDistanceToPoorSoul(), _attackRange);
 
         // Check if a valid transform is in front of zombie within given range. If a new side target was set from found transform, return true.
         if (Physics.CapsuleCast(Position, capsuleTop, CharacterRadius, targetDir, out RaycastHit hit, checkDist, _sideTargetMask))
@@ -194,7 +216,7 @@ public class ZombieBase : Damageable {
     }
 
     // Returns distance between zombie and main target with optional inclusion of character radius and attack range. Negative value means zombie is within range.
-    float GetDistanceToMainTarget(bool includeCharacterRadius = true, bool includeAttackRange = false) {
+    float GetDistanceToPoorSoul(bool includeCharacterRadius = true, bool includeAttackRange = false) {
         // Calculate raw distance from zombie to main target.
         float distToTarget = Vector3.Distance(Position, _poorSoul.Position);
 
@@ -233,7 +255,6 @@ public class ZombieBase : Damageable {
     
     public void SetActive(bool active) => gameObject.SetActive(active);
     public bool IsInPool() => !_data;
-    public float SetPrimaryTargetDistThreshold(float newThreshold) => _primaryTargetDistThreshold = newThreshold;
     public ZombieState GetZombieState() => _zombieState;
     public float GetMaxSpeed() => _nav.speed;
     public Vector3 GetVelocity() => _nav.velocity;

@@ -24,10 +24,10 @@ public class ZombiePool {
     // ------ PUSH/POP ------
 
     /// Gets a zombie from pool.
-    public ZombieBase Pop(ZombieDataEntry zombieData, Vector3 spawnPos, Damageable mainTarget, LayerMask sideTargetMask) {
+    public ZombieBase Pop(ZombieDataTypes zombieData, Vector3 spawnPos, float approachDist, Damageable mainTarget, LayerMask sideTargetMask) {
         if (_zombieStack.Count <= 0) ExpandPool();
         ZombieBase z = _zombieStack.Pop();
-        z.Initialize(zombieData, spawnPos, mainTarget, sideTargetMask);
+        z.Initialize(zombieData, spawnPos, approachDist, mainTarget, sideTargetMask);
         return z;
     }
 
@@ -47,7 +47,7 @@ public class ZombiePool {
             // Create a zombie, add zombie's return method to pool's delegate, initialize it, and add zombie to stack.
             Object.Instantiate(_zombieBasePrefab).TryGetComponent(out ZombieBase z);
             OnPoolDeplete += z.ReturnToPool;
-            z.SetId(_zombieStack.Count);
+            z.SetId(_totalZombies + i);
             Push(z);
         }
         

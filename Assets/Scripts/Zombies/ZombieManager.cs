@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class ZombieManager : MonoBehaviour {
@@ -15,14 +16,14 @@ public class ZombieManager : MonoBehaviour {
     [Header("References")]
     public GameObject zombieBasePrefab;
 
-    [Header("Targeting")]
-    public float _targetPosDeviation = 1.5f;
+    [FormerlySerializedAs("_targetPosDeviation")] [Header("Targeting")]
+    public float _approachDistance;
     public LayerMask _sideTargetMask;
     Damageable _mainTarget;
 
     [Header("Spawning")]
     public Transform[] spawnPoints;
-    public ZombieDataEntry[] zombieDataEntries;
+    public ZombieDataTypes[] zombieDataEntries;
     private List<ZombieBase> _activeZombies;
     private int _spawnRandSeed = 0;
 
@@ -77,7 +78,7 @@ public class ZombieManager : MonoBehaviour {
     
     /// Spawns a zombie with random data from entries based on current wave and returns spawned zombie.
     public ZombieBase SpawnZombieRandomWithReturn(int currentWave) {
-        ZombieDataEntry data = GetZombieData(currentWave, out int index);
+        ZombieDataTypes data = GetZombieData(currentWave, out int index);
         if (!data) return null;
 
         return SpawnZombieSpecific(index);
@@ -85,15 +86,14 @@ public class ZombieManager : MonoBehaviour {
     
     /// Spawns a zombie type with data at given data index.
     private ZombieBase SpawnZombieSpecific(int dataIndex) {
-        ZombieDataEntry data = zombieDataEntries[Mathf.Clamp(dataIndex, 0, zombieDataEntries.Length - 1)];
+        ZombieDataTypes data = zombieDataEntries[Mathf.Clamp(dataIndex, 0, zombieDataEntries.Length - 1)];
 
         Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        ZombieBase z = _zombiePool.Pop(data, spawn.position, _mainTarget, _sideTargetMask);
+        ZombieBase z = _zombiePool.Pop(data, spawn.position, _approachDistance, _mainTarget, _sideTargetMask);
         
         OnUpdate += z.UpdateLoop;
         OnFixedUpdate += z.FixedUpdateLoop;
         z.SetActive(true);
-        z.SetPrimaryTargetDistThreshold(_targetPosDeviation);
         
         _activeZombies.Add(z);
         
@@ -127,18 +127,18 @@ public class ZombieManager : MonoBehaviour {
     public int GetActiveZombieCount() => _activeZombies.Count;
     
     /// Attempts to get a random zombie data entry that can be spawned this wave.
-    private ZombieDataEntry GetZombieData(int currentWave, out int selectedIndex) {
+    private ZombieDataTypes GetZombieData(int currentWave, out int selectedIndex) {
         selectedIndex = -1;
         float totalWeight = 0;
         List<int> validEntries = new List<int>();
         
         // Find all data entries that can be spawned this wave.
         for (int i = 0; i < zombieDataEntries.Length; i++) {
-            ZombieDataEntry entry = zombieDataEntries[i];
+            ZombieDataTypes types = zombieDataEntries[i];
             
-            if (entry.minimumSpawnWave > currentWave) continue;
+            if (types.minimumSpawnWave > currentWave) continue;
             
-            totalWeight += entry.spawnWeight;
+            totalWeight += types.spawnWeight;
             validEntries.Add(i);
         }
 
@@ -151,7 +151,7 @@ public class ZombieManager : MonoBehaviour {
         _spawnRandSeed++;
         
         foreach (int i in validEntries) {
-            ZombieDataEntry zombie = zombieDataEntries[i];
+            ZombieDataTypes zombie = zombieDataEntries[i];
             
             // If currently examined entry's weight exceeds rand, return it.
             rand -= zombie.spawnWeight;

@@ -7,11 +7,14 @@ using Random = UnityEngine.Random;
 public delegate void GenericDelegate();
 public delegate void IntDelegate(int value);
 public delegate void BoolDelegate(bool value);
+public delegate void FloatDelegate(float value);
 public delegate void IntBoolDelegate(int intVal, bool boolVal);
 public delegate void FloatFloatDelegate(float float1Val, float float2Val);
 public delegate void IntIntFloatDelegate(int int1Val, int int2Val, float floatVal);
 public delegate void Vector2Delegate(Vector2 input);
 public delegate void Vector3Delegate(Vector3 input);
+public delegate void Vector3sDelegate(Vector3[] input);
+public delegate void DamageablesDelegate(Damageable[] input);
 public delegate void ZombieStateDelegate(ZombieState zombieState);
 public delegate void GameStateIntDelegate(GameState gameState, int intVal);
 
@@ -53,8 +56,7 @@ public static class Common {
         for (int i = 0; i < hitCols && hitDams < maxDamageables; i++) {
             // If hit collider's root has damageable component, add it to damageables array.
             Collider c = HitColList[i];
-            if (c == null) continue;
-            if (!c.transform.root.TryGetComponent(out Damageable d)) continue;
+            if (!c || !c.transform.root.TryGetComponent(out Damageable d)) continue;
 
             HitDamList[hitDams] = d;
             hitDams++;
@@ -114,8 +116,8 @@ public static class Common {
 
     /// Returns a random assortment of zombies from given array. Returns no more than specified maximum if zombie array is larger than given maximum.
     public static Damageable[] GetRandomDamageablesInList(Damageable[] zombies, int maxZombies) {
-        // If max zombies is below 1, return null.
-        if (maxZombies < 1) return null;
+        // If max zombies is below 1, return empty list.
+        if (maxZombies < 1) return EmptyHitDamList;
         // If max zombies is either higher than array size.
         if (maxZombies >= zombies.Length) return zombies;
 

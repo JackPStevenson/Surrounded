@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 
 [CreateAssetMenu(fileName = "Zombie Data Entry")]
-public class ZombieDataEntry : ScriptableObject {
+public class ZombieDataTypes : ScriptableObject {
     [Header("References")]
     public GameObject visualPrefab;
 
