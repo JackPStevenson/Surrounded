@@ -10,7 +10,7 @@ public abstract class PartWeaponListener : PartBase {
     
     // --- WEAPON EVENTS ---
     [Header("Weapon Events")]
-    public UnityEvent<Damageable[]> onDamageablesHit;
+    public UnityEvent<Health[]> onDamageablesHit;
     
     // ------ START METHODS ------
     
@@ -22,7 +22,7 @@ public abstract class PartWeaponListener : PartBase {
             return;
         }
         
-        Weapon.OnDamageablesHitDelegate += onDamageablesHit.Invoke;
+        Weapon.EventOnHit += onDamageablesHit.Invoke;
     }
     
     // ------ EVENT METHODS ------

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3150864116692891393}
   - component: {fileID: 159023862959688707}
   - component: {fileID: 2717168339777409213}
-  - component: {fileID: 5977762270860573844}
   - component: {fileID: 3299913770441199659}
+  - component: {fileID: 6304088305988312023}
+  - component: {fileID: 5993755145650770399}
   m_Layer: 8
   m_Name: Barricade
   m_TagString: Untagged
@@ -88,23 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5977762270860573844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9103172438427942495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d75a544344453154eb49dbf475b9574c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderers:
-  - {fileID: 2717168339777409213}
-  skinnedRenderers: []
-  maxHealth: 6
-  destroyOnDeath: 1
 --- !u!65 &3299913770441199659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,3 +110,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6304088305988312023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103172438427942495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beebe8d407b1b6e4ebb476c5b4c50502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpMax: 6
+  destroyOnDeath: 1
+--- !u!114 &5993755145650770399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103172438427942495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d06ba1d8088f1142a53b1ce9b5f4362, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 2717168339777409213}
+  skinnedRenderers: []

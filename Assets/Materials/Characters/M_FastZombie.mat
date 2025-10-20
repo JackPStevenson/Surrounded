@@ -39,7 +39,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: d7f74dcdfcf072d4e9ba1e878528ad05, type: 3}
+        m_Texture: {fileID: 2800000, guid: d4202664dc1dfd4438b6177a60208c02, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -79,7 +79,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: 4300efa114036064d865ef8f3906305b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2773ca5605215a149873d3c8c60a9369, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -126,6 +126,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _LastFlash: -2048
     - _Last_Damage_Flash: -2048
     - _Metallic: 0
     - _Normal_Power: 1
@@ -147,7 +148,8 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emission_Tint: {r: 0, g: 0, b: 0, a: 0}
+    - _FlashColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 0.0990566, g: 0.6786159, b: 1, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    public GameStateIntDelegate OnGameStateChanged;
+    public event Action<GameState, int> OnGameStateChanged;
     public static GameManager Instance;
     
-    private WaveManager _waveManager;
+    private ZombiesWaveManager _zombiesWaveManager;
     private PoorSoul _poorSoul;
 
     private GameState _gameState = GameState.Intermission;
@@ -28,14 +29,14 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        _waveManager = WaveManager.Instance;
-        _waveManager.OnAllZombiesDead += OnAllZombiesDead;
+        _zombiesWaveManager = ZombiesWaveManager.Instance;
+        _zombiesWaveManager.OnAllZombiesDead += OnAllZombiesDead;
         
         _poorSoul = PoorSoul.Instance;
         _poorSoul.OnDeath += OnPlayerDeath;
         _poorSoul.OnDeath += loseMenu.Enable;
         
-        _waveManager.SetMainTarget(_poorSoul);
+        _zombiesWaveManager.SetMainTarget(_poorSoul);
 
         SetGameState(GameState.Intermission);
     }

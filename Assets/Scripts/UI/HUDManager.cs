@@ -9,9 +9,9 @@ public class HUDManager : MonoBehaviour
     public static HUDManager Instance;
     
     GameManager _gameManager;
-    WaveManager _waveManager;
+    ZombiesWaveManager _zombiesWaveManager;
     PoorSoul _poorSoul;
-    ZombieManager _zombieManager;
+    ZombiesManager _zombiesManager;
     
     [Header("HUD Elements")]
     public GameObject _HordeText;
@@ -26,15 +26,15 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         _gameManager = GameManager.Instance;
-        _waveManager = WaveManager.Instance;
+        _zombiesWaveManager = ZombiesWaveManager.Instance;
         _poorSoul = PoorSoul.Instance;
-        _zombieManager = ZombieManager.Instance;
+        _zombiesManager = ZombiesManager.Instance;
         
-        _waveManager.OnHordeSpawnNotify += HordeSpawnNotify;
+        _zombiesWaveManager.OnHordeSpawnNotify += HordeSpawnNotify;
     }
 
     void Update() {
-        _healthSlider.value = _poorSoul.GetCurrentHealth() / _poorSoul.maxHealth;
+        _healthSlider.value = _poorSoul.HpCurrent / _poorSoul.HpMax;
         switch (_gameManager.GetGameState()) {
             case GameState.Intermission:
                 _waveProgressText.text = "Wave " + _gameManager.GetCurrentWave() + " in " + Mathf.Ceil(_gameManager.GetRemainingIntermission());
@@ -43,7 +43,7 @@ public class HUDManager : MonoBehaviour
             
             case GameState.InProgress:
                 _waveProgressText.text = "Wave " + _gameManager.GetCurrentWave();
-                _waveProgressSlider.value = _waveManager.GetWaveProgress();
+                _waveProgressSlider.value = _zombiesWaveManager.GetWaveProgress();
                 break;
             
             case GameState.Dead:
@@ -57,7 +57,7 @@ public class HUDManager : MonoBehaviour
 
     IEnumerator DisplayText() {
         _HordeText.SetActive(true);
-        yield return new WaitForSeconds(_waveManager.hordeStartDelay);
+        yield return new WaitForSeconds(_zombiesWaveManager.hordeStartDelay);
         _HordeText.SetActive(false);
     }
 }

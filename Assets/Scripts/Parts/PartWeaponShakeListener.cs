@@ -14,7 +14,7 @@ public class PartWeaponShakeListener : PartWeaponListener {
         if (Weapon.GetType() != typeof(WeaponShake)) return false;
         _weaponShake = (WeaponShake) Weapon;
 
-        _weaponShake.OnShakeDelegate += onShake.Invoke;
+        _weaponShake.EventOnShake += onShake.Invoke;
         
         return true;
     }

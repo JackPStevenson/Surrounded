@@ -14,7 +14,7 @@ public class PartWeaponSwipeListener : PartWeaponListener {
         if (Weapon.GetType() != typeof(WeaponSwipe)) return false;
         _weaponSwipe = (WeaponSwipe) Weapon;
 
-        _weaponSwipe.OnSwipeDelegate += onSwipe.Invoke;
+        _weaponSwipe.EventOnSwipe += onSwipe.Invoke;
         
         return true;
     }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7407888746000435811}
   - component: {fileID: 6186477267145414006}
+  - component: {fileID: 3403609890681588149}
   m_Layer: 0
   m_Name: StandardZombieVisual
   m_TagString: Untagged
@@ -45,9 +46,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57c0bd0255ebf6b478b47d6adc8fe118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zombieAnimator: {fileID: 2660856914240475439}
+  useRunningAnimation: 0
+--- !u!114 &3403609890681588149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058431072282217707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d06ba1d8088f1142a53b1ce9b5f4362, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   renderers: []
   skinnedRenderers:
+  - {fileID: 5647509221702960161}
   - {fileID: 6990881513762349740}
   - {fileID: 6628641999964350178}
   - {fileID: 5901790037433863377}
@@ -61,7 +75,6 @@ MonoBehaviour:
   - {fileID: 3771401717392477809}
   - {fileID: 6175000964640182154}
   - {fileID: 8202944900918982063}
-  - {fileID: 5647509221702960161}
 --- !u!1001 &8468973941861559486
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -313,12 +326,6 @@ PrefabInstance:
 --- !u!137 &1840526560938873127 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7785892293556075929, guid: 29ec8d65b9e9f9d4c9de87d3b0af32d3,
-    type: 3}
-  m_PrefabInstance: {fileID: 8468973941861559486}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &2660856914240475439 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 29ec8d65b9e9f9d4c9de87d3b0af32d3,
     type: 3}
   m_PrefabInstance: {fileID: 8468973941861559486}
   m_PrefabAsset: {fileID: 0}

@@ -14,7 +14,7 @@ public class PartWeaponTapListener : PartWeaponListener {
         if (Weapon.GetType() != typeof(WeaponTap)) return false;
         _weaponTap = (WeaponTap) Weapon;
         
-        _weaponTap.OnTapDelegate += onTap.Invoke;
+        _weaponTap.EventOnTap += onTap.Invoke;
         
         return true;
     }
