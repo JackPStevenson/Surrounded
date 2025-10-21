@@ -2735,6 +2735,8 @@ GameObject:
   - component: {fileID: 7407888746000435811}
   - component: {fileID: 1515412590803503169}
   - component: {fileID: 8819562504221582743}
+  - component: {fileID: 333783503154124689}
+  - component: {fileID: 2381090258564153888}
   m_Layer: 0
   m_Name: PoorSoul
   m_TagString: Untagged
@@ -2770,8 +2772,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def108bc72e7cb741b3c2f2bac7d3ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HpMax: 6
-  destroyOnDeath: 1
 --- !u!114 &8819562504221582743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2800,3 +2800,29 @@ MonoBehaviour:
   - {fileID: 3771401717392477809}
   - {fileID: 6175000964640182154}
   - {fileID: 8202944900918982063}
+--- !u!114 &333783503154124689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058431072282217707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beebe8d407b1b6e4ebb476c5b4c50502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpMax: 5
+  destroyOnDeath: 0
+--- !u!114 &2381090258564153888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058431072282217707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2596fab44199f984090ce8f7543f02a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

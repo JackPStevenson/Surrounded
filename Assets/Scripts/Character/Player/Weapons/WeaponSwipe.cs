@@ -7,13 +7,13 @@ public class WeaponSwipe : WeaponBase {
     public event Action<Vector3[]> EventOnSwipe;
     
     // --- DATA REFERENCES ---
-    public float MaxPathDistance => Mathf.Max(_weaponDataSwipe.maxPathDistance, WeaponManager.MinSwipeDistance);
+    public float MaxPathDistance => Mathf.Max(_dataWeaponSwipe.maxPathDistance, ManagerWeapon.MinSwipeDistance);
     
     [Header("Debug")]
     public LineRenderer debugLine;
 
     // --- PATH ---
-    private List<Vector3> _pathPoints;
+    private List<Vector3> _pathPoints = new List<Vector3>();
     int PointCount => _pathPoints.Count;
     Vector3 LastPoint => PointCount > 0 ? _pathPoints[^1] : Vector3.zero;
     
@@ -21,15 +21,16 @@ public class WeaponSwipe : WeaponBase {
 
     // ------ START METHODS ------
 
-    private WeaponDataSwipe _weaponDataSwipe;
+    private DataWeaponSwipe _dataWeaponSwipe;
+    public DataWeaponSwipe Data => _dataWeaponSwipe;
+    
     protected override bool TryParseData() {
-        if (weaponData.GetType() != typeof(WeaponDataSwipe)) return false;
-        _weaponDataSwipe = (WeaponDataSwipe) weaponData;
+        if (dataWeaponData.GetType() != typeof(DataWeaponSwipe)) return false;
+        _dataWeaponSwipe = (DataWeaponSwipe) dataWeaponData;
         return true;
     }
     
-    protected override void OnStart() {
-        _pathPoints = new List<Vector3>();
+    protected override void OnAwake() {
         debugLine.positionCount = 0;
     }
 
@@ -81,7 +82,7 @@ public class WeaponSwipe : WeaponBase {
         AttackUsed = true;
         
         // Only proceed if at least 2 swipe points are in array. 
-        if (_pathPoints.Count <= 1) {
+        if (PointCount <= 1) {
             ResetPath(true);
             return;
         }
@@ -104,7 +105,7 @@ public class WeaponSwipe : WeaponBase {
         // True if new point is the first in path.
         if (PointCount == 0) return true;
         // True if new point is far enough away from most recent point added. False if new point is not valid.
-        return Vector3.Distance(point, LastPoint) >= WeaponManager.MinSwipeDistance;
+        return Vector3.Distance(point, LastPoint) >= ManagerWeapon.MinSwipeDistance;
     }
     
     // Returns whether point will make path's length reach maximum allowed. Additionally, returns point adjusted to make path not exceed path limit.

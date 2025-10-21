@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public class PartLogicHitComps : PartBase {
+public class PartLogicHitComps : Part {
     // --- DAMAGEABLE TRACKING ---
     [Header("Damageable Tracking")]
     public int minHitsForActivation = 1;

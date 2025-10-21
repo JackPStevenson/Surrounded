@@ -1,23 +1,24 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class WeaponBase : MonoBehaviour {
     public event Action<Health[]> EventOnHit;
     protected void OnHit(Health[] h) => EventOnHit?.Invoke(h);
     
     // --- DATA ENTRY ---
-    [Header("Weapon Data")]
-    public WeaponDataBase weaponData;
+    [FormerlySerializedAs("weaponData")] [Header("Weapon Data")]
+    public DataWeapon dataWeaponData;
     // private WeaponDataTypes _weaponData; // Make this match your weapon's actual type.
     
     // --- DATA REFERENCES ---
-    public LayerMask HitMask => weaponData.hitMask;
-    public float Damage => weaponData.damage;
-    public float Range => weaponData.range;
-    public int Penetration => weaponData.penetration;
+    public LayerMask HitMask => dataWeaponData.hitMask;
+    public float Damage => dataWeaponData.damage;
+    public float Range => dataWeaponData.range;
+    public int Penetration => dataWeaponData.penetration;
     
-    public float EnergyRegenRate => weaponData.energyRegenRate;
-    public float EnergyCost => weaponData.energyCost;
+    public float EnergyRegenRate => dataWeaponData.energyRegenRate;
+    public float EnergyCost => dataWeaponData.energyCost;
     
     // --- CURRENT STATE ---
     public bool Active { get; private set; }
@@ -26,18 +27,18 @@ public abstract class WeaponBase : MonoBehaviour {
     
     // ------ UPDATE FUNCTIONS ------
 
-    void Start() {
-        if (!weaponData || !TryParseData()) {
+    void Awake() {
+        if (!dataWeaponData || !TryParseData()) {
             Debug.LogError("Unable to parse data to weapon's type.");
             enabled = false;
             return;
         }
         
-        OnStart();
+        OnAwake();
     }
 
     protected abstract bool TryParseData();
-    protected virtual void OnStart() {}
+    protected virtual void OnAwake() {}
     
     // ------ UPDATE FUNCTIONS ------
     

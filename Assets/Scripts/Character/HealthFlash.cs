@@ -15,9 +15,11 @@ public class HealthFlash : MonoBehaviour {
     public List<SkinnedMeshRenderer> skinnedRenderers;
 
     // ------ START METHODS ------
-    
-    private void Start() {
-        if (!Health && TryGetComponent(out Health h)) Initialize(h);
+    void Start() {
+        if (Health) return;
+        // Try to find health component on parent.
+        transform.parent?.TryGetComponent(out Health);
+        if(Health) Initialize(Health);
     }
 
     public void Initialize(Health h) {
@@ -26,9 +28,7 @@ public class HealthFlash : MonoBehaviour {
         Health.OnModHealth += FlashVisuals;
     }
 
-    private void Push() {
-        Health.OnModHealth -= FlashVisuals;
-    }
+    private void Push() => Health.OnModHealth -= FlashVisuals;
 
     // ------ EVENTS ------
     

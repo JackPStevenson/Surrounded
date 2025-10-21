@@ -45,7 +45,7 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
 
     public void UpdateCustom(float deltaTime) { }
 
-    public void FixedUpdateCustom(int tick, float deltaTime) {
+    public void FixedUpdateCustom(float deltaTime, int tick) {
         // Update zombie visual's direction based on direction its moving.
         Vector3 targetDir = Core.TargetDirection;
         if (targetDir.magnitude > 0) transform.rotation = Quaternion.LookRotation(targetDir);

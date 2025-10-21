@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PartAffectorStatus : PartBase
+public class PartAffectorStatus : Part
 {
     // --- STATUS ---
-    [Header("Effect")]
-    public StatusEffectData statusEffectData;
+    [FormerlySerializedAs("statusEffectData")] [Header("Effect")]
+    public DataStatusEffect dataStatusEffect;
 
     private Health[] _targetComps = Array.Empty<Health>();
 
@@ -13,8 +14,8 @@ public class PartAffectorStatus : PartBase
 
     protected override void InvokeLogic() {
         foreach (Health comp in _targetComps) {
-            if (comp && comp.TryGetComponent(out StatusHandling handler)) {
-                handler.AddEffect(statusEffectData);
+            if (comp && comp.TryGetComponent(out StatusHandler handler)) {
+                handler.AddEffect(dataStatusEffect);
             }
         }
     }

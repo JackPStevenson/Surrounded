@@ -12,14 +12,16 @@ public class WeaponTap : WeaponBase {
     
     // ------ START METHODS ------
 
-    private WeaponDataTap _weaponDataTap;
+    private DataWeaponTap _dataWeaponTap;
+    public DataWeaponTap Data => _dataWeaponTap;
+    
     protected override bool TryParseData() {
-        if (weaponData.GetType() != typeof(WeaponDataTap)) return false;
-        _weaponDataTap = (WeaponDataTap) weaponData;
+        if (dataWeaponData.GetType() != typeof(DataWeaponTap)) return false;
+        _dataWeaponTap = (DataWeaponTap) dataWeaponData;
         return true;
     }
 
-    protected override void OnStart() {
+    protected override void OnAwake() {
         _tapStartPos = Vector3.up * -1000;
     }
     
@@ -71,6 +73,6 @@ public class WeaponTap : WeaponBase {
             return false;
         }
         // False if new point is close enough to starting point. True if new point is too far.
-        return Vector3.Distance(_tapStartPos, newPoint) < WeaponManager.MinSwipeDistance;
+        return Vector3.Distance(_tapStartPos, newPoint) < ManagerWeapon.MinSwipeDistance;
     }
 }

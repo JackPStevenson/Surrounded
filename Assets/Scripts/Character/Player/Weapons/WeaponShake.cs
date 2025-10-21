@@ -7,19 +7,21 @@ using UnityEngine.Serialization;
 public class WeaponShake : WeaponBase {
     public event Action EventOnShake;
     
-    PoorSoul _poorSoul;
+    PoorSoulCore _poorSoul;
 
     // ------ START FUNCTIONS ------
     
-    private WeaponDataShake _weaponDataShake;
+    private DataWeaponShake _dataWeaponShake;
+    public DataWeaponShake Data => _dataWeaponShake;
+    
     protected override bool TryParseData() {
-        if (weaponData.GetType() != typeof(WeaponDataShake)) return false;
-        _weaponDataShake = (WeaponDataShake) weaponData;
+        if (dataWeaponData.GetType() != typeof(DataWeaponShake)) return false;
+        _dataWeaponShake = (DataWeaponShake) dataWeaponData;
         return true;
     }
     
-    protected override void OnStart() {
-        _poorSoul = PoorSoul.Instance;
+    protected override void OnAwake() {
+        _poorSoul = PoorSoulCore.Instance;
     }
 
     // ------ EVENT FUNCTIONS ------

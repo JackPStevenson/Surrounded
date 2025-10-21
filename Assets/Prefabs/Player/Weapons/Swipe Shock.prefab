@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partConditions: []
-  statusEffectData: {fileID: 11400000, guid: 43188f1ecc46ec641b6bb091f70c4dc3, type: 2}
+  dataStatusEffect: {fileID: 11400000, guid: 43188f1ecc46ec641b6bb091f70c4dc3, type: 2}
 --- !u!1 &4732984985392083037
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b62a8d0e9915846ab8220ff720a80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: b5b573ece82407c428abbfa1f19d7dd4, type: 2}
+  dataWeaponData: {fileID: 11400000, guid: fc6f7570dd6530a41904412ba75fb368, type: 2}
   debugLine: {fileID: 2411919886889777498}
 --- !u!120 &2411919886889777498
 LineRenderer:
