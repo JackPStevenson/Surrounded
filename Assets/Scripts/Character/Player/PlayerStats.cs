@@ -24,6 +24,8 @@ public class ZombieSquashedData
 
 public class PlayerStats : MonoBehaviour
 {
+    private static PlayerStats instance;
+
     private int _highestRoundReached = 0;
     private int _zombieBlood = 0;
     private int _zombieBrains = 0;
@@ -33,6 +35,12 @@ public class PlayerStats : MonoBehaviour
         new ZombieSquashedData(ZombieType.Tanky), new ZombieSquashedData(ZombieType.Fast),
         new ZombieSquashedData(ZombieType.Thrower), new ZombieSquashedData(ZombieType.HighDamage),
         new ZombieSquashedData(ZombieType.Boss) };
+
+    private void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     // Getter/Setter Methods
     public int TotalZombiesSquashed
