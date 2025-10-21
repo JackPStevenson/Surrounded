@@ -1,6 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponTap : WeaponBase {
+    [Header("Debug")]
+    public Transform debugVisual;
+    
     // ------ UPDATE METHODS ------
 
     protected override void OnFixedUpdate(float deltaTime) {
@@ -11,13 +15,14 @@ public class WeaponTap : WeaponBase {
     
     protected override void TouchPressAction(Vector3 pos) {
         // Only proceed if any zombies are in range of tap.
-        ZombieBase[] hitZombies = FindZombiesInSphere(pos, range, penetration, _hitMask);
-        if (hitZombies == null) return;
+        Damageable[] hitDamageables = Common.FindDamageablesInSphere(pos, range, penetration, hitMask);
         
-        // 
+        if (debugVisual) debugVisual.position = pos;
+        if (hitDamageables == null) return;
+        
         if (TryUseEnergy(energyCost)) {
-            foreach (ZombieBase t in hitZombies) {
-                t.DealDamage(damage);
+            foreach (Damageable d in hitDamageables) {
+                d.DealDamage(damage);
             }
         }
     }

@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Damageable : MonoBehaviour {
+    private readonly static int LastDamageFlash = Shader.PropertyToID("_Last_Damage_Flash");
     public event FloatFloatDelegate OnDamaged;
     public event GenericDelegate OnDeath;
 
     public Vector3 Position { get => transform.position; set => transform.position = value; }
 
+    [Header("References")]
+    public MeshRenderer[] renderers;
+    public SkinnedMeshRenderer[] skinnedRenderers;
+    
     [Header("General")]
     public float maxHealth;
     protected float CurrentHealth;
+    public bool destroyOnDeath = false;
 
     // ------ START METHODS ------
     
@@ -23,17 +29,36 @@ public class Damageable : MonoBehaviour {
     
     // ------ EVENT METHODS ------
 
-    /// Deals damage based on given value. If damageable's health drops below 0, OnDeath will be invoked.
-    public void DealDamage(float damage) {
+    /// Deals damage based on given value. If damageable's health drops below 0, OnDeath will be invoked. Returns remaining health.
+    public float DealDamage(float damage) {
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
         OnDamaged?.Invoke(damage, CurrentHealth);
+
+        if(renderers.Length > 0)
+            foreach (MeshRenderer r in renderers)
+                if(r)
+                    r.material.SetFloat(LastDamageFlash, Time.time);
         
-        if (CurrentHealth <= 0)
+        if(skinnedRenderers.Length > 0)
+            foreach (SkinnedMeshRenderer r in skinnedRenderers)
+                if(r)
+                    r.material.SetFloat(LastDamageFlash, Time.time);
+
+        if (CurrentHealth <= 0) {
             OnDeath?.Invoke();
+            
+            if(destroyOnDeath)
+                Destroy(gameObject);
+        }
+
+        return CurrentHealth;
     }
 
     public void Kill() {
         CurrentHealth = 0;
         OnDeath?.Invoke();
     }
+    
+    // ------ HELPER METHODS ------
+    public float GetCurrentHealth() => CurrentHealth;
 }

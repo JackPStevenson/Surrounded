@@ -1,16 +1,32 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static LevelManager Instance;
+
+    // ------ START METHODS ------
+    
+    void Awake() {
+        Instance = this;
+    }
+    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    // ------ UPDATE METHODS ------
+    
     void Update()
     {
         
+    }
+    
+    // ------ EVENT METHODS ------
+
+    public void LoadScene(int sceneId) {
+        SceneManager.LoadScene(sceneId);
     }
 }
