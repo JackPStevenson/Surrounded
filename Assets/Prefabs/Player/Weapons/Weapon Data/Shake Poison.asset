@@ -9,15 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 929cf82f15f920e478daf0d39414957b, type: 3}
-  m_Name: Swipe Normal
+  m_Script: {fileID: 11500000, guid: c60ca2ebd4ba53746be3bf4c75804e02, type: 3}
+  m_Name: Shake Poison
   m_EditorClassIdentifier: 
   hitMask:
     serializedVersion: 2
     m_Bits: 64
-  damage: 3
-  range: 0.5
+  damage: 0
+  range: -1
   penetration: -1
-  energyRegenRate: 1
-  energyCost: 0.1
-  maxPathDistance: 5
+  energyRegenRate: 0.25
+  energyCost: 1

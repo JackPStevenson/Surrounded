@@ -25,7 +25,8 @@ public class Health : MonoBehaviour {
 
     public void ModHealthNoReturn(float healthChange) => ModHealth(healthChange, false);
     public float ModHealth(float healthChange, bool isDamage = true) {
-        // Modify health and call event.
+        if (Mathf.Approximately(healthChange, 0)) return HpCurrent;
+        
         float delta = healthChange * (isDamage ? -1 : 1);
         HpCurrent += delta;
         OnModHealth?.Invoke(delta);

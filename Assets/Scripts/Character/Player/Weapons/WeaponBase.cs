@@ -5,8 +5,6 @@ public abstract class WeaponBase : MonoBehaviour {
     public event Action<Health[]> EventOnHit;
     protected void OnHit(Health[] h) => EventOnHit?.Invoke(h);
     
-    
-    
     // --- DATA ENTRY ---
     [Header("Weapon Data")]
     public WeaponDataBase weaponData;
@@ -22,8 +20,8 @@ public abstract class WeaponBase : MonoBehaviour {
     public float EnergyCost => weaponData.energyCost;
     
     // --- CURRENT STATE ---
-    protected bool Active;
-    protected float CurrentEnergy;
+    public bool Active { get; private set; }
+    public float CurrentEnergy { get; private set; }
     protected bool AttackUsed = false;
     
     // ------ UPDATE FUNCTIONS ------
@@ -89,7 +87,8 @@ public abstract class WeaponBase : MonoBehaviour {
     }
     
     /// Returns whether weapon has at least given amount of energy.
-    protected bool HasEnoughEnergy(float energyNeeded) => CurrentEnergy >= energyNeeded;
+    public bool HasEnoughEnergy() => HasEnoughEnergy(EnergyCost);
+    public bool HasEnoughEnergy(float energyNeeded) => CurrentEnergy >= energyNeeded;
 
     /// Tries to consume given amount of energy from current energy. Returns whether consumption was successful.
     public bool TryUseEnergy(float energyNeeded) {

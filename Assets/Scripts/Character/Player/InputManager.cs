@@ -68,7 +68,6 @@ public class InputManager : MonoBehaviour {
     }
 
     private void OnShakeDebug(InputValue value) {
-        print(1);
         // Invoke shake delegate and reset timers.
         OnShakeInput?.Invoke();
         _lastShakeTime = Time.time;

@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class WeaponManager : MonoBehaviour {
+    public static WeaponManager Instance;
     public readonly static float MinSwipeDistance = 0.75f;
     private InputManager _input;
     
@@ -14,23 +12,29 @@ public class WeaponManager : MonoBehaviour {
     public float tapHeightOffset = 0.5f;
     
     [Header("Weapons")]
-    public int activeTapWeapon = 0;
+    public WeaponTap fallbackTap;
+    public int activeTap = 0;
+    private bool _useFallback = false;
     public List<WeaponTap> tapWeapons;
-    public WeaponTap CurrentTap => (activeTapWeapon > -1 && activeTapWeapon < tapWeapons.Count) ? tapWeapons[activeTapWeapon] : null;
+    public WeaponTap CurrentTap => activeTap > -1 && activeTap < tapWeapons.Count ? tapWeapons[activeTap] : null;
     [Space]
-    public int activeSwipeWeapon = 0;
+    public int activeSwipe = 0;
     public List<WeaponSwipe> swipeWeapons;
-    public WeaponSwipe CurrentSwipe => (activeSwipeWeapon > -1 && activeSwipeWeapon < swipeWeapons.Count) ? swipeWeapons[activeSwipeWeapon] : null;
+    public WeaponSwipe CurrentSwipe => activeSwipe > -1 && activeSwipe < swipeWeapons.Count ? swipeWeapons[activeSwipe] : null;
     [Space]
-    public int activeShakeWeapon = 0;
+    public int activeShake = 0;
     public List<WeaponShake> shakeWeapons;
-    public WeaponShake CurrentShake => (activeShakeWeapon > -1 && activeShakeWeapon < shakeWeapons.Count) ? shakeWeapons[activeShakeWeapon] : null;
+    public WeaponShake CurrentShake => activeShake > -1 && activeShake < shakeWeapons.Count ? shakeWeapons[activeShake] : null;
     
     private Camera _camera;
     private Plane _floor;
 
     // ------ START METHODS ------
-    
+
+    void Awake() {
+        Instance = this;
+    }
+
     void Start() {
         _camera = Camera.main;
         _floor = new Plane(Vector3.up, Vector3.up * floorHeight);
@@ -46,45 +50,69 @@ public class WeaponManager : MonoBehaviour {
 
     void OnTouchPressAction(Vector2 input) {
         Vector3 pos = TouchToWorldPoint(input);
+
+        ToggleFallback(!CurrentTap.HasEnoughEnergy());
+        if(_useFallback) fallbackTap.OnTouchPress(pos);
+        else CurrentTap?.OnTouchPress(pos);
         
-        CurrentTap.OnTouchPress(pos);
-        CurrentSwipe.OnTouchPress(pos);
-        CurrentShake.OnTouchPress(pos);
+        CurrentSwipe?.OnTouchPress(pos);
+        CurrentShake?.OnTouchPress(pos);
     }
     
     void SwipeAction(Vector2 input) {
         Vector3 pos = TouchToWorldPoint(input);
         
-        CurrentTap.OnSwipe(pos);
-        CurrentSwipe.OnSwipe(pos);
-        CurrentShake.OnSwipe(pos);
+        if(_useFallback) fallbackTap.OnSwipe(pos);
+        else CurrentTap?.OnSwipe(pos);
+        
+        CurrentSwipe?.OnSwipe(pos);
+        CurrentShake?.OnSwipe(pos);
     }
     
     void TouchReleaseInputAction(Vector2 input) {
         Vector3 pos = TouchToWorldPoint(input);
         
-        CurrentTap.OnTouchRelease(pos);
-        CurrentSwipe.OnTouchRelease(pos);
-        CurrentShake.OnTouchRelease(pos);
+        if(_useFallback) fallbackTap.OnTouchRelease(pos);
+        else CurrentTap?.OnTouchRelease(pos);
+        
+        CurrentSwipe?.OnTouchRelease(pos);
+        CurrentShake?.OnTouchRelease(pos);
     }
     
     void OnShakeInputAction() {
-        CurrentTap.OnShake();
-        CurrentSwipe.OnShake();
-        CurrentShake.OnShake();
+        if(_useFallback) fallbackTap.OnShake();
+        else CurrentTap?.OnShake();
+        
+        CurrentSwipe?.OnShake();
+        CurrentShake?.OnShake();
     }
+    
+    // ------ ADDING WEAPONS ------
+
+    public void AddTap(GameObject prefab) { if(Instantiate(prefab, transform).TryGetComponent(out WeaponTap w)) tapWeapons.Add(w); }
+    public void AddSwipe(GameObject prefab) { if(Instantiate(prefab, transform).TryGetComponent(out WeaponSwipe w)) swipeWeapons.Add(w); }
+    public void AddShake(GameObject prefab) { if(Instantiate(prefab, transform).TryGetComponent(out WeaponShake w)) shakeWeapons.Add(w); }
     
     // ------ EQUIPPING ------
 
-    private void EquipWeaponsInternal() {
-        for (int i = 0; i < tapWeapons.Count; i++)
-            tapWeapons[i].ToggleWeapon(i == activeTapWeapon);
-        for (int i = 0; i < swipeWeapons.Count; i++)
-            swipeWeapons[i].ToggleWeapon(i == activeTapWeapon);
-        for (int i = 0; i < shakeWeapons.Count; i++)
-            shakeWeapons[i].ToggleWeapon(i == activeTapWeapon);
+    public void EquipTap(int slot) => EquipWeaponsInternal(slot, -1, -1, _useFallback);
+    public void EquipSwipe(int slot) => EquipWeaponsInternal(-1, slot, -1, _useFallback);
+    public void EquipShake(int slot) => EquipWeaponsInternal(-1, -1, slot, _useFallback);
+    public void ToggleFallback(bool fallback) => EquipWeaponsInternal(-1, -1, -1, fallback);
+
+    private void EquipWeaponsInternal(int tap, int swipe, int shake, bool fallback) {
+        if (tap > -1) activeTap = tap;
+        if (swipe > -1) activeSwipe = swipe;
+        if (shake > -1) activeShake = shake;
+
+        _useFallback = fallback;
+        fallbackTap.ToggleWeapon(_useFallback);
+        
+        for (int i = 0; i < tapWeapons.Count; i++) tapWeapons[i].ToggleWeapon(i == activeTap && !_useFallback);
+        for (int i = 0; i < swipeWeapons.Count; i++) swipeWeapons[i].ToggleWeapon(i == activeSwipe);
+        for (int i = 0; i < shakeWeapons.Count; i++) shakeWeapons[i].ToggleWeapon(i == activeShake);
     }
-    
+
     // ------ HELPER METHODS ------
 
     /// Converts screen space tap to a world point. Returns Vector3.one * -1024 if tap didn't hit ground plane.

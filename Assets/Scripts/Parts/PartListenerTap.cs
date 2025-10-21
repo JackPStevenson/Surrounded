@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PartWeaponTapListener : PartWeaponListener {
+public class PartListenerTap : PartListenerWeapon {
     // --- WEAPON REFERENCES ---
     private WeaponTap _weaponTap;
     

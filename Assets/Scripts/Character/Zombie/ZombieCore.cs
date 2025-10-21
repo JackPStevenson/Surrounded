@@ -83,6 +83,7 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
         
         Data = zombieData;
         Health.SetMaxHealth(Data.health);
+        Health.Reset();
         Anim.Initialize(this);
         Flash.Initialize(Health);
         Nav.Pop(spawnPos);

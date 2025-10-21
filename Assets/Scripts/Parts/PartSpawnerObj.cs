@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PartObjSpawner : PartBase {
+public class PartSpawnerObj : PartBase {
     // --- SPAWNABLES ---
     [Header("Spawning")]
     public GameObject spawnablePrefab;
