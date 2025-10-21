@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public abstract class PartWeaponListener : PartBase {
+public abstract class PartListenerWeapon : PartBase {
     // --- WEAPON REFERENCES ---
     protected WeaponBase Weapon;
     // private WeaponBase _weaponSpecific; // Make this match your weapon's actual type.

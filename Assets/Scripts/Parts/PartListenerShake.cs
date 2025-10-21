@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PartWeaponSwipeListener : PartWeaponListener {
+public class PartListenerShake : PartListenerWeapon {
     // --- WEAPON REFERENCES ---
-    private WeaponSwipe _weaponSwipe;
+    private WeaponShake _weaponShake;
     
     // --- WEAPON EVENTS ---
-    public UnityEvent<Vector3[]> onSwipe;
+    public UnityEvent onShake;
     
     // ------ START METHODS ------
     
     protected override bool TryParseWeapon() {
-        if (Weapon.GetType() != typeof(WeaponSwipe)) return false;
-        _weaponSwipe = (WeaponSwipe) Weapon;
+        if (Weapon.GetType() != typeof(WeaponShake)) return false;
+        _weaponShake = (WeaponShake) Weapon;
 
-        _weaponSwipe.EventOnSwipe += onSwipe.Invoke;
+        _weaponShake.EventOnShake += onShake.Invoke;
         
         return true;
     }

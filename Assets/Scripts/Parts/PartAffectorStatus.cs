@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PartStatusApplier : PartBase
+public class PartAffectorStatus : PartBase
 {
     // --- STATUS ---
     [Header("Effect")]
