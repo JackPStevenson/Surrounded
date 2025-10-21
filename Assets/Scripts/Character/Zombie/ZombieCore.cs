@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))] [RequireComponent(typeof(StatusHandling))] [RequireComponent(typeof(ZombieNav))]
+[RequireComponent(typeof(Health))] [RequireComponent(typeof(StatusHandler))] [RequireComponent(typeof(ZombieNav))]
 public class ZombieCore : MonoBehaviour, IUpdateCustom {
-    protected ZombiesManager Manager;
+    protected ManagerZombies Manager;
     
     public int Id { get; private set; } = -1;
     
     // --- PERMANENT REFERENCES ---
     public Health Health { get; private set; }
-    public StatusHandling Status { get; private set; }
+    public StatusHandler Status { get; private set; }
     public ZombieNav Nav { get; private set; }
     
     // --- TEMPORARY REFERENCES ---
-    public ZombieData Data { get; private set; }
+    public DataZombie Data { get; private set; }
     public ZombieAnimator Anim { get; private set; }
     protected HealthFlash Flash;
 
@@ -37,9 +37,9 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     
     // ------ START METHODS ------
     
-    public void Initialize(ZombiesManager manager, int id, Health mainTarget, float approachDist, LayerMask sideTargetMask) {
+    public void Initialize(ManagerZombies manager, int id, Health mainTarget, float approachDist, LayerMask sideTargetMask) {
         if (TryGetComponent(out Health h)) Health = h;
-        if (TryGetComponent(out StatusHandling s)) Status = s;
+        if (TryGetComponent(out StatusHandler s)) Status = s;
         if (TryGetComponent(out ZombieNav n)) Nav = n;
         if (!Health || !Status || !Nav) {
             enabled = false;
@@ -60,28 +60,28 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
         //Nav.UpdateCustom(deltaTime);
     }
 
-    public void FixedUpdateCustom(int tick, float deltaTime) {
-        Nav.FixedUpdateCustom(tick, deltaTime);
-        Anim.FixedUpdateCustom(tick, deltaTime);
-        Status.FixedUpdateCustom(tick, deltaTime);
+    public void FixedUpdateCustom(float deltaTime, int tick) {
+        Nav.FixedUpdateCustom(deltaTime, tick);
+        Anim.FixedUpdateCustom(deltaTime, tick);
+        Status.FixedUpdateCustom(deltaTime, tick);
     }
     
     // ------ POOLING ------
     
-    public void Pop(ZombieData zombieData, Vector3 spawnPos) {
+    public void Pop(DataZombie dataZombie, Vector3 spawnPos) {
         if (Id < 0) {
             enabled = false;
             return;
         }
 
-        GameObject visual = Instantiate(zombieData.visualPrefab, transform);
+        GameObject visual = Instantiate(dataZombie.visualPrefab, transform);
         if (visual.TryGetComponent(out ZombieAnimator a) && visual.TryGetComponent(out Flash)) Anim = a;
         else {
             enabled = false;
             return;
         }
         
-        Data = zombieData;
+        Data = dataZombie;
         Health.SetMaxHealth(Data.health);
         Health.Reset();
         Anim.Initialize(this);

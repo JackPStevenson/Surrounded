@@ -38,8 +38,10 @@ public class Health : MonoBehaviour {
         return 0;
     }
 
-    public void SetMaxHealth(float newMax, bool scaleCurrent = true) {
-        HpCurrent *= newMax/HpMax;
+    public void SetMaxHealth(float newMax, bool scaleCurrent = true, bool reset = false) {
         HpMax = newMax;
+
+        if (scaleCurrent) HpCurrent = newMax/HpMax;
+        if (reset) Reset();
     }
 }

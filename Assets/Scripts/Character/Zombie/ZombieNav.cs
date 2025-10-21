@@ -25,7 +25,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
     protected LayerMask SideTargetMask;
     
     // --- TEMPORARY REFERENCES ---
-    protected ZombieData Data => Core.Data;
+    protected DataZombie Data => Core.Data;
 
     // --- CURRENT STATE ---
     public NavState NavState { get; private set; } = NavState.Moving;
@@ -105,7 +105,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
 
     public void UpdateCustom(float deltaTime) { }
     
-    public void FixedUpdateCustom(int tick, float deltaTime) {
+    public void FixedUpdateCustom(float deltaTime, int tick) {
         if (!MainTarget || !Agent.isOnNavMesh || Agent.pathPending) return; // Only continue if poor soul is still alive and zombie isn't processing a path..
 
         Agent.speed = Core.CurrentTargetSpeed;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public class PartLogicCounter : PartBase {
+public class PartLogicCounter : Part {
     // --- COUNTING ---
     [Header("Counting")]
     public int maxCount = 3;
