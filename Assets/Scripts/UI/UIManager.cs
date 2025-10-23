@@ -2,28 +2,48 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // ui screens
     [SerializeField] private GameObject loadoutScreen;
     [SerializeField] private GameObject choosingItemScreen;
-    [SerializeField] private GameObject MainMenuScreen;
-    [SerializeField] private GameObject HowToPlayScreen;
-    [SerializeField] private GameObject SettingsScreen;
+    [SerializeField] private GameObject mainMenuScreen;
+    [SerializeField] private GameObject howToPlayScreen;
+    [SerializeField] private GameObject settingsScreen;
+    [SerializeField] private GameObject playerLevelScreen;
+    [SerializeField] private GameObject shopScreen;
+    [SerializeField] private GameObject lootBoxScreen;
 
-    public LoadoutDisplayer loadoutDisplayer;
-    public AvailableItemsDisplayer availableItemsDisplayer;
-
-
-    private void Awake()
+    public void SetLoadoutScreen(bool active)
     {
-        DontDestroyOnLoad(this.gameObject);
+        loadoutScreen.SetActive(active);
     }
 
-    private void ChangeLoadoutNames()
+    public void SetMainMenuScreen(bool active)
     {
-
+        mainMenuScreen.SetActive(active);
     }
 
-    // fill 
-    // move between scenes
-    // move between screens
+    public void SetHowToPlayScreen(bool active)
+    {
+        howToPlayScreen.SetActive(active);
+    }
+
+    public void SetSettingsScreen(bool active)
+    {
+        settingsScreen.SetActive(active);
+    }
+
+    public void SetPlayerLevelScreen(bool active)
+    {
+        playerLevelScreen.SetActive(active);
+        //playerLevelScreen.GetComponent<LevelingScreenManager>().
+    }
+
+    public void SetLootBoxScreen(bool active)
+    {
+        lootBoxScreen.SetActive(active);
+    }
+
+    public void SetShopScreen(bool active)
+    {
+        shopScreen.SetActive(active);
+    }
 }

@@ -176,7 +176,7 @@ PlayerSettings:
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 0
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 23
   AndroidTargetSdkVersion: 35
   AndroidPreferredInstallLocation: 1
@@ -270,7 +270,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 2
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/jpste/Documents/AndroidStuff/Surrounded.keystore
+  AndroidKeystoreName: C:/Users/heath/Downloads/Surrounded.keystore
   AndroidKeyaliasName: surrounded
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidEnableArm64MTE: 0
