@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: UIAudioGroup
   m_EditorClassIdentifier: 
   _type: 6
-  _clips: []
+  _clips:
+  - {fileID: 8300000, guid: aea01d3af5c37a7459c02632048558a8, type: 3}

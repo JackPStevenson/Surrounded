@@ -14,7 +14,7 @@ public enum SoundType
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioIndex audioIndex;
-    private static AudioManager instance;
+    public static AudioManager instance;
     private AudioSource audioSource;
 
     public bool playsound = false;

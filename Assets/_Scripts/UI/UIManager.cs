@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public void SetLoadoutScreen(bool active)
     {
         loadoutScreen.SetActive(active);
+        // loadoutScreen.GetComponent<UILoadout>().LoadLoadout();
     }
 
     public void SetMainMenuScreen(bool active)
@@ -34,7 +35,8 @@ public class UIManager : MonoBehaviour
     public void SetPlayerLevelScreen(bool active)
     {
         playerLevelScreen.SetActive(active);
-        //playerLevelScreen.GetComponent<LevelingScreenManager>().
+        if (active)
+            LevelingScreenManager.instance.UpdateLevelDisplay();
     }
 
     public void SetLootBoxScreen(bool active)
@@ -45,5 +47,20 @@ public class UIManager : MonoBehaviour
     public void SetShopScreen(bool active)
     {
         shopScreen.SetActive(active);
+    }
+
+    public void PlayClickSound()
+    {
+        AudioManager.PlaySoundByIndex(SoundType.UI, 0, 1f);
+    }
+
+    public void PlayLootBoxOpenedSound()
+    {
+        // AudioManager.PlaySoundByIndex(SoundType.UI, 1, 1f);
+    }
+
+    public void PlayItemClaimSound()
+    {
+        // AudioManager.PlaySoundByIndex(SoundType.UI, 2, 1f);
     }
 }
