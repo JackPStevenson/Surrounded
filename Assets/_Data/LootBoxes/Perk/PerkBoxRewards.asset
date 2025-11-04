@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 853189a1abb3cd54783f5ceafc410282, type: 3}
-  m_Name: UIAudioGroup
+  m_Script: {fileID: 11500000, guid: 8dcdc6e2e33a5d14781f5d80c5e5f098, type: 3}
+  m_Name: PerkBoxRewards
   m_EditorClassIdentifier: 
-  _type: 6
-  _clips:
-  - {fileID: 8300000, guid: aea01d3af5c37a7459c02632048558a8, type: 3}
+  rewards:
+  - {fileID: 11400000, guid: d4d6ee06f9c2c654cac4993fdac96d7d, type: 2}
+  - {fileID: 11400000, guid: 125b71d879771b940b5a4c2bbce289b2, type: 2}

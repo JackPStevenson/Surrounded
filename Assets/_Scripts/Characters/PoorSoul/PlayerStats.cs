@@ -24,10 +24,10 @@ public class ZombieSquashedData
 
 public class PlayerStats : MonoBehaviour
 {
-    private static PlayerStats instance;
+    public static PlayerStats instance;
 
     private int _highestRoundReached = 0;
-    private int _zombieBlood = 0;
+    [SerializeField] private int _zombieBlood = 0;
     private int _zombieBrains = 0;
 
     // array to store how many zombies of each type the player has squashed

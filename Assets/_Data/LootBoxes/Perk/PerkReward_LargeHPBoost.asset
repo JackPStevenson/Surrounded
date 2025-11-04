@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 853189a1abb3cd54783f5ceafc410282, type: 3}
-  m_Name: UIAudioGroup
+  m_Script: {fileID: 11500000, guid: 7051c79f2284bce4aaffab8e5d8269bc, type: 3}
+  m_Name: PerkReward_LargeHPBoost
   m_EditorClassIdentifier: 
-  _type: 6
-  _clips:
-  - {fileID: 8300000, guid: aea01d3af5c37a7459c02632048558a8, type: 3}
+  chance: 5
+  lootTier: 2
+  perk: {fileID: 11400000, guid: a24598c29eb10e64fa739bc80ba02d88, type: 2}

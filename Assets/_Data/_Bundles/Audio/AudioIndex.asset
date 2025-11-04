@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AudioIndex
   m_EditorClassIdentifier: 
   PerkGroup: {fileID: 11400000, guid: 0c288a7a53a08ae4aa5ea664ab9579d7, type: 2}
-  PourSoulGroup: {fileID: 11400000, guid: fcbab616765e08f45a52fb3fb23fc4ad, type: 2}
+  PoorSoulGroup: {fileID: 11400000, guid: fcbab616765e08f45a52fb3fb23fc4ad, type: 2}
   ShakeGroup: {fileID: 11400000, guid: 836eff32059e2714ba4c5d32fa23338f, type: 2}
   SwipeGroup: {fileID: 11400000, guid: ba90740bf977b0240a41bbe4fe029807, type: 2}
   TapGroup: {fileID: 11400000, guid: 694f402b65da9144797e32c9adb8012f, type: 2}

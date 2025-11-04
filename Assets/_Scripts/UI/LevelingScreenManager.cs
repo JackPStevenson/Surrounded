@@ -6,12 +6,23 @@ public class LevelingScreenManager : MonoBehaviour
 {
     [SerializeField] private Transform levelProgressObject;
     [SerializeField] private TMP_Text levelText;
+
+    public static LevelingScreenManager instance;
     //public int level = 1;
     //public int experience = 1000;
     //public int xpReq = 2000;
 
     public bool a = false;
     public bool b = false;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
+    }
 
     private void Update()
     {
