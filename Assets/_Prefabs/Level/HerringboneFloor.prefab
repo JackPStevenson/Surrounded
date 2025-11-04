@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5283399825780636461}
   - component: {fileID: 7712107751496505779}
   - component: {fileID: -9138164632348601980}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: HerringboneFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

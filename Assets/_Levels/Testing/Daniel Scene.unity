@@ -1578,6 +1578,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2498,6 +2503,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (37)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2580,6 +2590,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2919,6 +2934,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3166,6 +3186,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3708,6 +3733,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3790,6 +3820,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4215,6 +4250,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4297,6 +4337,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5224,7 +5269,7 @@ GameObject:
   - component: {fileID: 418227430}
   - component: {fileID: 418227429}
   - component: {fileID: 418227428}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cylinder (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5635,7 +5680,7 @@ GameObject:
   - component: {fileID: 484659140}
   - component: {fileID: 484659139}
   - component: {fileID: 484659138}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5906,6 +5951,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5988,6 +6038,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6115,6 +6170,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6198,6 +6258,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6280,6 +6345,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7192,6 +7262,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (38)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8000,6 +8075,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8443,7 +8523,7 @@ GameObject:
   - component: {fileID: 766445497}
   - component: {fileID: 766445496}
   - component: {fileID: 766445495}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrier (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8616,6 +8696,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9599,6 +9684,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10722,6 +10812,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10804,6 +10899,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12098,6 +12198,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12121,7 +12226,7 @@ GameObject:
   - component: {fileID: 1012135259}
   - component: {fileID: 1012135258}
   - component: {fileID: 1012135257}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrier (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12758,6 +12863,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (41)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13259,6 +13369,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13598,6 +13713,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (39)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14357,6 +14477,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14440,6 +14565,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14522,6 +14652,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14771,6 +14906,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14962,6 +15102,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16236,7 +16381,7 @@ GameObject:
   - component: {fileID: 1485864026}
   - component: {fileID: 1485864025}
   - component: {fileID: 1485864024}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrier (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16410,6 +16555,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16492,6 +16642,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (34)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16906,6 +17061,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16988,6 +17148,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (40)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17451,6 +17616,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17558,7 +17728,7 @@ GameObject:
   - component: {fileID: 1586214351}
   - component: {fileID: 1586214350}
   - component: {fileID: 1586214349}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrier (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18002,7 +18172,7 @@ GameObject:
   - component: {fileID: 1625070289}
   - component: {fileID: 1625070288}
   - component: {fileID: 1625070287}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18724,6 +18894,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19180,6 +19355,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (31)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19900,6 +20080,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20357,6 +20542,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20737,6 +20927,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20793,7 +20988,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 255
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -21715,6 +21910,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -22957,6 +23157,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ModularFloor (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23145,7 +23350,7 @@ GameObject:
   - component: {fileID: 2102462980}
   - component: {fileID: 2102462979}
   - component: {fileID: 2102462978}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23483,6 +23688,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ModularFloor (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6667bf21f856a554480c0444749537f6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
