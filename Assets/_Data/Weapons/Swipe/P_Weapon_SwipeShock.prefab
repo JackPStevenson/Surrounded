@@ -1,95 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2815366069462657443
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8752832535895460021}
-  - component: {fileID: 1596343699672426037}
-  - component: {fileID: 3304987847060167553}
-  m_Layer: 0
-  m_Name: Shock Applier
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8752832535895460021
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2815366069462657443}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 712841263719920839}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1596343699672426037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2815366069462657443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 597ba28f0edf9634eaa7469f3d71a004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  partConditions: []
-  onDamageablesHit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3304987847060167553}
-        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
-        m_MethodName: SetTargetComps
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onSwipe:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3304987847060167553}
-        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
-        m_MethodName: TryInvoke
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &3304987847060167553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2815366069462657443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95a5097069ad9641afa8c46e2db8fd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  partConditions: []
-  dataStatusEffect: {fileID: 11400000, guid: 43188f1ecc46ec641b6bb091f70c4dc3, type: 2}
 --- !u!1 &4732984985392083037
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8752832535895460021}
+  - {fileID: 2763386033470672857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8600403023177670101
@@ -136,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b62a8d0e9915846ab8220ff720a80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataWeaponData: {fileID: 11400000, guid: fc6f7570dd6530a41904412ba75fb368, type: 2}
+  weaponData: {fileID: 0}
   debugLine: {fileID: 2411919886889777498}
 --- !u!120 &2411919886889777498
 LineRenderer:
@@ -243,3 +153,101 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &8928675730790971258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2763386033470672857}
+  - component: {fileID: 7326065191933778706}
+  - component: {fileID: 8972651572735131166}
+  m_Layer: 0
+  m_Name: Shock Applier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2763386033470672857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8928675730790971258}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 712841263719920839}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7326065191933778706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8928675730790971258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8cebf064bdf984a952b85d02d38c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  onCompsHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8972651572735131166}
+        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
+        m_MethodName: SetTargetComps
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8972651572735131166}
+        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
+        m_MethodName: TryInvoke
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onTap:
+    m_PersistentCalls:
+      m_Calls: []
+  onSwipe:
+    m_PersistentCalls:
+      m_Calls: []
+  onShake:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8972651572735131166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8928675730790971258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95a5097069ad9641afa8c46e2db8fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  effectsPermanent: 0
+  statusEffects:
+  - {fileID: 11400000, guid: 43188f1ecc46ec641b6bb091f70c4dc3, type: 2}

@@ -4,21 +4,26 @@ using UnityEngine.Serialization;
 
 public abstract class WeaponBase : MonoBehaviour {
     public event Action<Health[]> EventOnHit;
-    protected void OnHit(Health[] h) => EventOnHit?.Invoke(h);
+    public event Action<Vector3> EventOnTap;
+    public event Action<Vector3[]> EventOnSwipe;
+    public event Action EventOnShake;
+    protected void EventTap(Vector3 pos) => EventOnTap?.Invoke(pos);
+    protected void EventSwipe(Vector3[] points) => EventOnSwipe?.Invoke(points);
+    protected void EventShake() => EventOnShake?.Invoke();
     
     // --- DATA ENTRY ---
-    [FormerlySerializedAs("weaponData")] [Header("Weapon Data")]
-    public DataWeapon dataWeaponData;
+    [Header("Weapon Data")]
+    public DataWeapon weaponData;
     // private WeaponDataTypes _weaponData; // Make this match your weapon's actual type.
     
     // --- DATA REFERENCES ---
-    public LayerMask HitMask => dataWeaponData.hitMask;
-    public float Damage => dataWeaponData.damage;
-    public float Range => dataWeaponData.range;
-    public int Penetration => dataWeaponData.penetration;
+    public LayerMask HitMask => weaponData.hitMask;
+    public float Damage => weaponData.damage;
+    public float Range => weaponData.range;
+    public int Penetration => weaponData.penetration;
     
-    public float EnergyRegenRate => dataWeaponData.energyRegenRate;
-    public float EnergyCost => dataWeaponData.energyCost;
+    public float EnergyRegenRate => weaponData.energyRegenRate;
+    public float EnergyCost => weaponData.energyCost;
     
     // --- CURRENT STATE ---
     public bool Active { get; private set; }
@@ -28,7 +33,8 @@ public abstract class WeaponBase : MonoBehaviour {
     // ------ UPDATE FUNCTIONS ------
 
     void Awake() {
-        if (!dataWeaponData || !TryParseData()) {
+        if (!weaponData || !TryParseData()) {
+            print(gameObject.name);
             Debug.LogError("Unable to parse data to weapon's type.");
             enabled = false;
             return;
@@ -101,4 +107,9 @@ public abstract class WeaponBase : MonoBehaviour {
     
     /// Directly modifies energy value. For most cases, use TryUseEnergy instead.
     public void ModifyEnergy(float value) => CurrentEnergy = Mathf.Clamp01(CurrentEnergy + value);
+    
+    protected void PerformHit(Health[] comps, float damage) {
+        foreach (Health h in comps) h.DealDamage(damage);
+        EventOnHit?.Invoke(comps);
+    }
 }

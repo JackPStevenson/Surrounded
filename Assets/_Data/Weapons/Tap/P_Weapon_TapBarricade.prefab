@@ -56,11 +56,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5392953420506613209}
-  - component: {fileID: 2813467939414786705}
+  - component: {fileID: 5566924363279412349}
   - component: {fileID: 5553492940692440209}
   - component: {fileID: 1511601606699241955}
   m_Layer: 0
-  m_Name: BarricadeSpawner
+  m_Name: Barricade Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1587716367728805308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2813467939414786705
+--- !u!114 &5566924363279412349
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,15 +90,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6628586232008849320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fc25609ff5451f4abfa10fc37d87660, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e8cebf064bdf984a952b85d02d38c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   partConditions: []
-  onDamageablesHit:
+  onCompsHit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1511601606699241955}
-        m_TargetAssemblyTypeName: PartDamageablesHitTracker, Assembly-CSharp
+        m_TargetAssemblyTypeName: PartLogicHitComps, Assembly-CSharp
         m_MethodName: SetHitCount
         m_Mode: 0
         m_Arguments:
@@ -113,7 +113,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5553492940692440209}
-        m_TargetAssemblyTypeName: PartObjSpawner, Assembly-CSharp
+        m_TargetAssemblyTypeName: PartSpawnerObj, Assembly-CSharp
         m_MethodName: SetSpawnPos
         m_Mode: 0
         m_Arguments:
@@ -125,7 +125,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 5553492940692440209}
-        m_TargetAssemblyTypeName: PartObjSpawner, Assembly-CSharp
+        m_TargetAssemblyTypeName: PartSpawnerObj, Assembly-CSharp
         m_MethodName: TryInvoke
         m_Mode: 1
         m_Arguments:
@@ -136,6 +136,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onSwipe:
+    m_PersistentCalls:
+      m_Calls: []
+  onShake:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5553492940692440209
 MonoBehaviour:
   m_ObjectHideFlags: 0

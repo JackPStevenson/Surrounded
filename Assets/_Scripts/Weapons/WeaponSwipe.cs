@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WeaponSwipe : WeaponBase {
-    public event Action<Vector3[]> EventOnSwipe;
     
     // --- DATA REFERENCES ---
     public float MaxPathDistance => Mathf.Max(_dataWeaponSwipe.maxPathDistance, ManagerWeapon.MinSwipeDistance);
@@ -25,8 +24,8 @@ public class WeaponSwipe : WeaponBase {
     public DataWeaponSwipe Data => _dataWeaponSwipe;
     
     protected override bool TryParseData() {
-        if (dataWeaponData.GetType() != typeof(DataWeaponSwipe)) return false;
-        _dataWeaponSwipe = (DataWeaponSwipe) dataWeaponData;
+        if (weaponData.GetType() != typeof(DataWeaponSwipe)) return false;
+        _dataWeaponSwipe = (DataWeaponSwipe) weaponData;
         return true;
     }
     
@@ -88,12 +87,12 @@ public class WeaponSwipe : WeaponBase {
         }
 
         // Try to find zombies along path and damage to all zombies found.
-        Health[] damageables = Common.FindHealthsOnPath(_pathPoints.ToArray(), Range, Penetration, HitMask);
+        Health[] hitComps = Common.FindHealthsOnPath(_pathPoints.ToArray(), Range, Penetration, HitMask);
         
         // If any damageables were found, damage them.
-        foreach (Health d in damageables) d.ModHealth(Damage);
-        OnHit(damageables);
-        EventOnSwipe?.Invoke(_pathPoints.ToArray());
+        foreach (Health h in hitComps) h.DealDamage(Damage);
+        PerformHit(hitComps, Damage);
+        EventSwipe(_pathPoints.ToArray());
         
         ResetPath(true);
     }

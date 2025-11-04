@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Health : MonoBehaviour {
-    public event Action<float> OnModHealth;
+    public event Action<float> OnHealthChange;
     public event Action OnDeath;
     
     [FormerlySerializedAs("maximum")] [Header("General")]
@@ -23,13 +23,11 @@ public class Health : MonoBehaviour {
     
     public void Reset() => HpCurrent = HpMax;
 
-    public void ModHealthNoReturn(float healthChange) => ModHealth(healthChange, false);
-    public float ModHealth(float healthChange, bool isDamage = true) {
-        if (Mathf.Approximately(healthChange, 0)) return HpCurrent;
+    public float DealDamage(float damage) {
+        if (Mathf.Approximately(damage, 0)) return HpCurrent;
         
-        float delta = healthChange * (isDamage ? -1 : 1);
-        HpCurrent += delta;
-        OnModHealth?.Invoke(delta);
+        HpCurrent -= damage;
+        OnHealthChange?.Invoke(-damage);
 
         // If health reaches 0, invoke death event.
         if (HpCurrent > 0) return HpCurrent;

@@ -37,7 +37,7 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
         
         Flash.Initialize(core.Health);
         core.Nav.OnAttack += OnAttack;
-        core.Health.OnModHealth += OnModHealth;
+        core.Health.OnHealthChange += OnHealthChange;
         core.Health.OnDeath += OnDeath;
     }
 
@@ -61,13 +61,13 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
     // ------ EVENT METHODS ------
 
     void OnAttack() => Anim.SetTrigger(Attack);
-    void OnModHealth(float damageTaken) { /*zombieAnimator.SetTrigger(Damaged); */ }
+    void OnHealthChange(float damageTaken) { /*zombieAnimator.SetTrigger(Damaged); */ }
     void OnDeath() => Anim.SetTrigger(Death);
 
     private void OnDestroy() {
         if(!Core) return;
         Core.Nav.OnAttack -= OnAttack;
-        Core.Health.OnModHealth -= OnModHealth;
+        Core.Health.OnHealthChange -= OnHealthChange;
         Core.Health.OnDeath -= OnDeath;
     }
 }

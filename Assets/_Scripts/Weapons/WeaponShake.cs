@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class WeaponShake : WeaponBase {
-    public event Action EventOnShake;
     
     PoorSoulCore _poorSoul;
 
@@ -15,8 +14,8 @@ public class WeaponShake : WeaponBase {
     public DataWeaponShake Data => _dataWeaponShake;
     
     protected override bool TryParseData() {
-        if (dataWeaponData.GetType() != typeof(DataWeaponShake)) return false;
-        _dataWeaponShake = (DataWeaponShake) dataWeaponData;
+        if (weaponData.GetType() != typeof(DataWeaponShake)) return false;
+        _dataWeaponShake = (DataWeaponShake) weaponData;
         return true;
     }
     
@@ -39,13 +38,12 @@ public class WeaponShake : WeaponBase {
         
         // Try to find damageables within given range of poor soul. If poor soul reference is invalid, use world center instead.
         Vector3 centerPos = _poorSoul ? _poorSoul.Position : Vector3.zero;
-        Health[] damageables = Common.FindHealthsInSphere(centerPos, Range, Penetration, HitMask);
+        Health[] hitComps = Common.FindHealthsInSphere(centerPos, Range, Penetration, HitMask);
         
         // If weapon has enough energy, use it and damage found enemies.
         if(!TryUseEnergy(EnergyCost)) return;
         
-        foreach (Health d in damageables) d.ModHealth(Damage);
-        OnHit(damageables);
-        EventOnShake?.Invoke();
+        PerformHit(hitComps, Damage);
+        EventShake();
     }
 }

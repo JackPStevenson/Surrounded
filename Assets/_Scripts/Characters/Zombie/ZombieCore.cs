@@ -31,9 +31,10 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     public Vector3 MoveDirection => Vector3.Scale(Velocity, new Vector3(1, 0, 1)).normalized;
     public Vector3 TargetDirection => Nav.TargetDirection;
     
-    public float CurrentTargetSpeed => BaseTargetSpeed * Status.SpeedMod;
-    public float CurrentDamage => Data.attackDamage * Status.DamageMod;
-    public float CurrentResist => Status.ResistMod;
+    public float CurrentTargetSpeed => Status.ModConstant(AffectorConstType.BaseSpeed, BaseTargetSpeed);
+    public float CurrentDamage => Status.ModConstant(AffectorConstType.BaseAttackDamage, Data.attackDamage);
+    
+    //public float CurrentResist => Status.ModConstant(AffectorConstType.BaseAttackDamage, Data.resistance);
     
     // ------ START METHODS ------
     
@@ -50,8 +51,9 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
         Manager = manager;
         gameObject.name = "Zombie " + id;
         Nav.Initialize(this, mainTarget, approachDist, sideTargetMask);
+        
         Health.OnDeath += Push;
-        Status.OnModHealthOverTime += Health.ModHealthNoReturn;
+        Status.OnDynamicModifierApplied += OnDynamicModifierApplied;
     }
     
     // ------ UPDATE METHODS ------
@@ -64,6 +66,7 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
         Nav.FixedUpdateCustom(deltaTime, tick);
         Anim.FixedUpdateCustom(deltaTime, tick);
         Status.FixedUpdateCustom(deltaTime, tick);
+        print(Status);
     }
     
     // ------ POOLING ------
@@ -102,4 +105,11 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     }
     
     public void SetActive(bool active) => gameObject.SetActive(active);
+
+    private void OnDynamicModifierApplied(StatusModifiersList modifiers) {
+        float healthModifier = modifiers.GetDynamicModifier(AffectorDynamicType.CurrentHealth);
+        
+        if (!Mathf.Approximately(healthModifier, 0))
+            Health.DealDamage(healthModifier);
+    }
 }

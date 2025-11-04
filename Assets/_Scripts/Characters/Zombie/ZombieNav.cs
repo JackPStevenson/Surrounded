@@ -220,7 +220,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
         if (_lastAttack + Core.Data.attackRate > Time.time) return -1; // Only deal damage if attack interval has fully elapsed.
         
         // Damage target, reset hit timer, and return health left of hit target.
-        float healthLeft = _currentTarget.ModHealth(Core.CurrentDamage);
+        float healthLeft = _currentTarget.DealDamage(Core.CurrentDamage);
         _lastAttack = Time.time;
         OnAttack?.Invoke();
         return healthLeft;
