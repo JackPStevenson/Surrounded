@@ -127,6 +127,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _LastFlash: -2048
     - _Last_Damage_Flash: -2048
     - _Metallic: 0
     - _Normal_Power: 1
@@ -149,7 +150,8 @@ Material:
     - _Damage_Flash_Color: {r: 1, g: 0, b: 0, a: 0.6862745}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emission_Tint: {r: 0, g: 0, b: 0, a: 0}
+    - _FlashColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 0.745283, g: 0.49568352, b: 0.49568352, a: 0}
+    - _Tint: {r: 0.31715906, g: 0.5698112, b: 0.536033, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

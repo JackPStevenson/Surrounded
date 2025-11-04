@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c8c80cadbf033842b3bf8305c9a3b9f, type: 3}
-  m_Name: D_Zombie_Tanky
+  m_Name: D_Zombie_Buff
   m_EditorClassIdentifier: 
-  visualPrefab: {fileID: 9058431072282217707, guid: 96942307100deb64ca87b5935fb42f0b,
+  visualPrefab: {fileID: 9058431072282217707, guid: 2d14a657ec496d347a592b1aa205f0ce,
     type: 3}
-  health: 5
-  speed: 1
-  attackDamage: 3
+  health: 3
+  speed: 0.8
+  attackDamage: 1.5
   attackRange: 0.2
-  attackRate: 1
-  minimumSpawnWave: 3
+  attackRate: 1.2
+  minimumSpawnWave: 5
   spawnWeight: 0.2
