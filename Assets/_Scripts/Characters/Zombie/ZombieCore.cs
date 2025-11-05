@@ -8,9 +8,12 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     public int Id { get; private set; } = -1;
     
     // --- PERMANENT REFERENCES ---
-    public Health Health { get; private set; }
-    public StatusHandler Status { get; private set; }
-    public ZombieNav Nav { get; private set; }
+    public Health Health => _health;
+    private Health _health;
+    public StatusHandler Status => _status;
+    private StatusHandler _status;
+    public ZombieNav Nav => _nav;
+    private ZombieNav _nav;
     
     // --- TEMPORARY REFERENCES ---
     public DataZombie Data { get; private set; }
@@ -18,29 +21,26 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     protected HealthFlash Flash;
 
     // --- BASE PARAMETERS ---
-    public float BaseTargetSpeed => Data.speed;
-    public float BaseDamage => Data.attackDamage;
-    public float BaseAttackRate => Data.attackRate;
-    public float BaseHealth => Data.health;
-    public float BaseRange => Data.attackRange;
+    public float Speed => Status.ModConst(AffectorConstType.Speed, Data.speed);
+    public float Damage => Status.ModConst(AffectorConstType.Damage, Data.attackDamage);
+    public float AttackRate => Status.ModConst(AffectorConstType.Speed, Data.attackRate);
+    public float BaseHealth => Status.ModConst(AffectorConstType.Speed, Data.health);
+    public float BaseRange => Status.ModConst(AffectorConstType.Speed, Data.attackRange);
     
     // --- STATE PARAMETERS ---
     public Vector3 Position => Health.Position;
     public Vector3 Velocity => Nav.Velocity;
-    public float Speed => Nav.Velocity.magnitude;
     public Vector3 MoveDirection => Vector3.Scale(Velocity, new Vector3(1, 0, 1)).normalized;
     public Vector3 TargetDirection => Nav.TargetDirection;
     
-    public float CurrentTargetSpeed => BaseTargetSpeed * Status.SpeedMod;
-    public float CurrentDamage => Data.attackDamage * Status.DamageMod;
-    public float CurrentResist => Status.ResistMod;
+    //public float CurrentResist => Status.ModConstant(AffectorConstType.BaseAttackDamage, Data.resistance);
     
     // ------ START METHODS ------
     
     public void Initialize(ManagerZombies manager, int id, Health mainTarget, float approachDist, LayerMask sideTargetMask) {
-        if (TryGetComponent(out Health h)) Health = h;
-        if (TryGetComponent(out StatusHandler s)) Status = s;
-        if (TryGetComponent(out ZombieNav n)) Nav = n;
+        TryGetComponent(out _health);
+        TryGetComponent(out _status);
+        TryGetComponent(out _nav);
         if (!Health || !Status || !Nav) {
             enabled = false;
             return;
@@ -50,8 +50,9 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
         Manager = manager;
         gameObject.name = "Zombie " + id;
         Nav.Initialize(this, mainTarget, approachDist, sideTargetMask);
+        
         Health.OnDeath += Push;
-        Status.OnModHealthOverTime += Health.ModHealthNoReturn;
+        Status.EventDynamicModifierApplied += EventDynamicModifierApplied;
     }
     
     // ------ UPDATE METHODS ------
@@ -102,4 +103,11 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     }
     
     public void SetActive(bool active) => gameObject.SetActive(active);
+
+    private void EventDynamicModifierApplied(StatusModifiersList modifiers) {
+        float healthModifier = modifiers.GetDynamicModifier(AffectorDynamicType.CurrentHealth);
+        
+        if (!Mathf.Approximately(healthModifier, 0))
+            Health.DealDamage(healthModifier);
+    }
 }

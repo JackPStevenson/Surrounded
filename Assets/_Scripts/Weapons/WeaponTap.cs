@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WeaponTap : WeaponBase {
-    public event Action<Vector3> EventOnTap;
     
     [Header("Debug")]
     public Transform debugVisual;
@@ -16,8 +15,8 @@ public class WeaponTap : WeaponBase {
     public DataWeaponTap Data => _dataWeaponTap;
     
     protected override bool TryParseData() {
-        if (dataWeaponData.GetType() != typeof(DataWeaponTap)) return false;
-        _dataWeaponTap = (DataWeaponTap) dataWeaponData;
+        if (weaponData.GetType() != typeof(DataWeaponTap)) return false;
+        _dataWeaponTap = (DataWeaponTap) weaponData;
         return true;
     }
 
@@ -54,9 +53,9 @@ public class WeaponTap : WeaponBase {
 
         // If weapon has enough energy, use weapon energy and damage any found damageables.
         if (!TryUseEnergy(EnergyCost)) return;
-        foreach (Health d in damageables) d.ModHealth(Damage);
-        OnHit(damageables);
-        EventOnTap?.Invoke(tapPos);
+        foreach (Health d in damageables) d.DealDamage(Damage);
+        PerformHit(damageables, Damage);
+        EventTap(tapPos);
     }
 
     // ------ HELPER FUNCTIONS ------

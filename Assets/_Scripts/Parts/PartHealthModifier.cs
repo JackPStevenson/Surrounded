@@ -6,6 +6,6 @@ public class PartHealthModifier : Part {
     
     void Start() {
         transform.parent?.TryGetComponent(out _health);
-        if(_health) _health.SetMaxHealth(_health.HpMax + healthMod, true, true);
+        //if(_health) _health.SetMaxHealth(_health.healthMax + healthMod, true, true);
     }
 }

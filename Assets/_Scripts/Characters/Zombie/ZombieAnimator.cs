@@ -37,7 +37,7 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
         
         Flash.Initialize(core.Health);
         core.Nav.OnAttack += OnAttack;
-        core.Health.OnModHealth += OnModHealth;
+        core.Health.OnHealthChange += OnHealthChange;
         core.Health.OnDeath += OnDeath;
     }
 
@@ -51,7 +51,7 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
         if (targetDir.magnitude > 0) transform.rotation = Quaternion.LookRotation(targetDir);
 
         // Update animator move parameter based on zombie's current velocity. Smoothly transition value to prevent choppiness.
-        float targetMoveSpeed = Core.Speed / Mathf.Max(Core.BaseTargetSpeed, 0.1f);
+        float targetMoveSpeed = Core.Velocity.magnitude / Mathf.Max(Core.Data.speed, 0.1f);
         _animMoveVar = Common.SmoothLerp(_animMoveVar, targetMoveSpeed, AnimSmoothing, Time.fixedDeltaTime);
         
         Anim.SetFloat(UseRunningAnim, useRunningAnimation ? 1 : 0);
@@ -61,13 +61,13 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
     // ------ EVENT METHODS ------
 
     void OnAttack() => Anim.SetTrigger(Attack);
-    void OnModHealth(float damageTaken) { /*zombieAnimator.SetTrigger(Damaged); */ }
+    void OnHealthChange(float damageTaken) { /*zombieAnimator.SetTrigger(Damaged); */ }
     void OnDeath() => Anim.SetTrigger(Death);
 
     private void OnDestroy() {
         if(!Core) return;
         Core.Nav.OnAttack -= OnAttack;
-        Core.Health.OnModHealth -= OnModHealth;
+        Core.Health.OnHealthChange -= OnHealthChange;
         Core.Health.OnDeath -= OnDeath;
     }
 }

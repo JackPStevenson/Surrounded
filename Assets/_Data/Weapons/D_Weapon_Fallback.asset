@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5940aef6bc7bbd84db592da062a605e7, type: 3}
-  m_Name: D_Weapon_FallbackTap
+  m_Name: D_Weapon_Fallback
   m_EditorClassIdentifier: 
-  name: Tap Weapon
-  description: A tap weapon.
+  displayName: Fallback.
+  description: Deez nutty.
   icon: {fileID: 21300000, guid: a62d2fb0a6af70f41aa2976fdc16f608, type: 3}
-  prefab: {fileID: 0}
+  minWaveToUnlock: 0
+  prefab: {fileID: 4257828763337059366, guid: 4e6f7313ebed6a841b86eef65d8b1010, type: 3}
   damage: 0.5
   range: 0.45
   penetration: 1
   energyRegenRate: 10
-  energyCost: 0.001
+  energyCost: 0
   hitMask:
     serializedVersion: 2
     m_Bits: 64

@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dada39fda8c014c9f88de2c6d0a059, type: 3}
   m_Name: D_Status_Shock
   m_EditorClassIdentifier: 
-  effectName: Shock
-  duration: 0.75
+  name: Shock
+  duration: 0.5
   stackable: 0
-  type: 1
-  value: 0
+  potencyScalar: 1
+  constantAffectors:
+  - type: 2
+    additive: 0
+    baseModifier: 0.1
+    statusInfluence: 0
+  dynamicAffectors:
+  - type: 0
+    basePotency: 0.125
+    statusInfluence: 1

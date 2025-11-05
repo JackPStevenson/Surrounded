@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dada39fda8c014c9f88de2c6d0a059, type: 3}
   m_Name: D_Status_Poison
   m_EditorClassIdentifier: 
-  effectName: Poison
+  name: Poison
   duration: 4
   stackable: 0
-  type: 0
-  value: -0.25
+  potencyScalar: 1
+  constantAffectors: []
+  dynamicAffectors:
+  - type: 0
+    basePotency: 0.25
+    statusInfluence: 1

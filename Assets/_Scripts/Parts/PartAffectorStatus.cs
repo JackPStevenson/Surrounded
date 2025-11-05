@@ -5,8 +5,9 @@ using UnityEngine.Serialization;
 public class PartAffectorStatus : Part
 {
     // --- STATUS ---
-    [FormerlySerializedAs("statusEffectData")] [Header("Effect")]
-    public DataStatusEffect dataStatusEffect;
+    [Header("Effect")]
+    public bool effectsPermanent = false;
+    public DataStatusEffect[] statusEffects;
 
     private Health[] _targetComps = Array.Empty<Health>();
 
@@ -15,7 +16,8 @@ public class PartAffectorStatus : Part
     protected override void InvokeLogic() {
         foreach (Health comp in _targetComps) {
             if (comp && comp.TryGetComponent(out StatusHandler handler)) {
-                handler.AddEffect(dataStatusEffect);
+                foreach (DataStatusEffect effect in statusEffects)
+                    handler.TryAddEffect(effect, !effectsPermanent);
             }
         }
     }

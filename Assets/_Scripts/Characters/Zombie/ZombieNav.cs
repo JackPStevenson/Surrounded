@@ -71,7 +71,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
         transform.position = spawnPos;
 
         // --- NAV AGENT ---
-        Agent.speed = Core.CurrentTargetSpeed;
+        Agent.speed = Core.Speed;
         
         // --- TARGETING ---
         // Make range account for distance between closest point on each capsule w/ random offset to reduce clumping.
@@ -108,7 +108,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
     public void FixedUpdateCustom(float deltaTime, int tick) {
         if (!MainTarget || !Agent.isOnNavMesh || Agent.pathPending) return; // Only continue if poor soul is still alive and zombie isn't processing a path..
 
-        Agent.speed = Core.CurrentTargetSpeed;
+        Agent.speed = Core.Speed;
         
         // If target moves too far from last recorded target position, update nav destination.
         if (Vector3.Distance(_navTargetPos, MainTarget.Position) > 0.15f || Agent.destination != _navTargetPos)
@@ -220,7 +220,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
         if (_lastAttack + Core.Data.attackRate > Time.time) return -1; // Only deal damage if attack interval has fully elapsed.
         
         // Damage target, reset hit timer, and return health left of hit target.
-        float healthLeft = _currentTarget.ModHealth(Core.CurrentDamage);
+        float healthLeft = _currentTarget.DealDamage(Core.Damage);
         _lastAttack = Time.time;
         OnAttack?.Invoke();
         return healthLeft;

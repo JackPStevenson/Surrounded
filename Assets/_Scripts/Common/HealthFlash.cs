@@ -25,10 +25,10 @@ public class HealthFlash : MonoBehaviour {
     public void Initialize(Health h) {
         if (Health) Push();
         Health = h;
-        Health.OnModHealth += FlashVisuals;
+        Health.OnHealthChange += FlashVisuals;
     }
 
-    private void Push() => Health.OnModHealth -= FlashVisuals;
+    private void Push() => Health.OnHealthChange -= FlashVisuals;
 
     // ------ EVENTS ------
     
