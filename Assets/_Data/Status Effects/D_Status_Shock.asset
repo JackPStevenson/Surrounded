@@ -18,10 +18,10 @@ MonoBehaviour:
   potencyScalar: 1
   constantAffectors:
   - type: 2
-    isAdditive: 0
+    additive: 0
     baseModifier: 0.1
-    influenceFromStatus: 1
+    statusInfluence: 0
   dynamicAffectors:
   - type: 0
-    basePotency: -0.125
-    influenceFromStatus: 1
+    basePotency: 0.125
+    statusInfluence: 1

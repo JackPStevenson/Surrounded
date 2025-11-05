@@ -4,13 +4,12 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 
-public struct StatusEffect : IUpdateCustom {
+public class StatusEffect : IUpdateCustom {
     public const float EffectTickInterval = 0.5f;
-    public bool IsEmpty { get; private set; }
     
     // --- GENERAL ---
     public readonly DataStatusEffect Data;
-    public readonly string Name => Data.name;
+    public string Name => Data.name;
     
     // --- EFFECTS ---
     public float Potency;
@@ -27,15 +26,14 @@ public struct StatusEffect : IUpdateCustom {
 
     // --- CONSTRUCTOR ---
 
-    public StatusEffect(DataStatusEffect data = null, float potency = 1) {
-        IsEmpty = !data;
+    public StatusEffect(DataStatusEffect data, float potency = 1) {
         Data = data;
         Potency = potency;
         TickedThisFrame = false;
         _elapsedTime = 0;
         _tickTimer = EffectTickInterval;
 
-        Modifiers = IsEmpty ? default : new StatusModifiersList(Data, potency);
+        Modifiers = new StatusModifiersList(Data, potency);
     }
 
     // --- UPDATE METHODS ---

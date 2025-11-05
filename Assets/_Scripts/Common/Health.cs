@@ -6,40 +6,34 @@ public class Health : MonoBehaviour {
     public event Action<float> OnHealthChange;
     public event Action OnDeath;
     
-    [FormerlySerializedAs("maximum")] [Header("General")]
-    public float HpMax;
-    public float HpCurrent { get; private set; }
+    [Header("General")]
+    public float healthMax;
+    protected float HealthCurrentRatio = 1;
+    public float HealthCurrent => healthMax * HealthCurrentRatio;
     public bool destroyOnDeath = false;
     
     public Vector3 Position => transform.position;
-
-    // ------ START METHODS ------
-    
-    void Start() {
-        HpCurrent = HpMax;
-    }
     
     // ------ EVENT METHODS ------
     
-    public void Reset() => HpCurrent = HpMax;
+    public void Reset() => HealthCurrentRatio = 1;
 
     public float DealDamage(float damage) {
-        if (Mathf.Approximately(damage, 0)) return HpCurrent;
-        
-        HpCurrent -= damage;
+        if (Mathf.Approximately(damage, 0)) return HealthCurrent;
+
+        float damageToRatio = damage / healthMax;
+        HealthCurrentRatio -= damageToRatio;
         OnHealthChange?.Invoke(-damage);
 
         // If health reaches 0, invoke death event.
-        if (HpCurrent > 0) return HpCurrent;
+        if (HealthCurrent > 0) return HealthCurrent;
         OnDeath?.Invoke();
         if (destroyOnDeath) Destroy(gameObject);
         return 0;
     }
 
-    public void SetMaxHealth(float newMax, bool scaleCurrent = true, bool reset = false) {
-        HpMax = newMax;
-
-        if (scaleCurrent) HpCurrent = newMax/HpMax;
-        if (reset) Reset();
+    public void SetMaxHealth(float newMax, bool resetCurrent = false) {
+        healthMax = newMax;
+        if (resetCurrent) Reset();
     }
 }

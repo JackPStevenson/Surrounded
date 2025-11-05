@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class ManagerInput : MonoBehaviour {
     public static ManagerInput Instance;
-
+    
     // General
     public bool IsTouching { get; private set; }
     public Vector2 LastTouchPosition { get; private set; }
@@ -51,8 +51,8 @@ public class ManagerInput : MonoBehaviour {
     }
 
     // ------ EVENT METHODS ------
-
-    private void OnTouchPress(InputValue value) {
+    
+    public void OnTouchPress(InputValue value) {
         IsTouching = true;
         OnTouchPressInput?.Invoke(LastTouchPosition);
     }

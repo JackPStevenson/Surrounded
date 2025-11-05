@@ -4,13 +4,12 @@ using System.Linq;
 using UnityEngine;
 
 public class StatusHandler : MonoBehaviour, IUpdateCustom {
-    public event Action<StatusModifiersList> OnConstModifierChanged;
-    public event Action<StatusModifiersList> OnDynamicModifierApplied;
+    public event Action<StatusModifiersList> EventConstModifierChanged;
+    public event Action<StatusModifiersList> EventDynamicModifierApplied;
 
     // --- EFFECTS ---
     private readonly List<StatusEffect> _temporaryEffects = new List<StatusEffect>();
     private readonly List<StatusEffect> _permanentEffects = new List<StatusEffect>();
-    private List<StatusEffect> ChooseList(bool temp) => temp ? _temporaryEffects : _permanentEffects;
     private StatusModifiersList _modifiers;
 
     private void Awake() {
@@ -19,14 +18,14 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
 
     // ------ UPDATE METHODS ------
 
-    public void UpdateCustom(float deltaTime) { }
-
     public void FixedUpdateCustom(float deltaTime, int tick = 0) {
         ProcessEffects(deltaTime, tick, false);
         ProcessEffects(deltaTime, tick);
     }
 
     // ------ EFFECT METHODS ------
+    
+    private List<StatusEffect> ChooseList(bool temp) => temp ? _temporaryEffects : _permanentEffects;
     
     private void ProcessEffects(float deltaTime, int tick, bool isTemp = true) {
         List<StatusEffect> effects = ChooseList(isTemp);
@@ -37,7 +36,7 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
 
             effect.FixedUpdateCustom(deltaTime, tick);
 
-            if (modifiers.HasDynamicModifiers && effect.TickedThisFrame) OnDynamicModifierApplied?.Invoke(modifiers);
+            if (modifiers.HasDynamicModifiers && effect.TickedThisFrame) EventDynamicModifierApplied?.Invoke(modifiers);
 
             if (effect.Expired) {
                 if (isTemp) RemoveEffect(i);
@@ -46,16 +45,12 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
         }
     }
 
-    public void TryAddEffect(DataStatusEffect effect, bool isTemp = true) {
-        if (!effect.stackable) {
-            StatusEffect existing = GetFirstEffect(effect.name, isTemp);
-            if (existing.IsEmpty) AddEffect(effect, isTemp);
-            else if (effect.duration > existing.TimeLeft) existing.Refresh(effect.duration);
-            return;
-        }
-        AddEffect(effect, isTemp);
+    public void TryAddEffect(DataStatusEffect newEffect, bool isTemp = true) {
+        if (newEffect.stackable) AddEffect(newEffect, isTemp);
+        else if (!HasEffect(newEffect.name, out StatusEffect found, isTemp)) AddEffect(newEffect, isTemp);
+        else if (newEffect.duration > found.TimeLeft) found.Refresh(newEffect.duration);
     }
-    
+
     private void AddEffect(DataStatusEffect newEffect, bool isTemp = true) {
         ChooseList(isTemp).Add(new StatusEffect(newEffect));
         UpdateModifiers();
@@ -66,8 +61,6 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
         UpdateModifiers();
     }
 
-
-
     public void Reset() {
         _permanentEffects.Clear();
         _temporaryEffects.Clear();
@@ -75,24 +68,23 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
     }
 
     private void UpdateModifiers() {
-        _modifiers.ResetList();
+        _modifiers.Reset();
         
-        if(_permanentEffects.Count > 0)
-            _modifiers.UpdateList(_permanentEffects.ToArray(), false, false);
-        if(_temporaryEffects.Count > 0)
-            _modifiers.UpdateList(_temporaryEffects.ToArray(), false);
+        if(_permanentEffects.Count > 0) _modifiers.UpdateList(_permanentEffects.ToArray(), false, false);
+        if(_temporaryEffects.Count > 0) _modifiers.UpdateList(_temporaryEffects.ToArray(), false);
 
-        OnConstModifierChanged?.Invoke(_modifiers);
+        EventConstModifierChanged?.Invoke(_modifiers);
     }
-
-
+    
     // ------ HELPER METHODS ------
 
-    public float ModConstant(AffectorConstType type, float baseConstant) => _modifiers.ModifyGivenConstant(type, baseConstant);
-    public float GetDynamicModifier(AffectorDynamicType type) => _modifiers.GetDynamicModifier(type);
-
+    public float ModConst(AffectorConstType type, float baseConstant) => _modifiers.ModifyConstant(type, baseConstant);
+    public float GetDynamic(AffectorDynamicType type) => _modifiers.GetDynamicModifier(type);
 
     public bool HasEffect(string effectName, bool isTemp = true) => ChooseList(isTemp).Any(t => t.CompareName(effectName));
-    public StatusEffect GetFirstEffect(string effectName, bool isTemp = true) => ChooseList(isTemp).First(t => t.CompareName(effectName));
-    public StatusEffect[] GetEffects(string effectName, bool isTemp = true) => ChooseList(isTemp).Where(t => t.CompareName(effectName)).ToArray();
+    public bool HasEffect(string effectName, out StatusEffect found, bool isTemp = true) {
+        found = ChooseList(isTemp).FirstOrDefault(t => t.CompareName(effectName));
+        return found != null;
+    }
+    public StatusEffect[] GetEffectsByName(string effectName, bool isTemp = true) => ChooseList(isTemp).Where(t => t.CompareName(effectName)).ToArray();
 }

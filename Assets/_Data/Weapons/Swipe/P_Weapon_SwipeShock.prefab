@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b62a8d0e9915846ab8220ff720a80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 0}
+  weaponData: {fileID: 11400000, guid: fc6f7570dd6530a41904412ba75fb368, type: 2}
   debugLine: {fileID: 2411919886889777498}
 --- !u!120 &2411919886889777498
 LineRenderer:

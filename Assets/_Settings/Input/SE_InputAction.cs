@@ -165,7 +165,7 @@ public partial class @SE_InputAction: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""a632b9be-45ba-40e9-b04a-a6912e729553"",
                     ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": ""Press(pressPoint=0.05,behavior=1)"",
+                    ""interactions"": ""Press(pressPoint=1.401298E-45,behavior=1)"",
                     ""processors"": """",
                     ""groups"": "";Touch"",
                     ""action"": ""TouchRelease"",

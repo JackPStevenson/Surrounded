@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public struct StatusModifiersList {
+public class StatusModifiersList {
     private const int ConstSize = (int) AffectorConstType.Count;
     private const int DynamicSize = (int) AffectorConstType.Count;
 
@@ -12,8 +12,9 @@ public struct StatusModifiersList {
     public bool HasDynamicModifiers { get; private set; }
 
     // ------ CONSTRUCTORS ------
-
-    public StatusModifiersList(DataStatusEffect effect = null, float scalar = 1) {
+    
+    public StatusModifiersList() : this(null, 1) { }
+    public StatusModifiersList(DataStatusEffect effect, float scalar = 1) {
         _constMuls = new float[ConstSize];
         _constAdds = new float[ConstSize];
         _dynamicAdds = new float[DynamicSize];
@@ -22,63 +23,45 @@ public struct StatusModifiersList {
         HasDynamicModifiers = false;
 
         if (effect) UpdateList(effect, scalar);
-        else {
-            ResetList();
-            UpdateFlags();
-        }
+        else Reset();
     }
 
     // ------ LIST UPDATING METHODS ------
 
     public void UpdateList(StatusEffect[] effects, bool resetList = true, bool updateFlags = true) {
-        if (resetList) ResetList();
+        if (resetList) Reset();
         foreach (StatusEffect effect in effects)
-            if (!effect.IsEmpty)
-                UpdateList(effect.Data, effect.Potency, false, false);
+            UpdateList(effect.Data, effect.Potency, false, false);
         if (updateFlags) UpdateFlags();
     }
 
-    private void UpdateList(DataStatusEffect effect, float scalar = 1, bool resetList = true, bool updateFlags = true) {
-        // Set arrays to default values if desired and populate modifier arrays with proper data.
-        if (resetList) ResetList();
-        foreach (AffectorConstant a in effect.constantAffectors) {
-            if (a.additive) _constAdds[Index(a)] += a.GetModifier(scalar);
-            else _constMuls[Index(a)] *= a.GetModifier(scalar);
+    private void UpdateList(DataStatusEffect effect, float scalar = 1, bool reset = true, bool updateFlags = true) {
+        if (reset) Reset();
+        foreach (AffectorConstant affector in effect.constantAffectors) {
+            if (affector.additive) _constAdds[(int) affector.type] += affector.Get(scalar);
+            else _constMuls[(int) affector.type] *= affector.Get(scalar);
         }
-        foreach (AffectorDynamic a in effect.dynamicAffectors) _dynamicAdds[Index(a)] += a.GetPotency(scalar);
-
+        foreach (AffectorDynamic affector in effect.dynamicAffectors)
+            _dynamicAdds[(int) affector.type] += affector.Get(scalar);
         if (updateFlags) UpdateFlags();
     }
 
-    public void ResetList() {
+    public void Reset() {
         HasConstModifiers = false;
         HasDynamicModifiers = false;
-        for (int i = 0; i < ConstSize; i++) {
-            _constMuls[i] = 1;
-            _constAdds[i] = 0;
-        }
-        for (int i = 0; i < DynamicSize; i++) _dynamicAdds[i] = 0;
+
+        Array.Fill(_constMuls, 1);
+        Array.Fill(_constAdds, 0);
+        Array.Fill(_dynamicAdds, 0);
     }
 
     private void UpdateFlags() {
-        HasConstModifiers = false;
-        HasDynamicModifiers = false;
-        for (int i = 0; i < ConstSize && !HasConstModifiers; i++)
-            if (!Mathf.Approximately(_constMuls[i], 1) || !Mathf.Approximately(_constAdds[i], 0))
-                HasConstModifiers = true;
-        for (int i = 0; i < DynamicSize && !HasDynamicModifiers; i++)
-            if (!Mathf.Approximately(_dynamicAdds[i], 0))
-                HasDynamicModifiers = true;
+        HasConstModifiers = _constMuls.Any(n => !Mathf.Approximately(n, 1)) || _constAdds.Any(n => !Mathf.Approximately(n, 0));
+        HasDynamicModifiers = _dynamicAdds.Any(n => !Mathf.Approximately(n, 0));
     }
 
     // ------ HELPER METHODS ------
 
-    private int Index(AffectorConstant affector) => Index(affector.type);
-    private int Index(AffectorConstType type) => (int) type;
-    private int Index(AffectorDynamic affector) => Index(affector.type);
-    private int Index(AffectorDynamicType type) => (int) type;
-
-    public float ModifyGivenConstant(AffectorConstType type, float baseValue) => (_constAdds != null && _constMuls != null) ? (baseValue + _constAdds[Index(type)]) * _constMuls[Index(type)] : baseValue;
-
-    public float GetDynamicModifier(AffectorDynamicType type) => _dynamicAdds != null ? _dynamicAdds[Index(type)] : 0;
+    public float ModifyConstant(AffectorConstType type, float baseValue) => HasConstModifiers ? ((baseValue + _constAdds[(int) type]) * _constMuls[(int) type]) : baseValue;
+    public float GetDynamicModifier(AffectorDynamicType type) => HasDynamicModifiers ? _dynamicAdds[(int) type] : 0;
 }

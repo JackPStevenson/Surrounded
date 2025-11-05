@@ -6848,7 +6848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1695b672c1ae4b9439c723d2a69e67d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataWeaponData: {fileID: 11400000, guid: 8015d9c6d6c5e8342ba0e5369acd86d5, type: 2}
+  weaponData: {fileID: 11400000, guid: 8015d9c6d6c5e8342ba0e5369acd86d5, type: 2}
   debugVisual: {fileID: 0}
 --- !u!1001 &669206401
 PrefabInstance:

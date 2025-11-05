@@ -34,7 +34,7 @@ public class ManagerHUD : MonoBehaviour
     }
 
     void Update() {
-        _healthSlider.value = _poorSoul.Health.HpCurrent / _poorSoul.Health.HpMax;
+        _healthSlider.value = _poorSoul.Health.HealthCurrent / _poorSoul.Health.healthMax;
         switch (_managerGame.GetGameState()) {
             case GameState.Intermission:
                 _waveProgressText.text = "Wave " + _managerGame.GetCurrentWave() + " in " + Mathf.Ceil(_managerGame.GetRemainingIntermission());

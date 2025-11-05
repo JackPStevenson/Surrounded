@@ -4,15 +4,16 @@ using UnityEngine.Serialization;
 
 /// Affectors for modifying base parameters.
 public enum AffectorConstType {
-    BaseHealth,
-    BaseResistance,
-    BaseSpeed,
-    BaseAttackDamage,
-    BaseAttackRange,
-    BaseAttackPenetration,
-    BaseAttackLength,
-    BaseEnergy,
-    BaseEnergyRegen,
+    MaxHealth,
+    Resistance,
+    Speed,
+    Damage,
+    AttackSpeed,
+    Range,
+    Penetration,
+    AttackLength,
+    MaxEnergy,
+    EnergyRegen,
     
     Count
 }
@@ -33,19 +34,18 @@ public struct AffectorConstant {
     
     [Header("Potency")]
     public float baseModifier;
-    public float influenceFromStatus;
+    public float statusInfluence;
     
-    public AffectorConstant(AffectorConstType type, bool additive = false, float baseModifier = 1, float influenceFromStatus = 1) {
+    public AffectorConstant(AffectorConstType type, bool additive = false, float baseModifier = 1, float statusInfluence = 1) {
         this.type = type;
         this.additive = additive;
         this.baseModifier = baseModifier;
-        this.influenceFromStatus = influenceFromStatus;
+        this.statusInfluence = statusInfluence;
     }
     
-    public float GetModifier(float scalar = 1) {
-        if (additive) return Mathf.Lerp(baseModifier, baseModifier * scalar, influenceFromStatus);
-        return 1 + Mathf.Lerp((baseModifier - 1), (baseModifier - 1) * scalar, influenceFromStatus);
-    }
+    public float Get(float scalar = 1) => additive ? GetAdd(scalar) : GetMul(scalar);
+    private float GetAdd(float scalar) => Mathf.Lerp(baseModifier, baseModifier * scalar, statusInfluence);
+    private float GetMul(float scalar) => Mathf.Lerp(baseModifier - 1, (baseModifier - 1) * scalar, statusInfluence) + 1;
 }
 
 [Serializable]
@@ -55,15 +55,15 @@ public struct AffectorDynamic {
     
     [Header("Potency")]
     public float basePotency;
-    public float influenceFromStatus;
+    [FormerlySerializedAs("influenceFromStatus")] public float statusInfluence;
 
-    public AffectorDynamic(AffectorDynamicType type, float basePotency = 1, float influenceFromStatus = 1) {
+    public AffectorDynamic(AffectorDynamicType type, float basePotency = 1, float statusInfluence = 1) {
         this.type = type;
         this.basePotency = basePotency;
-        this.influenceFromStatus = influenceFromStatus;
+        this.statusInfluence = statusInfluence;
     }
     
-    public float GetPotency(float scalar = 1) => Mathf.Lerp(basePotency, basePotency * scalar, influenceFromStatus);
+    public float Get(float scalar = 1) => Mathf.Lerp(basePotency, basePotency * scalar, statusInfluence);
 }
 
 

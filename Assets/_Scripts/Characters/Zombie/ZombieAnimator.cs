@@ -51,7 +51,7 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
         if (targetDir.magnitude > 0) transform.rotation = Quaternion.LookRotation(targetDir);
 
         // Update animator move parameter based on zombie's current velocity. Smoothly transition value to prevent choppiness.
-        float targetMoveSpeed = Core.Speed / Mathf.Max(Core.BaseTargetSpeed, 0.1f);
+        float targetMoveSpeed = Core.Velocity.magnitude / Mathf.Max(Core.Data.speed, 0.1f);
         _animMoveVar = Common.SmoothLerp(_animMoveVar, targetMoveSpeed, AnimSmoothing, Time.fixedDeltaTime);
         
         Anim.SetFloat(UseRunningAnim, useRunningAnimation ? 1 : 0);
