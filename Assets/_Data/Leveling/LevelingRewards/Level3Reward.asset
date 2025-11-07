@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de44653037d9ee14d939ce75b989b593, type: 3}
   m_Name: Level3Reward
   m_EditorClassIdentifier: 
-  type: 1
+  type: 5
   ZombieBloodReward: 0
-  WeaponToAdd: {fileID: 9217203093066365076, guid: 8f1167cadcc66f24fae6581bfa2da76f,
-    type: 3}
+  WeaponToAdd: {fileID: 0}

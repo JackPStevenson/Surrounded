@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de44653037d9ee14d939ce75b989b593, type: 3}
-  m_Name: Level4Reward
+  m_Name: Level10Reward
   m_EditorClassIdentifier: 
-  type: 0
-  ZombieBloodReward: 500
-  WeaponToAdd: {fileID: 0}
+  type: 2
+  ZombieBloodReward: 0
+  WeaponToAdd: {fileID: 4732984985392083037, guid: d627111f4ef726f4799809cb109a2488,
+    type: 3}

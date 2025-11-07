@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   ZombieBloodReward: 0
-  WeaponToAdd: {fileID: 7770101667591404033, guid: b206da4b4946b1242b24afb6702145b8,
-    type: 3}
+  itemToAdd: {fileID: 11400000, guid: fc9552199197c8048aaf04f982a86271, type: 2}
+  claimed: 0

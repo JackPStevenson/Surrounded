@@ -8,6 +8,10 @@ public class LevelingScreenManager : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
 
     public static LevelingScreenManager instance;
+
+    [SerializeField] private LevelingRewardsIndex rewardsIndex;
+    [SerializeField] private Transform rewardButtonParent;
+
     //public int level = 1;
     //public int experience = 1000;
     //public int xpReq = 2000;
@@ -29,12 +33,7 @@ public class LevelingScreenManager : MonoBehaviour
         if (a)
         {
             a = false;
-            UpdateLevelDisplay();
-        }
-        if (b)
-        {
-            b = false;
-            PlayerLevel.instance.AddExperience((uint)10000);
+            LoadRewards();
         }
     }
     public void UpdateLevelDisplay()
@@ -72,5 +71,36 @@ public class LevelingScreenManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void LoadRewards()
+    {
+        Transform currentButton;
+        LevelUpReward currentReward;
+        for (int i = 0; i < rewardsIndex.rewards.Length && i < rewardButtonParent.childCount; i++)
+        {
+            currentButton = rewardButtonParent.GetChild(i);
+            currentReward = rewardsIndex.rewards[i];
+            if (currentReward.itemToAdd != null)
+            {
+                currentButton.GetChild(0).GetComponent<TMP_Text>().text = currentReward.itemToAdd.displayName;
+                currentButton.GetChild(1).GetComponent<Image>().sprite = currentReward.itemToAdd.icon;
+            }
+            else
+            {
+                currentButton.GetChild(0).GetComponent<TMP_Text>().text = "Missing item ";
+            }
+        }
+    }
+
+    public LevelUpReward GetReward(int index)
+    {
+        return rewardsIndex.rewards[index];
+    }
+
+    public void GiveLevelUpReward(int index)
+    {
+        GetReward(index);
+        // do something to pass the reward to the inventory
     }
 }

@@ -6,7 +6,7 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance;
 
-    private delegate void Buy();
+    private delegate bool Buy();
     private Buy buy;
 
     [SerializeField] private GameObject lowFundsMsg;
@@ -17,15 +17,11 @@ public class ShopManager : MonoBehaviour
 
     [SerializeField] private uint[] TrapCosts = { 100, 250, 400, 600 };
 
-
     [SerializeField] private TMP_Text PlayerZombieBlood;
 
     [SerializeField] private GameObject[] TrapButtons;
     [SerializeField] private GameObject LootboxButton;
-
     [SerializeField] private GameObject BuyScreen;
-
-
 
     private void Awake()
     {
@@ -57,6 +53,7 @@ public class ShopManager : MonoBehaviour
         BuyScreen.SetActive(true);
         BuyScreen.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>().text = "Buy " + name + "?";
         BuyScreen.transform.GetChild(0).GetChild(2).GetChild(0).GetComponent<TMP_Text>().text = cost + " ZB";
+
     }
 
     public void SetBuyAction(string buyAction)
@@ -76,8 +73,19 @@ public class ShopManager : MonoBehaviour
     {
         if (buy != null)
         {
-            buy();
-            BuyScreen.SetActive(false);
+            if (buy())
+            {
+                BuyScreen.SetActive(false);
+                UpdateZombieBloodDisplay();
+            }
+            else
+            {
+                // display insuffficent funds text
+                if (lowFundsEnumerator != null)
+                    StopCoroutine(lowFundsEnumerator);
+                lowFundsEnumerator = StartCoroutine(DisplayInsufficientFundsMessage());
+            }
+
         }
     }
 
@@ -86,20 +94,15 @@ public class ShopManager : MonoBehaviour
         PlayerZombieBlood.text = PlayerStats.instance.ZombieBlood + " Zombie Blood";
     }
 
-    public void PurchaseLootBox()
+    public bool PurchaseLootBox()
     {
         if (PlayerStats.instance.RemoveZombieBlood(LootBoxCost))
         {
             LootboxManager.instance.OpenLootBoxScreen();
             UpdateZombieBloodDisplay();
+            return true;
         }
-        else
-        {
-            // display insuffficent funds text
-            if (lowFundsEnumerator != null)
-                StopCoroutine(lowFundsEnumerator);
-            lowFundsEnumerator = StartCoroutine(DisplayInsufficientFundsMessage());
-        }
+        return false;
     }
 
     private IEnumerator DisplayInsufficientFundsMessage()
