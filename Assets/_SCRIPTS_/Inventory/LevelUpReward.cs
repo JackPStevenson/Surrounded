@@ -6,7 +6,8 @@ public enum RewardType
     TapWeapon,
     SwipeWeapon,
     ShakeWeapon,
-    Lootbox
+    Lootbox,
+    Trap
 }
 
 [CreateAssetMenu(fileName = "LevelUpReward", menuName = "LevelUpReward")]
@@ -14,5 +15,7 @@ public class LevelUpReward : ScriptableObject
 {
     public RewardType type;
     public int ZombieBloodReward = 0;
-    public GameObject WeaponToAdd = null;
+    public DataDisplayable itemToAdd = null;
+    public bool claimed = false;
 }
+
