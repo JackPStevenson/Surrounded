@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName = "Bundle Weapons", menuName = "Data/Bundle/Weapons")]
+[CreateAssetMenu(fileName = "D_Bundle_Weapons", menuName = "Data/Bundle/Weapons")]
 public class DataBundleWeapons : DataBundle {
     [Header("Weapons")]
     public List<DataWeapon> Weapons;

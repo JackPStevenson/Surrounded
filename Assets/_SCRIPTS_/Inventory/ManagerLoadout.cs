@@ -48,14 +48,14 @@ public class ManagerLoadout : MonoBehaviour {
 
     void ApplyLoadout() {
         ManagerWeapon managerWeapon = ManagerWeapon.Instance;
-        PoorSoulCore poorSoul = PoorSoulCore.Instance;
-        if (!managerWeapon || !poorSoul) return;
+        PlayerCore player = PlayerCore.Instance;
+        if (!managerWeapon || !player) return;
         
 
         foreach (DataWeaponTap w in _tapWeapons) if(w) managerWeapon.AddTap(w);
         foreach (DataWeaponSwipe w in _swipeWeapons) if(w) managerWeapon.AddSwipe(w);
         foreach (DataWeaponShake w in _shakeWeapons) if(w) managerWeapon.AddShake(w);
-        foreach (DataPerkPlayer t in _playerPerks) if(t) poorSoul.AddPerk(t);
+        foreach (DataPerkPlayer t in _playerPerks) if(t) player.AddPerk(t);
         
         Destroy(gameObject);
     }

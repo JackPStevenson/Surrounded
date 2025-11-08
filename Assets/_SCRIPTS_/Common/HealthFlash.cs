@@ -18,8 +18,8 @@ public class HealthFlash : MonoBehaviour {
     void Start() {
         if (Health) return;
         // Try to find health component on parent.
-        transform.parent?.TryGetComponent(out Health);
-        if(Health) Initialize(Health);
+        if (!TryGetComponent(out Health)) transform.parent?.TryGetComponent(out Health);
+        if (Health) Initialize(Health);
     }
 
     public void Initialize(Health h) {

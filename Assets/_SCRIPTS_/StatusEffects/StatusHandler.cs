@@ -10,14 +10,16 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
     // --- EFFECTS ---
     private readonly List<StatusEffect> _temporaryEffects = new List<StatusEffect>();
     private readonly List<StatusEffect> _permanentEffects = new List<StatusEffect>();
-    private List<StatusEffect> ChooseList(bool temp) => temp ? _temporaryEffects : _permanentEffects;
-    private StatusModifiersList _modifiers;
+    private List<StatusEffect> GetList(bool tempList) => tempList ? _temporaryEffects : _permanentEffects;
+    private int GetEffectCount(bool tempList) => GetList(tempList).Count;
+    private StatusModifiersList _combinedModifiers;
 
     private void Awake() {
-        _modifiers = new StatusModifiersList();
+        _combinedModifiers = new StatusModifiersList();
     }
 
     // ------ UPDATE METHODS ------
+    
     public void UpdateCustom(float deltaTime) { }
     public void FixedUpdateCustom(float deltaTime, int tick = 0) {
         ProcessEffects(deltaTime, tick, false);
@@ -25,7 +27,7 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
     }
     
     private void ProcessEffects(float deltaTime, int tick, bool isTemp = true) {
-        List<StatusEffect> effects = ChooseList(isTemp);
+        List<StatusEffect> effects = GetList(isTemp);
 
         for (int i = 0; i < effects.Count; i++) {
             StatusEffect effect = effects[i];
@@ -42,24 +44,25 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
             }
             else effect.Refresh();
         }
+        
+        //_modifiers.Printt();
     }
 
     // ------ EFFECT METHODS ------
 
-    public void TryAddEffect(DataStatusEffect newEffect, bool isTemp = true) {
-        if (newEffect.stackable) AddEffect(newEffect, isTemp);
-        else if (!HasEffect(newEffect.name, out StatusEffect found, isTemp)) AddEffect(newEffect, isTemp);
+    public void TryAddEffect(DataStatusEffect newEffect, bool isTemp = true, float potency = 1) {
+        if (newEffect.stackable) AddEffect(newEffect, isTemp, potency);
+        else if (!HasEffect(newEffect.name, out StatusEffect found, isTemp)) AddEffect(newEffect, isTemp, potency);
         else if (newEffect.duration > found.TimeLeft) found.Refresh(newEffect.duration);
-        print(_temporaryEffects.Count);
     }
 
-    private void AddEffect(DataStatusEffect newEffect, bool isTemp = true) {
-        ChooseList(isTemp).Add(new StatusEffect(newEffect));
+    private void AddEffect(DataStatusEffect newEffect, bool isTemp = true, float potency = 1) {
+        GetList(isTemp).Add(new StatusEffect(newEffect, potency));
         UpdateModifiers();
     }
 
     private void RemoveEffect(int index, bool isTemp = true) {
-        ChooseList(isTemp).RemoveAt(index);
+        GetList(isTemp).RemoveAt(index);
         UpdateModifiers();
     }
 
@@ -72,23 +75,17 @@ public class StatusHandler : MonoBehaviour, IUpdateCustom {
     // ------ MODIFIER METHODS ------
 
     private void UpdateModifiers() {
-        _modifiers.Reset();
-        
-        if(_permanentEffects.Count > 0) _modifiers.UpdateList(_permanentEffects.ToArray(), false, false);
-        if(_temporaryEffects.Count > 0) _modifiers.UpdateList(_temporaryEffects.ToArray(), false);
+        _combinedModifiers.UpdateListFromEffects(GetList(false), GetList(true));
 
-        EventConstModifierChanged?.Invoke(_modifiers);
+        EventConstModifierChanged?.Invoke(_combinedModifiers);
     }
-    
+
     // ------ HELPER METHODS ------
 
-    public float ModConst(AffectorConstType type, float baseConstant) => _modifiers.ModifyConstant(type, baseConstant);
-    public float GetDynamic(AffectorDynamicType type) => _modifiers.GetDynamicModifier(type);
+    public float ModConst(AffectorConstType type, float val, bool subtract = false, bool clampMin = false) => _combinedModifiers.ApplyConstModifier(type, val, subtract, clampMin);
+    public float GetDynamic(AffectorDynamicType type) => _combinedModifiers.GetDynamicModifier(type);
 
-    public bool HasEffect(string effectName, bool isTemp = true) => ChooseList(isTemp).Any(t => t.CompareName(effectName));
-    public bool HasEffect(string effectName, out StatusEffect found, bool isTemp = true) {
-        found = ChooseList(isTemp).FirstOrDefault(t => t.CompareName(effectName));
-        return found != null;
-    }
-    public StatusEffect[] GetEffectsByName(string effectName, bool isTemp = true) => ChooseList(isTemp).Where(t => t.CompareName(effectName)).ToArray();
+    public bool HasEffect(string effect, bool isTemp = true) => GetList(isTemp).Any(t => t.CompareName(effect));
+    public bool HasEffect(string effect, out StatusEffect found, bool isTemp = true) => (found = GetList(isTemp).FirstOrDefault(t => t.CompareName(effect))) != null;
+    public StatusEffect[] GetEffectsByName(string effectName, bool isTemp = true) => GetList(isTemp).Where(t => t.CompareName(effectName)).ToArray();
 }

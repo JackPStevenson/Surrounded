@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Health : MonoBehaviour {
     public event Action<float> EventHealthChange;
@@ -15,16 +14,21 @@ public class Health : MonoBehaviour {
     
     public Vector3 Position => transform.position;
     
+    public void SetStatusHandler(StatusHandler handler) => _status = handler;
+    private StatusHandler _status;
+    
     // ------ EVENT METHODS ------
     
     public void Reset() => HealthCurrentRatio = 1;
 
     public float DealDamage(float damage) {
-        if (Mathf.Approximately(damage, 0)) return HealthCurrent;
-
-        float damageToRatio = damage / healthMax;
+        // If health has attached status effect, apply current resistance to incoming damage.
+        float modifiedDmg = GetModifiedDamage(damage);
+        if (Mathf.Approximately(modifiedDmg, 0)) return HealthCurrent;
+    
+        float damageToRatio = modifiedDmg / GetModifiedMaxHealth();
         HealthCurrentRatio -= damageToRatio;
-        EventHealthChange?.Invoke(-damage);
+        EventHealthChange?.Invoke(-modifiedDmg);
 
         // If health reaches 0, invoke death event.
         if (HealthCurrent > 0) return HealthCurrent;
@@ -37,4 +41,7 @@ public class Health : MonoBehaviour {
         healthMax = newMax;
         if (resetCurrent) Reset();
     }
+
+    float GetModifiedDamage(float dmg) => (dmg <= 0) ? dmg : ((_status) ? _status.ModConst(AffectorConstType.Resistance, dmg, true, true) : dmg);
+    float GetModifiedMaxHealth() => (_status) ? _status.ModConst(AffectorConstType.MaxHealth, healthMax) : healthMax;
 }

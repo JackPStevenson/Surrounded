@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName = "Data Status Effect", menuName = "Data/Status Effect")]
+[CreateAssetMenu(fileName = "D_Status_", menuName = "Data/Status Effect")]
 public class DataStatusEffect : ScriptableObject {
     [Header("General")]
     public new string name;

@@ -68,10 +68,11 @@ public class ZombiesPool : MonoBehaviour, IUpdateCustom {
         }
     }
     
-    public void Release(ZombieCore zombie) {
-        _activeZombies.Remove(zombie);
-        _pooledZombies.Enqueue(zombie);
-        EventZombieReturned?.Invoke(zombie);
+    public void Release(CharacterCore zombie) {
+        ZombieCore z = zombie as ZombieCore;
+        _activeZombies.Remove(z);
+        _pooledZombies.Enqueue(z);
+        EventZombieReturned?.Invoke(z);
     }
     
     public void Deplete() {

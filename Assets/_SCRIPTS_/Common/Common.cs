@@ -86,7 +86,7 @@ public static class Common {
     private static int FallbackInt(int value, int fallback) => (value > -1) ? value : fallback;
     private static float FallbackFloat(float value, float fallback) => (value > -1) ? value : fallback;
     private static Health[] FallbackComps(int hitComps) {
-        if (hitComps == 0) return CompListEmpty;
+        if (hitComps <= 0) return CompListEmpty;
         Health[] result = new Health[hitComps];
         Array.Copy(CompList, result, hitComps);
         return result;

@@ -7,14 +7,14 @@ public class PartListenerWeapon : Part {
     // --- WEAPON REFERENCES ---
     protected WeaponBase Weapon;
     
-    // --- WEAPON EVENTS ---
+    // --- EVENTS ---
     [Header("Weapon Events")]
-    public UnityEvent<Health[]> onCompsHit;
-    public UnityEvent<Vector3> onTap;
-    public UnityEvent<Vector3[]> onSwipe;
-    public UnityEvent onShake;
+    public UnityEvent<Health[]> EventCompsHit;
+    public UnityEvent<Vector3> EventTap;
+    public UnityEvent<Vector3[]> EventSwipe;
+    public UnityEvent EventShake;
     
-    // ------ START METHODS ------
+    // ------ START FUNCTIONS ------
     
     protected override void OnStart() {
         if (!transform.parent || !transform.parent.TryGetComponent(out Weapon)) {
@@ -22,13 +22,13 @@ public class PartListenerWeapon : Part {
             return;
         }
         
-        Weapon.EventOnHit += onCompsHit.Invoke;
-        Weapon.EventOnTap += onTap.Invoke;
-        Weapon.EventOnSwipe += onSwipe.Invoke;
-        Weapon.EventOnShake += onShake.Invoke;
+        Weapon.EventOnHit += EventCompsHit.Invoke;
+        Weapon.EventOnTap += EventTap.Invoke;
+        Weapon.EventOnSwipe += EventSwipe.Invoke;
+        Weapon.EventOnShake += EventShake.Invoke;
     }
     
-    // ------ EVENT METHODS ------
+    // ------ PART METHODS ------
 
     protected override void InvokeLogic() { }
     public override void Reset() { }
