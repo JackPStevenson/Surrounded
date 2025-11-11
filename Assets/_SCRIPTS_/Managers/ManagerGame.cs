@@ -8,7 +8,7 @@ public class ManagerGame : MonoBehaviour {
     public static ManagerGame Instance;
     
     private ManagerWave _managerWave;
-    private PoorSoulCore _poorSoul;
+    private PlayerCore _player;
 
     private GameState _gameState = GameState.Intermission;
     private int _currentWave;
@@ -32,11 +32,11 @@ public class ManagerGame : MonoBehaviour {
         _managerWave = ManagerWave.Instance;
         _managerWave.OnAllZombiesDead += OnAllZombiesDead;
         
-        _poorSoul = PoorSoulCore.Instance;
-        _poorSoul.Health.EventDeath += EventPlayerDeath;
-        _poorSoul.Health.EventDeath += loseMenu.Enable;
+        _player = PlayerCore.Instance;
+        _player.Health.EventDeath += EventPlayerDeath;
+        _player.Health.EventDeath += loseMenu.Enable;
         
-        _managerWave.SetMainTarget(_poorSoul.Health);
+        _managerWave.SetMainTarget(_player.Health);
 
         SetGameState(GameState.Intermission);
     }
@@ -88,5 +88,5 @@ public class ManagerGame : MonoBehaviour {
     public float GetRemainingIntermission() => Mathf.Max(intermissionTime - (Time.time - _lastIntermission));
     public GameState GetGameState() => _gameState;
     public int GetCurrentWave() => Mathf.Max(_currentWave, 1);
-    public PoorSoulCore GetPoorSoul() => _poorSoul;
+    public PlayerCore GetPoorSoul() => _player;
 }

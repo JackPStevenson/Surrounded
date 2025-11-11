@@ -20,14 +20,9 @@ public abstract class Part : MonoBehaviour {
     private void Start() => OnStart();
     protected virtual void OnStart(){ }
 
-    // ------ EVENTS ------
+    // ------ PART FUNCTIONS ------
     
-    public void TryInvoke() {
-        if (!AllConditionsTrue) return;
-
-        InvokeLogic();
-    }
-
-    protected virtual void InvokeLogic() { }
-    public virtual void Reset() { }
+    public void TryInvoke() { if (AllConditionsTrue) InvokeLogic(); }
+    protected abstract void InvokeLogic();
+    public abstract void Reset();
 }

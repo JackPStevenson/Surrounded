@@ -12,7 +12,7 @@ public class StatusEffect : IUpdateCustom {
     public string Name => Data.name;
     
     // --- EFFECTS ---
-    public float Potency;
+    public float Potency = 1;
     public AffectorConstant[] ConstAffectors => Data.constantAffectors is {Length: > 0} ? Data.constantAffectors : null;
     public AffectorDynamic[] DynamicAffectors => Data.dynamicAffectors is {Length: > 0} ? Data.dynamicAffectors : null;
     public readonly StatusModifiersList Modifiers;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-[CreateAssetMenu(fileName = "Data Zombie", menuName = "Data/Zombie")]
+[CreateAssetMenu(fileName = "D_Zombie", menuName = "Data/Zombie")]
 public class DataZombie : ScriptableObject {
     [Header("References")]
     public GameObject visualPrefab;

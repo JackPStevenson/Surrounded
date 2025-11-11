@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "Data Weapon Shake", menuName = "Data/Weapon/Shake")]
+[CreateAssetMenu(fileName = "D_Weapon_Shake", menuName = "Data/Weapon/Shake")]
 public class DataWeaponShake : DataWeapon {
     public DataWeaponShake() {
         displayName = "Shake Weapon";

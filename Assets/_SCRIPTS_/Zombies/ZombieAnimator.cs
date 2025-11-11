@@ -6,7 +6,8 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(HealthFlash))]
 public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
     private readonly static int UseRunningAnim = Animator.StringToHash("UseRunningAnim");
-    private readonly static int MoveSpeed = Animator.StringToHash("MoveSpeed");
+    private readonly static int MoveState = Animator.StringToHash("MoveState");
+    private readonly static int MoveSpeedScalar = Animator.StringToHash("MoveSpeedScalar");
     private readonly static int Attack = Animator.StringToHash("OnAttack");
     private readonly static int Death = Animator.StringToHash("OnDeath");
     private readonly static int Damaged = Animator.StringToHash("OnDamaged");
@@ -20,20 +21,15 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
     protected HealthFlash Flash;
     
     // --- STATE PARAMETERS ---
-    private float _animMoveVar = 0;
+    private float _moveState = 0;
 
     // ------ START METHODS ------
 
     public void Initialize(ZombieCore core) {
         Core = core;
         
-        foreach (Transform child in transform)
-            if (child.TryGetComponent(out Anim))
-                break;
-        if (!Anim || !TryGetComponent(out Flash)) {
-            enabled = false;
-            return;
-        }
+        foreach (Transform child in transform) if (child.TryGetComponent(out Anim)) break;
+        TryGetComponent(out Flash);
         
         Flash.Initialize(core.Health);
         core.Nav.OnAttack += OnAttack;
@@ -47,21 +43,27 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
 
     public void FixedUpdateCustom(float deltaTime, int tick) {
         // Update zombie visual's direction based on direction its moving.
-        Vector3 targetDir = Core.TargetDirection;
+        Vector3 targetDir = Vector3.Scale(Core.TargetDirection, new Vector3(1, 0, 1)).normalized;
         if (targetDir.magnitude > 0) transform.rotation = Quaternion.LookRotation(targetDir);
 
         // Update animator move parameter based on zombie's current velocity. Smoothly transition value to prevent choppiness.
-        float targetMoveSpeed = Core.Velocity.magnitude / Mathf.Max(Core.Data.speed, 0.1f);
-        _animMoveVar = Common.SmoothLerp(_animMoveVar, targetMoveSpeed, AnimSmoothing, Time.fixedDeltaTime);
-        
+        //float targetMoveState = Mathf.Clamp01(Core.Velocity.magnitude);
+        float targetMoveState = Core.Nav.NavState is NavState.Moving ? 1 : 0;
+        _moveState = Common.SmoothLerp(_moveState, targetMoveState, AnimSmoothing, Time.fixedDeltaTime);
+
         Anim.SetFloat(UseRunningAnim, useRunningAnimation ? 1 : 0);
-        Anim.SetFloat(MoveSpeed, _animMoveVar);
+        Anim.SetFloat(MoveState, _moveState);
+
+        float speedDelta = Core.Velocity.magnitude * 0.9f;
+        Anim.SetFloat(MoveSpeedScalar, speedDelta);
     }
 
     // ------ EVENT METHODS ------
 
     void OnAttack() => Anim.SetTrigger(Attack);
-    void EventHealthChange(float damageTaken) { /*zombieAnimator.SetTrigger(Damaged); */ }
+    void EventHealthChange(float healthChange) {
+        if(healthChange < 0) Anim.SetTrigger(Damaged);
+    }
     void EventDeath() => Anim.SetTrigger(Death);
 
     private void OnDestroy() {

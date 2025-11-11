@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class ManagerWave : MonoBehaviour {
-    public event Action<int> OnTrickleSpawn;
-    public event Action<int, bool> OnHordeSpawnNotify; // True if horde is last one of this wave.
+    public event Action<int> EventTrickleSpawn;
+    public event Action<int, bool> EventHordeSpawnNotify; // True if horde is last one of this wave.
     public event Action<int, int, float> OnHordeSpawn;
     public event Action OnAllZombiesDead;
 
@@ -74,7 +74,7 @@ public class ManagerWave : MonoBehaviour {
 
         // If spawning is still enabled and time for another trickle spawn elapses, spawn a trickle zombie.
         if (_isSpawning && _lastTrickleSpawn + GetTrickleSpawnDelay() <= Time.time ) {
-            OnTrickleSpawn?.Invoke(_currentWave);
+            EventTrickleSpawn?.Invoke(_currentWave);
             
             _lastTrickleSpawn = Time.time;
         }
@@ -104,7 +104,7 @@ public class ManagerWave : MonoBehaviour {
     // ------ EVENT FUNCTIONS ------
 
     private IEnumerator SpawnHordeDelayed(bool isLastHorde) {
-        OnHordeSpawnNotify?.Invoke(_currentWave, isLastHorde);
+        EventHordeSpawnNotify?.Invoke(_currentWave, isLastHorde);
 
         yield return new WaitForSeconds(hordeStartDelay);
 

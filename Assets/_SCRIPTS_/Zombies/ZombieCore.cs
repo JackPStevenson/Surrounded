@@ -1,17 +1,10 @@
-using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))] [RequireComponent(typeof(StatusHandler))] [RequireComponent(typeof(ZombieNav))]
-public class ZombieCore : MonoBehaviour, IUpdateCustom {
-    public event Action<ZombieCore> EventDeath;
-    
+[RequireComponent(typeof(ZombieNav))]
+public class ZombieCore : CharacterCore {
     public int Id { get; private set; } = -1;
     
     // --- PERMANENT REFERENCES ---
-    public Health Health => _health;
-    private Health _health;
-    public StatusHandler Status => _status;
-    private StatusHandler _status;
     public ZombieNav Nav => _nav;
     private ZombieNav _nav;
     
@@ -20,104 +13,67 @@ public class ZombieCore : MonoBehaviour, IUpdateCustom {
     private DataZombie _data;
     public ZombieAnimator Anim => _anim;
     private ZombieAnimator _anim;
-    private HealthFlash _flash;
 
     // --- BASE PARAMETERS ---
     public float Speed => Status.ModConst(AffectorConstType.Speed, _data.speed);
     public float Damage => Status.ModConst(AffectorConstType.Damage, _data.attackDamage);
-    public float AttackRate => Status.ModConst(AffectorConstType.Speed, _data.attackRate);
-    public float BaseHealth => Status.ModConst(AffectorConstType.Speed, _data.health);
-    public float BaseRange => Status.ModConst(AffectorConstType.Speed, _data.attackRange);
+    public float AttackRate => Status.ModConst(AffectorConstType.AttackSpeed, _data.attackRate);
+    public float MaxHealth => Status.ModConst(AffectorConstType.MaxHealth, _data.health);
+    public float Range => Status.ModConst(AffectorConstType.Range, _data.attackRange);
     
     // --- STATE PARAMETERS ---
-    public Vector3 Position => Health.Position;
     public Vector3 Velocity => Nav.Velocity;
-    public Vector3 MoveDirection => Vector3.Scale(Velocity, new Vector3(1, 0, 1)).normalized;
     public Vector3 TargetDirection => Nav.TargetDirection;
-
-    public bool IsAlive => _isAlive;
-    private bool _isAlive = false;
     
-    //public float CurrentResist => Status.ModConstant(AffectorConstType.BaseAttackDamage, Data.resistance);
+    public float CurrentResist => Status.ModConst(AffectorConstType.Resistance, 1);
     
     // ------ START METHODS ------
     
     public void Initialize(int id, Health mainTarget, float approachDist, LayerMask sideTargetMask) {
-        TryGetComponent(out _health);
-        TryGetComponent(out _status);
-        TryGetComponent(out _nav);
+        Initialize();
         
         Id = id;
         gameObject.name = "Zombie " + id;
-        Nav.Initialize(this, mainTarget, approachDist, sideTargetMask);
         
-        Health.EventDeath += Despawn;
-        Health.EventDeath += OnDeath;
-        Status.EventDynamicModifierApplied += EventDynamicModifierApplied;
+        TryGetComponent(out _nav);
+        Nav.Initialize(this, mainTarget, approachDist, sideTargetMask);
     }
     
     // ------ UPDATE METHODS ------
 
-    public void UpdateCustom(float deltaTime) { }
-    public void FixedUpdateCustom(float deltaTime, int tick) {
+    protected override void OnFixedUpdateCustom(float deltaTime, int tick) {
         Nav.FixedUpdateCustom(deltaTime, tick);
         Anim.FixedUpdateCustom(deltaTime, tick);
-        Status.FixedUpdateCustom(deltaTime, tick);
     }
     
     // ------ POOLING ------
-    
+
     public void Spawn(DataZombie dataZombie, Vector3 spawnPos) {
-        if (Id < 0) {
-            enabled = false;
-            return;
-        }
+        if (Id < 0) return;
         
         _data = dataZombie;
 
-        if (!_anim) {
-            GameObject go = Instantiate(dataZombie.visualPrefab, transform);
-            go.TryGetComponent(out _anim);
-            go.TryGetComponent(out _flash);
-        }
-        else {
-            Debug.Log("What are ya doin.");
-        }
-
-        Health.SetMaxHealth(_data.health);
-        Health.Reset();
-        
-        Anim.Initialize(this);
-        _flash.Initialize(Health);
+        GameObject go = Instantiate(dataZombie.visualPrefab, transform);
+        go.TryGetComponent(out _anim);
         
         Nav.Spawn(spawnPos);
-        _isAlive = true;
-        SetActive(true);
+        Activate();
     }
 
-    void OnDeath() => EventDeath?.Invoke(this);
-    
+    protected override void OnActivate() {
+        Health.SetMaxHealth(_data.health);
+        Anim.Initialize(this);
+        gameObject.SetActive(true);
+    }
+
     /// Returns zombie back to pool with its data erased.
-    public void Despawn() {
-        _isAlive = false;
-        
-        Status.Reset();
+    protected override void OnDeactivate() {
         Nav.Reset();
         _data = null;
 
-        Destroy(_anim.gameObject);
+        for(int i = transform.childCount - 1; i >= 0; i--)
+            Destroy(transform.GetChild(i).gameObject);
+        
         _anim = null;
-        _flash = null;
-        
-        SetActive(false);
-    }
-    
-    public void SetActive(bool active) => gameObject.SetActive(active);
-
-    private void EventDynamicModifierApplied(StatusModifiersList modifiers) {
-        float healthModifier = modifiers.GetDynamicModifier(AffectorDynamicType.CurrentHealth);
-        
-        if (!Mathf.Approximately(healthModifier, 0))
-            Health.DealDamage(healthModifier);
     }
 }

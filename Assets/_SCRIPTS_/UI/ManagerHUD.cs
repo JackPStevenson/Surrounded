@@ -10,7 +10,7 @@ public class ManagerHUD : MonoBehaviour
     
     ManagerGame _managerGame;
     ManagerWave _managerWave;
-    PoorSoulCore _poorSoul;
+    PlayerCore _player;
     ManagerZombies _managerZombies;
     
     [Header("HUD Elements")]
@@ -27,14 +27,14 @@ public class ManagerHUD : MonoBehaviour
     {
         _managerGame = ManagerGame.Instance;
         _managerWave = ManagerWave.Instance;
-        _poorSoul = PoorSoulCore.Instance;
+        _player = PlayerCore.Instance;
         _managerZombies = ManagerZombies.Instance;
         
-        _managerWave.OnHordeSpawnNotify += HordeSpawnNotify;
+        _managerWave.EventHordeSpawnNotify += HordeSpawnNotify;
     }
 
     void Update() {
-        _healthSlider.value = _poorSoul.Health.HealthRatio;
+        _healthSlider.value = _player.Health.HealthRatio;
         switch (_managerGame.GetGameState()) {
             case GameState.Intermission:
                 _waveProgressText.text = "Wave " + _managerGame.GetCurrentWave() + " in " + Mathf.Ceil(_managerGame.GetRemainingIntermission());

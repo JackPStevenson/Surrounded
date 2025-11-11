@@ -52,11 +52,14 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
         _approachDistance = approachDist;
         
         _agent.updateRotation = false;
+        _agent.enabled = false;
         _agent.stoppingDistance = 0.0f;
     }
     
     public void Spawn(Vector3 spawnPos) {
+        _agent.enabled = false;
         transform.position = spawnPos;
+        _agent.enabled = true;
         _agent.speed = _core.Speed;
         
         // Make range account for distance between closest point on each capsule w/ random offset to reduce clumping.

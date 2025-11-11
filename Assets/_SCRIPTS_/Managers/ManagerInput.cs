@@ -64,7 +64,6 @@ public class ManagerInput : MonoBehaviour {
         }
         else if (IsTouching) {
             if (touchPress.isPressed) {
-                
                 OnTouchPositionInput?.Invoke(TouchPos);
             }
             else {

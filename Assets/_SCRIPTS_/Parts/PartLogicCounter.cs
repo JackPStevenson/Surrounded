@@ -10,21 +10,13 @@ public class PartLogicCounter : Part {
     public bool loopCounter = true;
     private int _currentCount;
 
-    // ------ COUNT INCREMENTING ------
+    // ------ PART FUNCTIONS ------
     
-    /// Increments counter by 1 when invoked.
     protected override void InvokeLogic() => ModCount(1);
-    
-    /// Modifies count by given amount.
     public void ModCount(int modifier) {
-        _currentCount = (_currentCount + modifier) % (maxCount + 1);
-        
-        // If minimum count for activation is 0 or lower, mark Activated when current count reaches max count.
-        if (minCountForActivation <= 0) Activated = _currentCount == maxCount;
-        // Otherwise, mark Activated when current count reaches or exceeds minimum activation count.
-        else Activated = _currentCount >= Mathf.Min(maxCount, minCountForActivation);
+        _currentCount = Mathf.Clamp(_currentCount + modifier, 0, maxCount);
+        if (loopCounter) _currentCount %= (maxCount + 1);
+        Activated = _currentCount >= (minCountForActivation > 0 ? Mathf.Min(maxCount, minCountForActivation) : maxCount);
     }
-
-    /// Resets count to 0.
-    public override void Reset() => ModCount(-_currentCount);
+    public override void Reset() => ModCount(-maxCount);
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data Weapon Swipe", menuName = "Data/Weapon/Swipe")]
+[CreateAssetMenu(fileName = "D_Weapon_Swipe", menuName = "Data/Weapon/Swipe")]
 public class DataWeaponSwipe : DataWeapon {
     [Header("Swiping")]
     public float maxPathDistance = 5;
