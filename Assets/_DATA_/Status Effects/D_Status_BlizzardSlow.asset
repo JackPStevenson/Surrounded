@@ -21,4 +21,8 @@ MonoBehaviour:
     additive: 0
     baseModifier: 0.5
     statusInfluence: 1
+  - type: 4
+    additive: 0
+    baseModifier: 0.5
+    statusInfluence: 1
   dynamicAffectors: []
