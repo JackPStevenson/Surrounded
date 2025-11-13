@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dcdc6e2e33a5d14781f5d80c5e5f098, type: 3}
+  m_Name: PerkBoxRewards
+  m_EditorClassIdentifier: 
+  rewards:
+  - {fileID: 11400000, guid: d4d6ee06f9c2c654cac4993fdac96d7d, type: 2}
+  - {fileID: 11400000, guid: 125b71d879771b940b5a4c2bbce289b2, type: 2}
