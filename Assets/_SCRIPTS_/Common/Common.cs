@@ -2,6 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[Serializable]
+public struct StringUIntPair {
+    public string str;
+    public uint value;
+
+    public StringUIntPair(string str, uint value) { this.str = str; this.value = value; }
+    public bool Compare(string compareTo) => string.CompareOrdinal(str, compareTo) == 0;
+}
+
 public enum GameState {
     Intermission,
     InProgress,

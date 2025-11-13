@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491fecf7db3c0a14a9e3abe9c8e53119, type: 3}
   m_Name: D_Bundle_Master
   m_EditorClassIdentifier: 
-  BundleWeapons: {fileID: 11400000, guid: 14ae5023fe4a7ca4c818640b5b34e47c, type: 2}
-  BundlePerksPlayer: {fileID: 11400000, guid: bc6edf5dddfc7874a8a865bba44a8245, type: 2}
+  TapWeapons: {fileID: 11400000, guid: f27e63e3a7959aa478e44bdad0e8808b, type: 2}
+  SwipeWeapons: {fileID: 11400000, guid: fafce743c118c3c49af7724f16ee80e4, type: 2}
+  ShakeWeapons: {fileID: 11400000, guid: 690e5a3f5fc137e46be88e43330262d5, type: 2}
+  Perks: {fileID: 11400000, guid: bc6edf5dddfc7874a8a865bba44a8245, type: 2}
   BundleZombies: {fileID: 11400000, guid: c970eade7a0b6dd429763ae2334773d7, type: 2}

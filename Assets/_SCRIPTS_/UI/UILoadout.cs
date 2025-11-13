@@ -18,8 +18,10 @@ public class UILoadout : MonoBehaviour {
     
     [Header("Bundles")]
     public DataBundleMaster masterBundle;
-    private DataBundleWeapons Weapons => masterBundle.BundleWeapons;
-    private DataBundlePerksPlayer PerksPlayer => masterBundle.BundlePerksPlayer;
+    private DataBundleWeapons TapWeapons => masterBundle.TapWeapons;
+    private DataBundleWeapons SwipeWeapons => masterBundle.SwipeWeapons;
+    private DataBundleWeapons ShakeWeapons => masterBundle.ShakeWeapons;
+    private DataBundlePerks Perks => masterBundle.Perks;
 
     [Header("General")]
     public UIGridSelect gridSelect;
@@ -47,16 +49,16 @@ public class UILoadout : MonoBehaviour {
         gridSelect.OnSelected += OnSelected;
 
         Loadout.ClearTaps();
-        Loadout.AddTap(Weapons.DefaultTap);
-        tapDisplay.SetInfo(Weapons.DefaultTap);
+        Loadout.AddTap(TapWeapons.FirstTap);
+        tapDisplay.SetInfo(TapWeapons.FirstTap);
             
         Loadout.ClearSwipes();
-        Loadout.AddSwipe(Weapons.DefaultSwipe);
-        swipeDisplay.SetInfo(Weapons.DefaultSwipe);
+        Loadout.AddSwipe(SwipeWeapons.FirstSwipe);
+        swipeDisplay.SetInfo(SwipeWeapons.FirstSwipe);
         
         Loadout.ClearShakes();
-        Loadout.AddShake(Weapons.DefaultShake);
-        shakeDisplay.SetInfo(Weapons.DefaultShake);
+        Loadout.AddShake(ShakeWeapons.FirstShake);
+        shakeDisplay.SetInfo(ShakeWeapons.FirstShake);
 
         perk1Display.SetInfo("None", "", null);
         perk2Display.SetInfo("None", "", null);
@@ -70,12 +72,12 @@ public class UILoadout : MonoBehaviour {
         if (type is SelectType.None || _currentSelectType is not SelectType.None) return;
         
         switch (type) {
-            case SelectType.WeaponTap: gridSelect.Initialize(Weapons.GetItems<DataWeaponTap>(), "Tap Weapon"); break;
-            case SelectType.WeaponSwipe: gridSelect.Initialize(Weapons.GetItems<DataWeaponSwipe>(), "Swipe Weapon"); break;
-            case SelectType.WeaponShake: gridSelect.Initialize(Weapons.GetItems<DataWeaponShake>(), "Shake Weapon"); break;
-            case SelectType.Perk1: gridSelect.Initialize(PerksPlayer.PlayerPerks.ToArray(), "Perk 1"); break;
-            case SelectType.Perk2: gridSelect.Initialize(PerksPlayer.PlayerPerks.ToArray(), "Perk 2"); break;
-            case SelectType.Perk3: gridSelect.Initialize(PerksPlayer.PlayerPerks.ToArray(), "Perk 3"); break;
+            case SelectType.WeaponTap: gridSelect.Initialize(TapWeapons.Taps, "Tap Weapon"); break;
+            case SelectType.WeaponSwipe: gridSelect.Initialize(SwipeWeapons.Swipes, "Swipe Weapon"); break;
+            case SelectType.WeaponShake: gridSelect.Initialize(ShakeWeapons.Shakes, "Shake Weapon"); break;
+            case SelectType.Perk1: gridSelect.Initialize(Perks.Perks, "Perk 1"); break;
+            case SelectType.Perk2: gridSelect.Initialize(Perks.Perks, "Perk 2"); break;
+            case SelectType.Perk3: gridSelect.Initialize(Perks.Perks, "Perk 3"); break;
         }
         
         _currentSelectType = type;
@@ -85,40 +87,40 @@ public class UILoadout : MonoBehaviour {
         
         switch (_currentSelectType) {
             case SelectType.WeaponTap:
-                DataWeaponTap tap = Weapons.GetItems<DataWeaponTap>()[index];
+                DataWeaponTap tap = TapWeapons.Taps[index];
                 Loadout.ClearTaps();
                 Loadout.AddTap(tap);
                 tapDisplay.SetInfo(tap);
                 break;
             
             case SelectType.WeaponSwipe:
-                DataWeaponSwipe swipe = Weapons.GetItems<DataWeaponSwipe>()[index];
+                DataWeaponSwipe swipe = SwipeWeapons.Swipes[index];
                 Loadout.ClearSwipes();
                 Loadout.AddSwipe(swipe);
                 swipeDisplay.SetInfo(swipe);
                 break;
             
             case SelectType.WeaponShake:
-                DataWeaponShake shake = Weapons.GetItems<DataWeaponShake>()[index];
+                DataWeaponShake shake = ShakeWeapons.Shakes[index];
                 Loadout.ClearShakes();
                 Loadout.AddShake(shake);
                 shakeDisplay.SetInfo(shake);
                 break;
             
             case SelectType.Perk1:
-                DataPerkPlayer perk1 = PerksPlayer.PlayerPerks[index];
+                DataPerkPlayer perk1 = Perks.Perks[index];
                 Loadout.SetPerkPlayer(perk1, 0);
                 perk1Display.SetInfo(perk1);
                 break;
             
             case SelectType.Perk2:
-                DataPerkPlayer perk2 = PerksPlayer.PlayerPerks[index];
+                DataPerkPlayer perk2 = Perks.Perks[index];
                 Loadout.SetPerkPlayer(perk2, 1);
                 perk2Display.SetInfo(perk2);
                 break;
             
             case SelectType.Perk3:
-                DataPerkPlayer perk3 = PerksPlayer.PlayerPerks[index];
+                DataPerkPlayer perk3 = Perks.Perks[index];
                 Loadout.SetPerkPlayer(perk3, 2);
                 perk3Display.SetInfo(perk3);
                 break;

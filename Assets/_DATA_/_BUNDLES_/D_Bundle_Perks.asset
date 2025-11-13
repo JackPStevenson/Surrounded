@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7f3d3da2e1545dfabb0a5d18ed9b048, type: 3}
-  m_Name: D_Bundle_PerksPlayer
+  m_Name: D_Bundle_Perks
   m_EditorClassIdentifier: 
   PlayerPerks:
   - {fileID: 11400000, guid: 9f9427410aa891f4a8053daaaf771694, type: 2}
