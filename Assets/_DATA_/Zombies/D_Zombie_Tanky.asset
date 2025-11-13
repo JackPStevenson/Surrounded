@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 9058431072282217707, guid: 96942307100deb64ca87b5935fb42f0b,
     type: 3}
-  health: 450
-  speed: 1
-  attackDamage: 45
+  health: 350
+  speed: 0.75
+  attackDamage: 25
   attackRange: 0.2
-  attackRate: 1
+  attackSpeed: 0.7
   minimumSpawnWave: 3
-  spawnWeight: 0.2
+  spawnWeight: 0.4

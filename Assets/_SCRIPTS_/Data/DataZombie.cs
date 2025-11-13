@@ -16,7 +16,7 @@ public class DataZombie : ScriptableObject {
     [Header("Attacking")]
     public float attackDamage = 1;
     public float attackRange = 1;
-    [FormerlySerializedAs("attackInterval")] public float attackRate = 1.2f;
+    public float attackSpeed = 1.2f;
     
     [Header("Spawning")]
     public int minimumSpawnWave;
