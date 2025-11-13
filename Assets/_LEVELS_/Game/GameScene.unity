@@ -4011,6 +4011,7 @@ Transform:
   - {fileID: 688456245}
   m_Father: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1681058023 stripped
 GameObject:
@@ -4018,6 +4019,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1284681794}
   m_PrefabAsset: {fileID: 0}
+=======
+  m_LocalEulerAnglesHint: {x: 35, y: -45, z: 0}
+>>>>>>> Stashed changes
 =======
   m_LocalEulerAnglesHint: {x: 35, y: -45, z: 0}
 >>>>>>> Stashed changes
