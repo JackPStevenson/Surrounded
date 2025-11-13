@@ -202,7 +202,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
     
     /// Attempt to attack current target. Will wait for attack interval to fully elapse. Returns remaining health of hit object
     float TryAttack() {
-        if (_lastAttack + _core.Data.attackRate > Time.time) return -1; // Only deal damage if attack interval has fully elapsed.
+        if (_lastAttack + _core.AttackInterval > Time.time) return -1; // Only deal damage if attack interval has fully elapsed.
         
         // Damage target, reset hit timer, and return health left of hit target.
         float healthLeft = _currentTarget.DealDamage(_core.Damage);

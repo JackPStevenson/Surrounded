@@ -25,4 +25,4 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 64
-  maxPathDistance: 5
+  maxPathDistance: 7.5

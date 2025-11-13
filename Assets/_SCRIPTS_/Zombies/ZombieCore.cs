@@ -17,13 +17,16 @@ public class ZombieCore : CharacterCore {
     // --- BASE PARAMETERS ---
     public float Speed => Status.ModConst(AffectorConstType.Speed, _data.speed);
     public float Damage => Status.ModConst(AffectorConstType.Damage, _data.attackDamage);
-    public float AttackRate => Status.ModConst(AffectorConstType.AttackSpeed, _data.attackRate);
+    public float AttackSpeed => Status.ModConst(AffectorConstType.AttackSpeed, _data.attackSpeed);
+    public float AttackInterval => 1f / Mathf.Max(AttackSpeed, 0.000001f);
     public float MaxHealth => Status.ModConst(AffectorConstType.MaxHealth, _data.health);
     public float Range => Status.ModConst(AffectorConstType.Range, _data.attackRange);
     
     // --- STATE PARAMETERS ---
     public Vector3 Velocity => Nav.Velocity;
+    public float CurrentSpeed => Nav.Velocity.magnitude;
     public Vector3 TargetDirection => Nav.TargetDirection;
+    public bool IsMoving => Nav.NavState is NavState.Moving;
     
     public float CurrentResist => Status.ModConst(AffectorConstType.Resistance, 1);
     

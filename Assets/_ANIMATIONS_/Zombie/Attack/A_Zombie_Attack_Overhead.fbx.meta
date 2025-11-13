@@ -34,8 +34,8 @@ ModelImporter:
       name: Zombie Attack Overhead
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 70
-      lastFrame: 160
+      firstFrame: 75
+      lastFrame: 165
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

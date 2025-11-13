@@ -11,6 +11,7 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
     private readonly static int Attack = Animator.StringToHash("OnAttack");
     private readonly static int Death = Animator.StringToHash("OnDeath");
     private readonly static int Damaged = Animator.StringToHash("OnDamaged");
+    private readonly static int AttackSpeedScalar = Animator.StringToHash("AttackSpeedScalar");
     private const float AnimSmoothing = 0.000001f;
 
     public bool useRunningAnimation = false;
@@ -46,16 +47,20 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
         Vector3 targetDir = Vector3.Scale(Core.TargetDirection, new Vector3(1, 0, 1)).normalized;
         if (targetDir.magnitude > 0) transform.rotation = Quaternion.LookRotation(targetDir);
 
-        // Update animator move parameter based on zombie's current velocity. Smoothly transition value to prevent choppiness.
-        //float targetMoveState = Mathf.Clamp01(Core.Velocity.magnitude);
-        float targetMoveState = Core.Nav.NavState is NavState.Moving ? 1 : 0;
-        _moveState = Common.SmoothLerp(_moveState, targetMoveState, AnimSmoothing, Time.fixedDeltaTime);
-
-        Anim.SetFloat(UseRunningAnim, useRunningAnimation ? 1 : 0);
+        // Record current state parameters.
+        bool isMoving = Core.IsMoving;
+        float moveStateTarget = isMoving ? 1 : 0;
+        float moveSpeedScalar = Mathf.Max(isMoving ? Core.CurrentSpeed : Core.AttackSpeed);
+        
+        // Update animator parameters.
+        _moveState = Common.SmoothLerp(_moveState, moveStateTarget, AnimSmoothing, Time.fixedDeltaTime);
+        
         Anim.SetFloat(MoveState, _moveState);
-
-        float speedDelta = Core.Velocity.magnitude * 0.9f;
-        Anim.SetFloat(MoveSpeedScalar, speedDelta);
+        
+        Anim.SetFloat(MoveSpeedScalar, moveSpeedScalar);
+        Anim.SetFloat(UseRunningAnim, useRunningAnimation ? 1 : 0);
+        
+        Anim.SetFloat(AttackSpeedScalar, Core.AttackSpeed);
     }
 
     // ------ EVENT METHODS ------
