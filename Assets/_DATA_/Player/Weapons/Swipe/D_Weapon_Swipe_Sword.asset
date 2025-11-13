@@ -21,9 +21,9 @@ MonoBehaviour:
   damage: 0
   range: 0.5
   penetration: -1
-  energyRegenRate: 2.12
+  energyRegenRate: 0.16666667
   energyCost: 1
   hitMask:
     serializedVersion: 2
     m_Bits: 64
-  maxPathDistance: 10
+  maxPathDistance: 15

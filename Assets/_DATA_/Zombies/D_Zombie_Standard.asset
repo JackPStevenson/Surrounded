@@ -18,6 +18,6 @@ MonoBehaviour:
   speed: 1
   attackDamage: 15
   attackRange: 0.2
-  attackRate: 1.2
+  attackSpeed: 0.85
   minimumSpawnWave: 0
   spawnWeight: 1

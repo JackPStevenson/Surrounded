@@ -34,8 +34,8 @@ ModelImporter:
       name: Zombie Attack Headbutt
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 65
-      lastFrame: 155
+      firstFrame: 75
+      lastFrame: 165
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

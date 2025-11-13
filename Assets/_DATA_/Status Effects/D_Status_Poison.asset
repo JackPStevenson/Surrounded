@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: D_Status_Poison
   m_EditorClassIdentifier: 
   name: Poison
-  duration: 4
+  duration: 5
   stackable: 0
   potencyScalar: 1
   constantAffectors: []
   dynamicAffectors:
   - type: 0
-    basePotency: 20
+    basePotency: 15
     statusInfluence: 1
