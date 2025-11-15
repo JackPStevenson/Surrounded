@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayClickSound()
     {
-        AudioManager.PlaySoundByIndex(SoundType.UI, 0, 1f);
+        AudioManager.instance.PlaySoundByIndex(SoundType.UI, 0, 1f);
     }
 
     public void PlayLootBoxOpenedSound()

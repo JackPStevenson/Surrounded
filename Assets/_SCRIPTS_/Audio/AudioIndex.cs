@@ -45,4 +45,22 @@ public class AudioIndex : ScriptableObject
     {
         return ZombieGroup.GetClip(index);
     }
+
+    public void PrintAllClipNames()
+    {
+        Debug.Log("Perk Clips");
+        PerkGroup.PrintAudioList();
+        Debug.Log("Poor Soul Clips");
+        PoorSoulGroup.PrintAudioList();
+        Debug.Log("Shake Clips");
+        ShakeGroup.PrintAudioList();
+        Debug.Log("Swipe Clips");
+        SwipeGroup.PrintAudioList();
+        Debug.Log("Tap Clips");
+        TapGroup.PrintAudioList();
+        Debug.Log("UI Clips");
+        UIGroup.PrintAudioList();
+        Debug.Log("Zombie Clips");
+        ZombieGroup.PrintAudioList();
+    }
 }

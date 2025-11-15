@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: PoorSoulAudioGroup
   m_EditorClassIdentifier: 
   _type: 1
-  _clips: []
+  _clips:
+  - {fileID: 8300000, guid: bf6d904d6b6f28e4d820a164500493a3, type: 3}
+  - {fileID: 8300000, guid: 62559e26e2bbda74d8450201ead8c4a5, type: 3}

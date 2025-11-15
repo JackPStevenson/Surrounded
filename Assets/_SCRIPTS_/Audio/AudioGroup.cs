@@ -33,13 +33,14 @@ public class AudioGroup : ScriptableObject
     }
 
     // prints the audio clip names and corresponding index
+    [ContextMenu("Dev/Print All Clip Names")]
     public void PrintAudioList()
     {
-        string msg = "index | name\n";
+        string msg = "\nindex | name\n";
         for (int i = 0; i < _clips.Length; i++)
         {
             AudioClip clip = _clips[i];
-            msg += i + " | " + clip.ToString() + "\n";
+            msg += i + " | " + clip.name.ToString() + "\n";
         }
         Debug.Log(msg);
     }
