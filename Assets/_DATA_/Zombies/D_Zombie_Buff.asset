@@ -21,3 +21,6 @@ MonoBehaviour:
   attackSpeed: 0.6
   minimumSpawnWave: 5
   spawnWeight: 0.2
+  hurtSound: SFX_BuffZombieHurt
+  attackSound: SFX_BuffZombieAttack
+  deathSound: SFX_BuffZombieDeath
