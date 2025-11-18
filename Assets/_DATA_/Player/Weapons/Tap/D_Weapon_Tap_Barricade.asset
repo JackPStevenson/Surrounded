@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5940aef6bc7bbd84db592da062a605e7, type: 3}
+  m_Name: D_Weapon_Tap_Barricade
+  m_EditorClassIdentifier: 
+  displayName: Barricade Tap
+  description: Does no damage, but heals tapped barricades. Spawns additional brricades
+    if none were hit.
+  icon: {fileID: 21300000, guid: 03947114a0e50df49bfa29c91e20678d, type: 3}
+  minWaveToUnlock: 6
+  prefab: {fileID: 4983778374549918329, guid: e8849c8fcbea155409c4df32430e3b1b, type: 3}
+  damage: -30
+  range: 0.25
+  penetration: -1
+  energyRegenRate: 1.2
+  energyCost: 0.3
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 256
