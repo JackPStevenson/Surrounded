@@ -54,6 +54,8 @@ public class ManagerLoadout : MonoBehaviour {
     void ApplyLoadout() {
         _weapons = ManagerWeapon.Instance;
         _player = PlayerCore.Instance;
+        print(_player);
+        print(_weapons);
         
         if (!_weapons || !_player) return;
 

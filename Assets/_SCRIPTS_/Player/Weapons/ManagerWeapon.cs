@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ManagerWeapon : MonoBehaviour {
-    public event Action<WeaponBase, int> EventWeaponEquip;
+    public event Action<DataWeapon, int> EventWeaponEquip;
     public static ManagerWeapon Instance;
     private ManagerInput _managerInput;
     
@@ -128,9 +128,9 @@ public class ManagerWeapon : MonoBehaviour {
         for (int i = 0; i < swipeWeapons.Count; i++) swipeWeapons[i]?.ToggleWeapon(i == activeSwipe);
         for (int i = 0; i < shakeWeapons.Count; i++) shakeWeapons[i]?.ToggleWeapon(i == activeShake);
 
-        EventWeaponEquip?.Invoke(CurrentTap, 0);
-        EventWeaponEquip?.Invoke(CurrentSwipe, 1);
-        EventWeaponEquip?.Invoke(CurrentShake, 2);
+        EventWeaponEquip?.Invoke(CurrentTap.Data, 0);
+        EventWeaponEquip?.Invoke(CurrentSwipe.Data, 1);
+        EventWeaponEquip?.Invoke(CurrentShake.Data, 2);
     }
 
     // ------ HELPER METHODS ------

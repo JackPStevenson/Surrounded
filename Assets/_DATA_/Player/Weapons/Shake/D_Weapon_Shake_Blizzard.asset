@@ -20,7 +20,7 @@ MonoBehaviour:
   damage: 0
   range: -1
   penetration: -1
-  energyRegenRate: 0.033333335
+  energyRegenRate: 0.0625
   energyCost: 1
   hitMask:
     serializedVersion: 2
