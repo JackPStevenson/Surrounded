@@ -26,10 +26,11 @@ public class Health : MonoBehaviour {
     public void Reset() => HealthCurrentRatio = 1;
 
     public float DealDamage(float damage, string damageSource = "") {
+        if(HealthCurrent <= 0) return 0;
+        
         // If health has attached status effect, apply current resistance to incoming damage.
         float modifiedDmg = GetModifiedDamage(damage);
         if (Mathf.Approximately(modifiedDmg, 0)) return HealthCurrent;
-
         if(damageSource.Length > 0) _lastDamageSource = damageSource;
         
         float damageToRatio = modifiedDmg / GetModifiedMaxHealth();
