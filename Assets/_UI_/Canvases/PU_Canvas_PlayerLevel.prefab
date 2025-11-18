@@ -3163,6 +3163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelProgressObject: {fileID: 9002974254071855204}
   levelText: {fileID: 8998773771433496408}
+  rewardsIndex: {fileID: 0}
+  rewardButtonParent: {fileID: 0}
   a: 0
   b: 0
 --- !u!1 &3617991227401173190

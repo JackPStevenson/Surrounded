@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 9058431072282217707, guid: c17514fb1753d944aa75c1a1a8eaee12,
     type: 3}
-  health: 60
-  speed: 1.6
+  name: Fast Zombie
+  health: 75
+  speed: 2
   attackDamage: 7.5
   attackRange: 0.2
-  attackSpeed: 1.2
+  attackSpeed: 1.25
   minimumSpawnWave: 2
   spawnWeight: 0.6
   hurtSound: SFX_FastZombieHurt
   attackSound: SFX_FastZombieAttack
   deathSound: SFX_FastZombieDeath
+  experienceOnDeath: 10

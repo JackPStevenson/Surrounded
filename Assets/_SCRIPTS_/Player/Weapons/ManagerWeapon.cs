@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ManagerWeapon : MonoBehaviour {
+    public event Action<WeaponBase, int> EventWeaponEquip;
     public static ManagerWeapon Instance;
     private ManagerInput _managerInput;
-
-    public UIWeaponEnergy tapSlot;
-    public UIWeaponEnergy swipeSlot;
-    public UIWeaponEnergy shakeSlot;
     
     [Header("Tapping")]
     public float floorHeight = 0;
@@ -21,14 +18,17 @@ public class ManagerWeapon : MonoBehaviour {
     private bool _useFallback = false;
     public List<WeaponTap> tapWeapons = new List<WeaponTap>();
     public WeaponTap CurrentTap => activeTap > -1 && tapWeapons != null && activeTap < tapWeapons.Count ? tapWeapons[activeTap] : null;
+    public DataWeaponTap CurrentTapData => CurrentTap ? CurrentTap.Data : null;
     [Space]
     public int activeSwipe = 0;
     public List<WeaponSwipe> swipeWeapons = new List<WeaponSwipe>();
     public WeaponSwipe CurrentSwipe => activeSwipe > -1 && swipeWeapons != null && activeSwipe < swipeWeapons.Count ? swipeWeapons[activeSwipe] : null;
+    public DataWeaponSwipe CurrentSwipeData => CurrentSwipe ? CurrentSwipe.Data : null;
     [Space]
     public int activeShake = 0;
     public List<WeaponShake> shakeWeapons = new List<WeaponShake>();
     public WeaponShake CurrentShake => activeShake > -1 && shakeWeapons != null && activeShake < shakeWeapons.Count ? shakeWeapons[activeShake] : null;
+    public DataWeaponShake CurrentShakeData => CurrentShake ? CurrentShake.Data : null;
     
     private Camera _camera;
     private Plane _floor;
@@ -91,12 +91,6 @@ public class ManagerWeapon : MonoBehaviour {
         CurrentShake?.OnShake();
     }
 
-    private void FixedUpdate() {
-        if(CurrentTap) tapSlot.SetCharge(CurrentTap.CurrentEnergy);
-        if(CurrentSwipe) swipeSlot.SetCharge(CurrentSwipe.CurrentEnergy);
-        if(CurrentShake) shakeSlot.SetCharge(CurrentShake.CurrentEnergy);
-    }
-
     // ------ ADDING WEAPONS ------
 
     public void AddTap(DataWeaponTap d) {
@@ -133,10 +127,10 @@ public class ManagerWeapon : MonoBehaviour {
         for (int i = 0; i < tapWeapons.Count; i++) tapWeapons[i]?.ToggleWeapon(i == activeTap && !_useFallback);
         for (int i = 0; i < swipeWeapons.Count; i++) swipeWeapons[i]?.ToggleWeapon(i == activeSwipe);
         for (int i = 0; i < shakeWeapons.Count; i++) shakeWeapons[i]?.ToggleWeapon(i == activeShake);
-        
-        if(CurrentTap && CurrentTap.Data) tapSlot.display.SetIcon(CurrentTap.Data.icon);
-        if(CurrentSwipe && CurrentSwipe.Data) swipeSlot.display.SetIcon(CurrentSwipe.Data.icon);
-        if(CurrentShake && CurrentShake.Data) shakeSlot.display.SetIcon(CurrentShake.Data.icon);
+
+        EventWeaponEquip?.Invoke(CurrentTap, 0);
+        EventWeaponEquip?.Invoke(CurrentSwipe, 1);
+        EventWeaponEquip?.Invoke(CurrentShake, 2);
     }
 
     // ------ HELPER METHODS ------

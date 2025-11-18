@@ -1,13 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(ZombiesPool))]
 public class ManagerZombies : MonoBehaviour {
     public static ManagerZombies Instance;
+    public ZombiesPool ZombiePool => _zombiesPool;
     private ZombiesPool _zombiesPool;
     private ManagerWave _managerWave;
     
@@ -36,11 +34,11 @@ public class ManagerZombies : MonoBehaviour {
 
     void Awake() {
         Instance = this;
+        TryGetComponent(out _zombiesPool);
     }
 
     void Start() {
         _managerWave = ManagerWave.Instance;
-        TryGetComponent(out _zombiesPool);
         
         _managerWave.OnHordeSpawn += SpawnZombieHorde;
         _managerWave.EventTrickleSpawn += SpawnZombieRandom;

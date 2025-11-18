@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ManagerLevel : MonoBehaviour {
-    public static ManagerLevel Instance;
+public class ManagerScene : MonoBehaviour {
+    public static ManagerScene Instance;
     public event Action<int> OnAboutToLoadScene;
 
     // ------ START METHODS ------

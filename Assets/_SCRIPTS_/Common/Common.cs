@@ -1,14 +1,33 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public struct StringUIntPair {
+public class StringIntPair {
     public string str;
-    public uint value;
+    public int value;
 
-    public StringUIntPair(string str, uint value) { this.str = str; this.value = value; }
-    public bool Compare(string compareTo) => string.CompareOrdinal(str, compareTo) == 0;
+    public StringIntPair(string str, int value) { this.str = str; this.value = value; }
+    public bool CompareName(string compareTo) => string.CompareOrdinal(str, compareTo) == 0;
+    public void ModValue(int delta) => value += delta;
+
+    // ------ HELPER METHODS ------
+    
+    public static int TryGetFromList(List<StringIntPair> list, string name, int fallback) {
+        // Try to find entry with given name. If found, add return its value. Otherwise, return fallback.
+        return list.FirstOrDefault(t => t.CompareName(name))?.value ?? fallback;
+    }
+    
+    public static void TryAddToList(List<StringIntPair> list, string name, int value) {
+        // Try to find entry with given name.
+        StringIntPair entry = list.FirstOrDefault(t => t.CompareName(name));
+        
+        // If entry was found, add kills to it. Otherwise, make new entry.
+        if (entry != null) entry.ModValue(value);
+        else list.Add(new StringIntPair(name, value));
+    }
 }
 
 public enum GameState {

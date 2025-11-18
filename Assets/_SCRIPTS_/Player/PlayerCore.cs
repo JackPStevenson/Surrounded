@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerCore : CharacterCore {
@@ -27,5 +28,9 @@ public class PlayerCore : CharacterCore {
     
     protected override void OnActivate() { 
         Health.SetMaxHealth(maxHealth);
+    }
+
+    private void OnDestroy() {
+        Instance = null;
     }
 }

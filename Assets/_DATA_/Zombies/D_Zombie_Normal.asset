@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c8c80cadbf033842b3bf8305c9a3b9f, type: 3}
-  m_Name: D_Zombie_Standard
+  m_Name: D_Zombie_Normal
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 9058431072282217707, guid: c9b2ff8b6cbb3614a93c05b65c165163,
     type: 3}
+  name: Normal Zombie
   health: 100
   speed: 1
   attackDamage: 15
   attackRange: 0.2
-  attackSpeed: 0.85
+  attackSpeed: 1
   minimumSpawnWave: 0
   spawnWeight: 1
   hurtSound: SFX_StandardZombieHurt
   attackSound: SFX_StandardZombieAttack
   deathSound: SFX_StandardZombieDeath
+  experienceOnDeath: 10

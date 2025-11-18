@@ -3455,6 +3455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayItemPrefab: {fileID: 5099761522915629263, guid: 801250cdf4f9e7e4a94cc3c4ca76210c,
     type: 3}
+  Items: []
 --- !u!114 &7947158195828317555
 MonoBehaviour:
   m_ObjectHideFlags: 0
