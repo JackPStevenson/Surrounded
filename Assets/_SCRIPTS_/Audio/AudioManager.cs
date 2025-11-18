@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
@@ -52,6 +53,8 @@ public class AudioManager : MonoBehaviour
 
     public void DisplayClips(SoundType type)
     {
+
+
         switch (type)
         {
             case SoundType.Zombie:
@@ -81,7 +84,49 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public static void PlaySoundByIndex(SoundType type, int index, float volume = 1)
+    public int FindSoundIndex(SoundType type, string name)
+    {
+
+        AudioClip[] clips = null;
+        switch (type)
+        {
+            case SoundType.Zombie:
+                clips = audioIndex.ZombieGroup.AudioClips;
+                break;
+            case SoundType.UI:
+                clips = audioIndex.UIGroup.AudioClips;
+                break;
+            case SoundType.PoorSoul:
+                clips = audioIndex.PoorSoulGroup.AudioClips;
+                break;
+            case SoundType.Tap:
+                clips = audioIndex.TapGroup.AudioClips;
+                break;
+            case SoundType.Swipe:
+                clips = audioIndex.SwipeGroup.AudioClips;
+                break;
+            case SoundType.Shake:
+                clips = audioIndex.ShakeGroup.AudioClips;
+                break;
+            case SoundType.Perk:
+                clips = audioIndex.PerkGroup.AudioClips;
+                break;
+        }
+
+        if (clips != null)
+        {
+            for (int i = 0; i < clips.Length; i++)
+            {
+                if (clips[i].name == name)
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public void PlaySoundByIndex(SoundType type, int index, float volume = 1)
     {
         // get the group, then the audio, then play it
         switch (type)
@@ -111,5 +156,11 @@ public class AudioManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    [ContextMenu("Dev/Print All Clip Names")]
+    public void PrintAllClips()
+    {
+        audioIndex.PrintAllClipNames();
     }
 }

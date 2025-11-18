@@ -21,3 +21,6 @@ MonoBehaviour:
   attackSpeed: 0.7
   minimumSpawnWave: 3
   spawnWeight: 0.4
+  hurtSound: SFX_TankyZombieHurt
+  attackSound: SFX_TankyZombieAttack
+  deathSound: SFX_TankyZombieDeath
