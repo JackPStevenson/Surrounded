@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scenes/Daniel Scene.meta
+guid: b98dcaee4fe0eda49a64816e3f9f3a52
+=======
 guid: 8f4189381d0f14c41bfae31c24a09112
+>>>>>>> dev:Assets/_LEVELS_/Testing/Daniel Scene.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
