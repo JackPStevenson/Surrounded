@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public abstract class DataDisplayable : ScriptableObject {
+public abstract class DataDisplayable : ScriptableObject, IComparable<DataDisplayable> {
     [Header("Display Info")]
     public string displayName;
     public string description;
     public Sprite icon;
-    public int minWaveToUnlock = 0;
+    public int levelToUnlock;
+
+    public int CompareTo(DataDisplayable other) => levelToUnlock.CompareTo(other.levelToUnlock);
 }

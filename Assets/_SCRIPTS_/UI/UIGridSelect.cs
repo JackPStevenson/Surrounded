@@ -23,11 +23,10 @@ public class UIGridSelect : MonoBehaviour {
     public void Initialize<T>(T[] displayables, string typeName) where T : DataDisplayable {
         if (!_grid) Awake();
         
-        int maxWaveReached = PlayerPrefs.GetInt("MaxWaveReached", 1);
+        Array.Sort(displayables);
         _items = new UIDisplayItem[displayables.Length];
-        for (int i = 0; i < displayables.Length; i++) {
-            MakeDisplayItem(displayables, i, maxWaveReached);
-        }
+        for (int i = 0; i < displayables.Length; i++)
+            MakeDisplayItem(displayables, i);
 
         if (_chooseText) _chooseText.text = "Choose a " + typeName;
         gameObject.SetActive(true);
@@ -48,11 +47,11 @@ public class UIGridSelect : MonoBehaviour {
 
     public List<GameObject> Items = new List<GameObject>();
     /// Makes display item from given displayable at given index in items array. Additionally adds listener to display item's button.
-    private void MakeDisplayItem<T>(T[] displayables, int index, int maxWaveReached) where T : DataDisplayable {
+    private void MakeDisplayItem<T>(T[] displayables, int index) where T : DataDisplayable {
         GameObject e = Instantiate(displayItemPrefab, _grid);
         e.TryGetComponent(out UIDisplayItem i);
         Items.Add(e);
-        i.SetInfo(displayables[index], maxWaveReached);
+        i.SetInfo(displayables[index], ManagerSaveLoad.GetLevel());
         i.Button.onClick.AddListener(() => Select(index));
         _items[index] = i;
     }
