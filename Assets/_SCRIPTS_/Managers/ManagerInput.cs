@@ -4,9 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.Serialization;
 
-public class ManagerInput : MonoBehaviour {
+public class ManagerInput : MonoSingleton<ManagerInput> {
     public readonly static float MinSwipeDistance = 0.75f;
-    public static ManagerInput Instance;
     
     // General
     public bool IsTouching { get; private set; }
@@ -38,16 +37,16 @@ public class ManagerInput : MonoBehaviour {
     
     // ------ START METHODS ------
 
-    private void Awake() {
-        Instance = this;
-        
+    protected override void OnAwake() {
         _lowPassValue = Vector3.up;
+        
         _accel = Accelerometer.current;
         if (_accel == null) return;
-        
         InputSystem.EnableDevice(_accel);
         _accel.samplingFrequency = 60f;
     }
+    
+    // ------ UPDATE METHODS ------
 
     void Update() {
         if (Touchscreen.current == null)

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public class PlayerCore : CharacterCore {
-    public static PlayerCore Instance;
+    public static PlayerCore Inst;
 
     [Header("Vitality")]
     public float maxHealth = 100;
@@ -11,7 +11,7 @@ public class PlayerCore : CharacterCore {
     // ------ START METHODS ------
     
     void Awake() {
-        Instance = this;
+        Inst = this;
         Initialize();
         Activate();
     }
@@ -31,6 +31,6 @@ public class PlayerCore : CharacterCore {
     }
 
     private void OnDestroy() {
-        Instance = null;
+        Inst = null;
     }
 }

@@ -2,31 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerStatTracker : MonoBehaviour {
-    public static PlayerStatTracker Instance;
-    
-    ManagerZombies _zombies;
-    PlayerCore _player;
+public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
     
     // ------ START METHODS ------
 
-    void Awake() {
-        if (Instance) {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-            return;
-        }
-        
-        Instance = this;
-    }
+    protected override void OnAwake() { }
 
     void Start() {
-        _zombies = ManagerZombies.Instance;
-        print(_zombies);
-        _player = PlayerCore.Instance;
-        
-        _zombies.ZombiePool.EventZombieReturned += OnZombieReturnedToPool;
-        _player.EventDeath += OnPlayerDeath;
+        ManagerZombies.Inst.ZombiePool.EventZombieReturned += OnZombieReturnedToPool;
+        PlayerCore.Inst.EventDeath += OnPlayerDeath;
     }
 
     // ------ EVENT METHODS ------

@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ManagerLoadout : MonoBehaviour {
-    public static ManagerLoadout Instance;
-
-    private ManagerWeapon _weapons;
-    private PlayerCore _player;
-
+public class ManagerLoadout : MonoSingleton<ManagerLoadout> {
     // --- TAP WEAPONS ---
     private readonly List<DataWeaponTap> _tapWeapons = new List<DataWeaponTap>();
     public void AddTap(DataWeaponTap data) => _tapWeapons.Add(data);
@@ -34,16 +29,8 @@ public class ManagerLoadout : MonoBehaviour {
 
     // ------ START METHODS ------
 
-    void Awake() {
-        if (Instance) {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-            return;
-        }
-        
-        Instance = this;
+    protected override void OnAwake() {
         DontDestroyOnLoad(gameObject);
-        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
@@ -52,18 +39,11 @@ public class ManagerLoadout : MonoBehaviour {
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) => ApplyLoadout();
 
     void ApplyLoadout() {
-        _weapons = ManagerWeapon.Instance;
-        _player = PlayerCore.Instance;
-        
-        if (!_weapons || !_player) return;
+        if (!ManagerWeapon.Inst) return;
 
-        foreach (DataWeaponTap w in _tapWeapons) if(w) _weapons.AddTap(w);
-        foreach (DataWeaponSwipe w in _swipeWeapons) if(w) _weapons.AddSwipe(w);
-        foreach (DataWeaponShake w in _shakeWeapons) if(w) _weapons.AddShake(w);
-        foreach (DataPerkPlayer t in _playerPerks) if(t) _player.AddPerk(t);
-    }
-
-    private void OnDestroy() {
-        Instance = null;
+        foreach (DataWeaponTap w in _tapWeapons) if(w) ManagerWeapon.Inst.AddTap(w);
+        foreach (DataWeaponSwipe w in _swipeWeapons) if(w) ManagerWeapon.Inst.AddSwipe(w);
+        foreach (DataWeaponShake w in _shakeWeapons) if(w) ManagerWeapon.Inst.AddShake(w);
+        foreach (DataPerkPlayer t in _playerPerks) if(t) PlayerCore.Inst.AddPerk(t);
     }
 }

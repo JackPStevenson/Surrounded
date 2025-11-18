@@ -21,7 +21,7 @@ public class PartAffectorDamage : PartAffector {
             if (_hitCompTracker.Any(c => c == comp)) return;
             _hitCompTracker.Add(comp);
         }
-        comp.DealDamage(ownedByPlayer ? PlayerCore.Instance.Status.ModConst(AffectorConstType.Damage, damage) : damage);
+        comp.DealDamage(ownedByPlayer ? PlayerCore.Inst.Status.ModConst(AffectorConstType.Damage, damage) : damage);
     }
     
     public override void Reset() {
