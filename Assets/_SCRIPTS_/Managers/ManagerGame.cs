@@ -1,12 +1,9 @@
 using System;
 using UnityEngine;
 
-public class ManagerGame : MonoBehaviour {
+public class ManagerGame : MonoSingleton<ManagerGame> {
     public event Action<GameState, int> OnGameStateChanged;
     public static ManagerGame Instance;
-
-    private ManagerWave _managerWave;
-    private PlayerCore _player;
 
     private GameState _gameState = GameState.Intermission;
     private int _currentWave;
@@ -22,27 +19,18 @@ public class ManagerGame : MonoBehaviour {
 
     // ------ START FUNCTIONS ------
 
-    void Awake() {
-        Instance = this;
-    }
+    protected override void OnAwake() { }
 
     void Start() {
-        _managerWave = ManagerWave.Instance;
-        _managerWave.OnAllZombiesDead += OnAllZombiesDead;
-
-        _player = PlayerCore.Instance;
-        _player.Health.EventDeath += EventPlayerDeath;
-
-        _managerWave.SetMainTarget(_player.Health);
+        PlayerCore.Inst.Health.EventDeath += EventPlayerDeath;
+        
+        ManagerWave.Inst.OnAllZombiesDead += OnAllZombiesDead;
+        ManagerWave.Inst.SetMainTarget(PlayerCore.Inst.Health);
 
         SetGameState(GameState.Intermission);
     }
 
     // ------ UPDATE FUNCTIONS ------
-
-    void Update() {
-
-    }
 
     void FixedUpdate() {
         if (_gameState is not GameState.Intermission) return;
@@ -90,5 +78,4 @@ public class ManagerGame : MonoBehaviour {
     public float GetRemainingIntermission() => Mathf.Max(intermissionTime - (Time.time - _lastIntermission));
     public GameState GetGameState() => _gameState;
     public int GetCurrentWave() => Mathf.Max(_currentWave, 1);
-    public PlayerCore GetPoorSoul() => _player;
 }

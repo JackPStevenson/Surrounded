@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ZombiesPool))]
-public class ManagerZombies : MonoBehaviour {
-    public static ManagerZombies Instance;
-    public ZombiesPool ZombiePool => _zombiesPool;
-    private ZombiesPool _zombiesPool;
-    private ManagerWave _managerWave;
+public class ManagerZombies : MonoSingleton<ManagerZombies> {
+    public ZombiesPool ZombiePool => _zombiePool;
+    private ZombiesPool _zombiePool;
     
-    // --- DELEGATES ---
-
     [Header("References")]
     public GameObject zombieBasePrefab;
     public DataStatusEffect zombieScalarStatusEffect;
@@ -25,41 +21,38 @@ public class ManagerZombies : MonoBehaviour {
     [Header("Spawning")]
     public Transform[] spawnPoints;
     public List<DataZombie> ZombieDataEntries => masterBundle.BundleZombies.Zombies;
-    public int ActiveZombieCount => _zombiesPool.ActiveZombieCount;
+    public int ActiveZombieCount => ZombiePool.ActiveZombieCount;
     private int _spawnRandSeed = 0;
 
     private int _tick;
     
     // ------ START FUNCTIONS ------
 
-    void Awake() {
-        Instance = this;
-        TryGetComponent(out _zombiesPool);
+    protected override void OnAwake() {
+        TryGetComponent(out _zombiePool);
     }
 
     void Start() {
-        _managerWave = ManagerWave.Instance;
-        
-        _managerWave.OnHordeSpawn += SpawnZombieHorde;
-        _managerWave.EventTrickleSpawn += SpawnZombieRandom;
-        _managerWave.OnAllZombiesDead += DepletePool;
+        ManagerWave.Inst.OnHordeSpawn += SpawnZombieHorde;
+        ManagerWave.Inst.EventTrickleSpawn += SpawnZombieRandom;
+        ManagerWave.Inst.OnAllZombiesDead += DepletePool;
     }
     
     // ------ UPDATE FUNCTIONS ------
 
     void Update() {
-        _zombiesPool.UpdateCustom(Time.deltaTime);
+        ZombiePool.UpdateCustom(Time.deltaTime);
     }
 
     void FixedUpdate() {
-        _zombiesPool.FixedUpdateCustom(Time.deltaTime, _tick);
+        ZombiePool.FixedUpdateCustom(Time.deltaTime, _tick);
         _tick++;
     }
 
     // ------ EVENT FUNCTIONS ------
 
     /// Destroys all zombies in or made from pool.
-    public void DepletePool() => _zombiesPool.Deplete();
+    public void DepletePool() => ZombiePool.Deplete();
     
     // ------ ZOMBIE SPAWNING/RETURNING ------
     
@@ -69,7 +62,7 @@ public class ManagerZombies : MonoBehaviour {
     
     /// Spawns a zombie type with data at given data index.
     private ZombieCore SpawnZombieSpecific(int dataIndex, int currentWave) {
-        ZombieCore z = _zombiesPool.Get(ZombieDataEntries[dataIndex], spawnPoints[Random.Range(0, spawnPoints.Length)].position);
+        ZombieCore z = ZombiePool.Get(ZombieDataEntries[dataIndex], spawnPoints[Random.Range(0, spawnPoints.Length)].position);
         z.TryAddEffect(zombieScalarStatusEffect, false, currentWave - 1);
         return z;
     }

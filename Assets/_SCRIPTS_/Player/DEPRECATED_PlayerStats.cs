@@ -22,9 +22,9 @@ public class ZombieSquashedData
     }
 }
 
-public class PlayerStats : MonoBehaviour
+public class DEPRECATED_PlayerStats : MonoBehaviour
 {
-    public static PlayerStats instance;
+    public static DEPRECATED_PlayerStats instance;
 
     private int _highestRoundReached = 0;
     [SerializeField] private int _zombieBlood = 0;

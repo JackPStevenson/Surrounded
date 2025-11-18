@@ -3,14 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ManagerHUD : MonoBehaviour {
-    public static ManagerHUD Instance;
-
-    ManagerGame _managerGame;
-    ManagerWave _managerWave;
-    ManagerWeapon _managerWeapon;
-    PlayerCore _player;
-    ManagerZombies _managerZombies;
+public class ManagerHUD : MonoSingleton<ManagerHUD> {
 
     [Header("HUD Elements")]
     public GameObject hordeText;
@@ -27,63 +20,64 @@ public class ManagerHUD : MonoBehaviour {
     private Slider _shakeEnergySlider;
     
     // ------ START METHODS ------
-
-    void Awake() {
-        Instance = this;
-        
+    
+    protected override void OnAwake() {
         tapDisplay.transform.Find("Slider").TryGetComponent(out _tapEnergySlider);
         swipeDisplay.transform.Find("Slider").TryGetComponent(out _swipeEnergySlider);
         shakeDisplay.transform.Find("Slider").TryGetComponent(out _shakeEnergySlider);
     }
 
     void Start() {
-        _managerGame = ManagerGame.Instance;
-        _managerWave = ManagerWave.Instance;
-        _player = PlayerCore.Instance;
-        _managerZombies = ManagerZombies.Instance;
-        _managerWeapon = ManagerWeapon.Instance;
-
-        _managerWave.EventHordeSpawnNotify += HordeSpawnNotify;
-        _managerWeapon.EventWeaponEquip += OnWeaponEquip;
+        ManagerWave.Inst.EventHordeSpawnNotify += HordeSpawnNotify;
+        ManagerWeapon.Inst.EventWeaponEquip += OnWeaponEquip;
+        
+        OnWeaponEquip(ManagerWeapon.Inst.CurrentTap?.Data, 0);
+        OnWeaponEquip(ManagerWeapon.Inst.CurrentSwipe?.Data, 1);
+        OnWeaponEquip(ManagerWeapon.Inst.CurrentShake?.Data, 2);
     }
 
     // ------ UPDATE METHODS ------
     
     void Update() {
-        healthSlider.value = _player.Health.HealthRatio;
-        switch (_managerGame.GetGameState()) {
+        healthSlider.value = PlayerCore.Inst.Health.HealthRatio;
+        switch (ManagerGame.Inst.GetGameState()) {
             default:
             case GameState.Intermission:
-                waveProgressText.text = "Wave " + _managerGame.GetCurrentWave() + " in " + Mathf.Ceil(_managerGame.GetRemainingIntermission());
-                waveProgressSlider.value = _managerGame.GetRemainingIntermission() / _managerGame.intermissionTime;
+                waveProgressText.text = "Wave " + ManagerGame.Inst.GetCurrentWave() + " in " + Mathf.Ceil(ManagerGame.Inst.GetRemainingIntermission());
+                waveProgressSlider.value = ManagerGame.Inst.GetRemainingIntermission() / ManagerGame.Inst.intermissionTime;
                 break;
 
             case GameState.InProgress:
-                waveProgressText.text = "Wave " + _managerGame.GetCurrentWave();
-                waveProgressSlider.value = _managerWave.GetWaveProgress();
+                waveProgressText.text = "Wave " + ManagerGame.Inst.GetCurrentWave();
+                waveProgressSlider.value = ManagerWave.Inst.GetWaveProgress();
                 break;
 
             case GameState.Dead:
                 break;
         }
 
-        _tapEnergySlider.value = (_managerWeapon.CurrentTap) ? _managerWeapon.CurrentTap.CurrentEnergy : 0;
-        _swipeEnergySlider.value = (_managerWeapon.CurrentSwipe) ? _managerWeapon.CurrentSwipe.CurrentEnergy : 0;
-        _shakeEnergySlider.value = (_managerWeapon.CurrentShake) ? _managerWeapon.CurrentShake.CurrentEnergy : 0;
+        UpdateSliders();
+    }
+
+    void UpdateSliders() {
+        _tapEnergySlider.value = ManagerWeapon.Inst.CurrentTapEnergy;
+        _swipeEnergySlider.value = ManagerWeapon.Inst.CurrentSwipeEnergy;
+        _shakeEnergySlider.value = ManagerWeapon.Inst.CurrentShakeEnergy;
     }
     
     // ------ EVENT METHODS ------
 
     void OnWeaponEquip(DataWeapon weapon, int slot) {
+        print(1);
         switch (slot) {
             default:
-                tapDisplay.SetIcon(weapon.icon);
+                tapDisplay.SetIcon(weapon?.icon);
                 break;
             case 1:
-                swipeDisplay.SetIcon(weapon.icon);
+                swipeDisplay.SetIcon(weapon?.icon);
                 break;
             case 2:
-                shakeDisplay.SetIcon(weapon.icon);
+                shakeDisplay.SetIcon(weapon?.icon);
                 break;
         }
     }
@@ -92,7 +86,7 @@ public class ManagerHUD : MonoBehaviour {
 
     IEnumerator DisplayText() {
         hordeText.SetActive(true);
-        yield return new WaitForSeconds(_managerWave.hordeStartDelay);
+        yield return new WaitForSeconds(ManagerWave.Inst.hordeStartDelay);
         hordeText.SetActive(false);
     }
 }

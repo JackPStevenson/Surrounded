@@ -11,10 +11,7 @@ public enum SelectType {
     Perk3,
 }
 
-public class UILoadout : MonoBehaviour {
-    public static UILoadout Instance;
-
-    protected ManagerLoadout Loadout;
+public class UILoadout : MonoSingleton<UILoadout> {
     
     [Header("Bundles")]
     public DataBundleMaster masterBundle;
@@ -38,24 +35,21 @@ public class UILoadout : MonoBehaviour {
 
     // ------ START METHODS ------
     
-    void Awake() {
-        Instance = this;
-    }
+    protected override void OnAwake() { }
 
     void Start() {
-        Loadout = ManagerLoadout.Instance;
         gridSelect.OnSelected += OnSelected;
 
-        Loadout.ClearTaps();
-        Loadout.AddTap(masterBundle.defaultTap);
+        ManagerLoadout.Inst.ClearTaps();
+        ManagerLoadout.Inst.AddTap(masterBundle.defaultTap);
         tapDisplay.SetInfo(masterBundle.defaultTap);
             
-        Loadout.ClearSwipes();
-        Loadout.AddSwipe(masterBundle.defaultSwipe);
+        ManagerLoadout.Inst.ClearSwipes();
+        ManagerLoadout.Inst.AddSwipe(masterBundle.defaultSwipe);
         swipeDisplay.SetInfo(masterBundle.defaultSwipe);
         
-        Loadout.ClearShakes();
-        Loadout.AddShake(masterBundle.defaultShake);
+        ManagerLoadout.Inst.ClearShakes();
+        ManagerLoadout.Inst.AddShake(masterBundle.defaultShake);
         shakeDisplay.SetInfo(masterBundle.defaultShake);
 
         perk1Display.SetInfo("None", "", null);
@@ -86,40 +80,40 @@ public class UILoadout : MonoBehaviour {
         switch (_currentSelectType) {
             case SelectType.WeaponTap:
                 DataWeaponTap tap = Weapons.Taps[index];
-                Loadout.ClearTaps();
-                Loadout.AddTap(tap);
+                ManagerLoadout.Inst.ClearTaps();
+                ManagerLoadout.Inst.AddTap(tap);
                 tapDisplay.SetInfo(tap);
                 break;
             
             case SelectType.WeaponSwipe:
                 DataWeaponSwipe swipe = Weapons.Swipes[index];
-                Loadout.ClearSwipes();
-                Loadout.AddSwipe(swipe);
+                ManagerLoadout.Inst.ClearSwipes();
+                ManagerLoadout.Inst.AddSwipe(swipe);
                 swipeDisplay.SetInfo(swipe);
                 break;
             
             case SelectType.WeaponShake:
                 DataWeaponShake shake = Weapons.Shakes[index];
-                Loadout.ClearShakes();
-                Loadout.AddShake(shake);
+                ManagerLoadout.Inst.ClearShakes();
+                ManagerLoadout.Inst.AddShake(shake);
                 shakeDisplay.SetInfo(shake);
                 break;
             
             case SelectType.Perk1:
                 DataPerkPlayer perk1 = Perks.Perks[index];
-                Loadout.SetPerkPlayer(perk1, 0);
+                ManagerLoadout.Inst.SetPerkPlayer(perk1, 0);
                 perk1Display.SetInfo(perk1);
                 break;
             
             case SelectType.Perk2:
                 DataPerkPlayer perk2 = Perks.Perks[index];
-                Loadout.SetPerkPlayer(perk2, 1);
+                ManagerLoadout.Inst.SetPerkPlayer(perk2, 1);
                 perk2Display.SetInfo(perk2);
                 break;
             
             case SelectType.Perk3:
                 DataPerkPlayer perk3 = Perks.Perks[index];
-                Loadout.SetPerkPlayer(perk3, 2);
+                ManagerLoadout.Inst.SetPerkPlayer(perk3, 2);
                 perk3Display.SetInfo(perk3);
                 break;
         }

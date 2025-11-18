@@ -39,11 +39,11 @@ public class LevelingScreenManager : MonoBehaviour
     public void UpdateLevelDisplay()
     {
         // get player level
-        int level = (int)PlayerLevel.instance.CurrentLevel;
+        int level = (int)DEPRECATED_PlayerLevel.instance.CurrentLevel;
         // get player experience
-        int experience = (int)PlayerLevel.instance.Experience;
+        int experience = (int)DEPRECATED_PlayerLevel.instance.Experience;
         // get xp requirement for next level
-        int xpReq = (int)PlayerLevel.instance.GetCurrentXPRequirement();
+        int xpReq = (int)DEPRECATED_PlayerLevel.instance.GetCurrentXPRequirement();
         levelText.SetText("Current Level\n" + level.ToString());
         // loop through all the sliders
         int numChildren = levelProgressObject.childCount;

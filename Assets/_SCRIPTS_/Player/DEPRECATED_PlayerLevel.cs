@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class PlayerLevel : MonoBehaviour
+public class DEPRECATED_PlayerLevel : MonoBehaviour
 {
     [SerializeField] private LevelingRewardsIndex rewardsIndex;
-    public static PlayerLevel instance;
+    public static DEPRECATED_PlayerLevel instance;
 
     public uint _level = 0;
     public uint _experience = 0;
@@ -119,7 +119,6 @@ public static class PlayerData
 
     public static void Save(uint _level, uint _experience)
     {
-        Debug.Log("Saved level as: " + _level + " and experience as " + _experience);
         PlayerPrefs.SetInt(K_LEVEL, unchecked((int)_level));
         PlayerPrefs.SetInt(K_EXPERIENCE, unchecked((int)_experience));
         PlayerPrefs.Save();
