@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(ZombiesPool))]
 public class ManagerZombies : MonoBehaviour {
     public static ManagerZombies Instance;
+    public ZombiesPool ZombiePool => _zombiesPool;
     private ZombiesPool _zombiesPool;
     private ManagerWave _managerWave;
     

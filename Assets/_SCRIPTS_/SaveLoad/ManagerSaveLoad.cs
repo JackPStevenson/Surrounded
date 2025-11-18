@@ -12,9 +12,12 @@ public class ManagerSaveLoad : MonoBehaviour {
     public string PlayerSavePath => DataDir + PlayerSaveName + ".json";
     public string PlayerSettingsPath => DataDir + PlayerSettingsName + ".json";
 
-
+    [SerializeField]
     private SaveLoadPlayer _playerSave;
+    [Space]
+    [SerializeField]
     private SaveLoadSettings _playerSettings;
+    
     private bool PlayerSaveLoaded => _playerSave != null;
     private bool SettingsLoaded => _playerSettings != null;
     
@@ -42,7 +45,6 @@ public class ManagerSaveLoad : MonoBehaviour {
         }
         Instance = this;
         
-        ClearAllData();
         DontDestroyOnLoad(gameObject);
         LoadData();
     }
@@ -66,7 +68,6 @@ public class ManagerSaveLoad : MonoBehaviour {
             _playerSave ??= new SaveLoadPlayer();
             SaveData();
         }
-        
     }
 
     private void LoadSettings() {
@@ -81,20 +82,22 @@ public class ManagerSaveLoad : MonoBehaviour {
     // ------ RESET METHODS ------
     
     private void ResetPlayerSave() {
-        Debug.Log("Wiping Player Save");
         if (!PlayerSaveLoaded) return;
-        try {
-            File.Delete(PlayerSavePath);
-        }
+        
+        try { File.Delete(PlayerSavePath); }
         catch (Exception e) { /* ignore */ }
+        
+        _playerSave = null;
         LoadPlayerSave();
     }
     
     private void ResetSettings() {
-        Debug.Log("Wiping Settings");
         if (!SettingsLoaded) return;
+        
         try { File.Delete(PlayerSettingsPath); }
         catch (Exception e) { /* ignore */ }
+        
+        _playerSettings = null;
         LoadSettings();
     }
 }

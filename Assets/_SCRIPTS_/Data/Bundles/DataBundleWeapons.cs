@@ -6,20 +6,27 @@ using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "D_Bundle_Weapons", menuName = "Data/Bundle/Weapons")]
 public class DataBundleWeapons : DataBundle {
+    
     [Header("Weapons")]
     public List<DataWeapon> weapons;
     
-    public DataWeapon First() => weapons[0];
-    public T First<T>() where T : DataWeapon => GetFirst<T, DataWeapon>(weapons);
-    public T[] GetWeapons<T>() where T : DataWeapon => GetItems<T, DataWeapon>(weapons);
-
+    // ------ FETCH METHODS ------
     
-    public DataWeaponTap FirstTap => Taps[0];
+    private T[] GetWeapons<T>() where T : DataWeapon => GetItems<T, DataWeapon>(weapons);
+    private T First<T>() where T : DataWeapon => GetFirst<T, DataWeapon>(weapons);
+    
+    // ------ TAP FETCH METHODS ------
+    
     public DataWeaponTap[] Taps => GetWeapons<DataWeaponTap>();
+    public DataWeaponTap FirstTap => First<DataWeaponTap>();
     
-    public DataWeaponSwipe FirstSwipe => Swipes[0];
+    // ------ SWIPE FETCH METHODS ------
+    
     public DataWeaponSwipe[] Swipes => GetWeapons<DataWeaponSwipe>();
+    public DataWeaponSwipe FirstSwipe => First<DataWeaponSwipe>();
     
-    public DataWeaponShake FirstShake => Shakes[0];
+    // ------ SHAKE FETCH METHODS ------
+    
     public DataWeaponShake[] Shakes => GetWeapons<DataWeaponShake>();
+    public DataWeaponShake FirstShake => First<DataWeaponShake>();
 }
