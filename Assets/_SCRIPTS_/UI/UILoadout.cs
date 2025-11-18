@@ -18,9 +18,7 @@ public class UILoadout : MonoBehaviour {
     
     [Header("Bundles")]
     public DataBundleMaster masterBundle;
-    private DataBundleWeapons TapWeapons => masterBundle.TapWeapons;
-    private DataBundleWeapons SwipeWeapons => masterBundle.SwipeWeapons;
-    private DataBundleWeapons ShakeWeapons => masterBundle.ShakeWeapons;
+    private DataBundleWeapons Weapons => masterBundle.Weapons;
     private DataBundlePerks Perks => masterBundle.Perks;
 
     [Header("General")]
@@ -49,16 +47,16 @@ public class UILoadout : MonoBehaviour {
         gridSelect.OnSelected += OnSelected;
 
         Loadout.ClearTaps();
-        Loadout.AddTap(TapWeapons.FirstTap);
-        tapDisplay.SetInfo(TapWeapons.FirstTap);
+        Loadout.AddTap(masterBundle.defaultTap);
+        tapDisplay.SetInfo(masterBundle.defaultTap);
             
         Loadout.ClearSwipes();
-        Loadout.AddSwipe(SwipeWeapons.FirstSwipe);
-        swipeDisplay.SetInfo(SwipeWeapons.FirstSwipe);
+        Loadout.AddSwipe(masterBundle.defaultSwipe);
+        swipeDisplay.SetInfo(masterBundle.defaultSwipe);
         
         Loadout.ClearShakes();
-        Loadout.AddShake(ShakeWeapons.FirstShake);
-        shakeDisplay.SetInfo(ShakeWeapons.FirstShake);
+        Loadout.AddShake(masterBundle.defaultShake);
+        shakeDisplay.SetInfo(masterBundle.defaultShake);
 
         perk1Display.SetInfo("None", "", null);
         perk2Display.SetInfo("None", "", null);
@@ -72,9 +70,9 @@ public class UILoadout : MonoBehaviour {
         if (type is SelectType.None || _currentSelectType is not SelectType.None) return;
         
         switch (type) {
-            case SelectType.WeaponTap: gridSelect.Initialize(TapWeapons.Taps, "Tap Weapon"); break;
-            case SelectType.WeaponSwipe: gridSelect.Initialize(SwipeWeapons.Swipes, "Swipe Weapon"); break;
-            case SelectType.WeaponShake: gridSelect.Initialize(ShakeWeapons.Shakes, "Shake Weapon"); break;
+            case SelectType.WeaponTap: gridSelect.Initialize(Weapons.Taps, "Tap Weapon"); break;
+            case SelectType.WeaponSwipe: gridSelect.Initialize(Weapons.Swipes, "Swipe Weapon"); break;
+            case SelectType.WeaponShake: gridSelect.Initialize(Weapons.Shakes, "Shake Weapon"); break;
             case SelectType.Perk1: gridSelect.Initialize(Perks.Perks, "Perk 1"); break;
             case SelectType.Perk2: gridSelect.Initialize(Perks.Perks, "Perk 2"); break;
             case SelectType.Perk3: gridSelect.Initialize(Perks.Perks, "Perk 3"); break;
@@ -87,21 +85,21 @@ public class UILoadout : MonoBehaviour {
         
         switch (_currentSelectType) {
             case SelectType.WeaponTap:
-                DataWeaponTap tap = TapWeapons.Taps[index];
+                DataWeaponTap tap = Weapons.Taps[index];
                 Loadout.ClearTaps();
                 Loadout.AddTap(tap);
                 tapDisplay.SetInfo(tap);
                 break;
             
             case SelectType.WeaponSwipe:
-                DataWeaponSwipe swipe = SwipeWeapons.Swipes[index];
+                DataWeaponSwipe swipe = Weapons.Swipes[index];
                 Loadout.ClearSwipes();
                 Loadout.AddSwipe(swipe);
                 swipeDisplay.SetInfo(swipe);
                 break;
             
             case SelectType.WeaponShake:
-                DataWeaponShake shake = ShakeWeapons.Shakes[index];
+                DataWeaponShake shake = Weapons.Shakes[index];
                 Loadout.ClearShakes();
                 Loadout.AddShake(shake);
                 shakeDisplay.SetInfo(shake);

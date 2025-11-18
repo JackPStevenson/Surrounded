@@ -15,13 +15,13 @@ MonoBehaviour:
   displayName: Poison Tap
   description: Lower damage, but applies poision in a small area.
   icon: {fileID: 21300000, guid: d48ef3a8a541c844a9a9c921306c3f60, type: 3}
-  minWaveToUnlock: 3
+  levelToUnlock: 6
   prefab: {fileID: 6711824401304372354, guid: 03678fccb0d5cc54a9e06b66f4316760, type: 3}
   damage: 15
   range: 0.55
   penetration: -1
   energyRegenRate: 30
-  energyCost: 1
+  energyCost: 0
   hitMask:
     serializedVersion: 2
     m_Bits: 64

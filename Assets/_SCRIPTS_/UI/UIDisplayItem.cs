@@ -21,10 +21,10 @@ public class UIDisplayItem : MonoBehaviour {
         }
     }
 
-    public void SetInfo(DataDisplayable d, int maxWaveReached) {
-        bool waveReached = maxWaveReached >= d.minWaveToUnlock;
-        SetInfo(d.displayName, waveReached ? d.description : "Reach level " + d.minWaveToUnlock, d.icon);
-        Button.interactable = waveReached;
+    public void SetInfo(DataDisplayable d, int playerLevel) {
+        bool unlocked = playerLevel >= d.levelToUnlock;
+        SetInfo(d.displayName, unlocked ? d.description : "Locked (Lvl " + d.levelToUnlock  + ")", d.icon);
+        Button.interactable = unlocked;
     }
 
 

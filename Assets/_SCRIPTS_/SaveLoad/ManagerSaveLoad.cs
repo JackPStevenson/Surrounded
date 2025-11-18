@@ -40,8 +40,9 @@ public class ManagerSaveLoad : MonoBehaviour {
     public static int GetLevel() => Instance._playerSave.level;
     public static int GetExperience() => Instance._playerSave.experience;
     public static void AddExperience(int exp) {
-        EventPlayerGainExp?.Invoke(exp);
-        if (Instance._playerSave.AddExperience(exp) > 0)
+        EventPlayerGainExp?.Invoke(exp * 15);
+        Debug.Log("Player exp is boofin (fix for release)");
+        if (Instance._playerSave.AddExperience(exp * 15) > 0)
             EventPlayerLevelUp?.Invoke(GetLevel());
     }
     

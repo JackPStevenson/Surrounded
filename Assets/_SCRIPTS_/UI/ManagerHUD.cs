@@ -20,16 +20,20 @@ public class ManagerHUD : MonoBehaviour {
 
     [Header("Weapons")]
     public UIDisplayItem tapDisplay;
-    public Slider tapEnergySlider;
+    private Slider _tapEnergySlider;
     public UIDisplayItem swipeDisplay;
-    public Slider swipeEnergySlider;
+    private Slider _swipeEnergySlider;
     public UIDisplayItem shakeDisplay;
-    public Slider shakeEnergySlider;
+    private Slider _shakeEnergySlider;
     
     // ------ START METHODS ------
 
     void Awake() {
         Instance = this;
+        
+        tapDisplay.transform.Find("Slider").TryGetComponent(out _tapEnergySlider);
+        swipeDisplay.transform.Find("Slider").TryGetComponent(out _swipeEnergySlider);
+        shakeDisplay.transform.Find("Slider").TryGetComponent(out _shakeEnergySlider);
     }
 
     void Start() {
@@ -63,9 +67,9 @@ public class ManagerHUD : MonoBehaviour {
                 break;
         }
 
-        tapEnergySlider.value = (_managerWeapon.CurrentTap) ? _managerWeapon.CurrentTap.CurrentEnergy : 0;
-        swipeEnergySlider.value = (_managerWeapon.CurrentSwipe) ? _managerWeapon.CurrentSwipe.CurrentEnergy : 0;
-        shakeEnergySlider.value = (_managerWeapon.CurrentShake) ? _managerWeapon.CurrentShake.CurrentEnergy : 0;
+        _tapEnergySlider.value = (_managerWeapon.CurrentTap) ? _managerWeapon.CurrentTap.CurrentEnergy : 0;
+        _swipeEnergySlider.value = (_managerWeapon.CurrentSwipe) ? _managerWeapon.CurrentSwipe.CurrentEnergy : 0;
+        _shakeEnergySlider.value = (_managerWeapon.CurrentShake) ? _managerWeapon.CurrentShake.CurrentEnergy : 0;
     }
     
     // ------ EVENT METHODS ------

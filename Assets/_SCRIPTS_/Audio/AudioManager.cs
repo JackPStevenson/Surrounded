@@ -11,8 +11,7 @@ public enum SoundType
     UI
 }
 
-public class AudioManager : MonoBehaviour
-{
+public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioIndex audioIndex;
     public static AudioManager instance;
     private AudioSource audioSource;
@@ -21,42 +20,34 @@ public class AudioManager : MonoBehaviour
     public bool printlist = false;
     public bool printlist2 = false;
 
-    private void Awake()
-    {
+    private void Awake() {
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Update()
-    {
-        if (playsound)
-        {
+    private void Update() {
+        if (playsound) {
             playsound = false;
             PlaySoundByIndex(SoundType.Zombie, 0);
         }
-        if (printlist)
-        {
+        if (printlist) {
             printlist = false;
             DisplayClips(SoundType.Zombie);
         }
-        if (printlist2)
-        {
+        if (printlist2) {
             printlist2 = false;
             DisplayClips(SoundType.UI);
         }
     }
 
-    private void Start()
-    {
+    private void Start() {
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void DisplayClips(SoundType type)
-    {
+    public void DisplayClips(SoundType type) {
 
 
-        switch (type)
-        {
+        switch (type) {
             case SoundType.Zombie:
                 instance.audioIndex.ZombieGroup.PrintAudioList();
                 break;
@@ -84,12 +75,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public int FindSoundIndex(SoundType type, string name)
-    {
+    public int FindSoundIndex(SoundType type, string name) {
 
         AudioClip[] clips = null;
-        switch (type)
-        {
+        switch (type) {
             case SoundType.Zombie:
                 clips = audioIndex.ZombieGroup.AudioClips;
                 break;
@@ -113,12 +102,9 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        if (clips != null)
-        {
-            for (int i = 0; i < clips.Length; i++)
-            {
-                if (clips[i].name == name)
-                {
+        if (clips != null) {
+            for (int i = 0; i < clips.Length; i++) {
+                if (clips[i].name == name) {
                     return i;
                 }
             }
@@ -126,11 +112,10 @@ public class AudioManager : MonoBehaviour
         return -1;
     }
 
-    public void PlaySoundByIndex(SoundType type, int index, float volume = 1)
-    {
+    public void PlaySoundByIndex(SoundType type, int index, float volume = 1) {
         // get the group, then the audio, then play it
-        switch (type)
-        {
+        
+        switch (type) {
             case SoundType.Zombie:
                 instance.audioSource.PlayOneShot(instance.audioIndex.GetZombieSound(index), volume);
                 break;
@@ -159,8 +144,7 @@ public class AudioManager : MonoBehaviour
     }
 
     [ContextMenu("Dev/Print All Clip Names")]
-    public void PrintAllClips()
-    {
+    public void PrintAllClips() {
         audioIndex.PrintAllClipNames();
     }
 }
