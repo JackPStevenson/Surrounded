@@ -13,14 +13,17 @@ public class ManagerHUD : MonoBehaviour {
     ManagerZombies _managerZombies;
 
     [Header("HUD Elements")]
-    public GameObject _HordeText;
-    public Slider _waveProgressSlider;
-    public TMP_Text _waveProgressText;
-    public Slider _healthSlider;
+    public GameObject hordeText;
+    public Slider waveProgressSlider;
+    public TMP_Text waveProgressText;
+    public Slider healthSlider;
 
     [Header("Weapons")]
+    public UIDisplayItem tapDisplay;
     public Slider tapEnergySlider;
+    public UIDisplayItem swipeDisplay;
     public Slider swipeEnergySlider;
+    public UIDisplayItem shakeDisplay;
     public Slider shakeEnergySlider;
     
     // ------ START METHODS ------
@@ -37,22 +40,23 @@ public class ManagerHUD : MonoBehaviour {
         _managerWeapon = ManagerWeapon.Instance;
 
         _managerWave.EventHordeSpawnNotify += HordeSpawnNotify;
+        _managerWeapon.EventWeaponEquip += OnWeaponEquip;
     }
 
     // ------ UPDATE METHODS ------
     
     void Update() {
-        _healthSlider.value = _player.Health.HealthRatio;
+        healthSlider.value = _player.Health.HealthRatio;
         switch (_managerGame.GetGameState()) {
             default:
             case GameState.Intermission:
-                _waveProgressText.text = "Wave " + _managerGame.GetCurrentWave() + " in " + Mathf.Ceil(_managerGame.GetRemainingIntermission());
-                _waveProgressSlider.value = _managerGame.GetRemainingIntermission() / _managerGame.intermissionTime;
+                waveProgressText.text = "Wave " + _managerGame.GetCurrentWave() + " in " + Mathf.Ceil(_managerGame.GetRemainingIntermission());
+                waveProgressSlider.value = _managerGame.GetRemainingIntermission() / _managerGame.intermissionTime;
                 break;
 
             case GameState.InProgress:
-                _waveProgressText.text = "Wave " + _managerGame.GetCurrentWave();
-                _waveProgressSlider.value = _managerWave.GetWaveProgress();
+                waveProgressText.text = "Wave " + _managerGame.GetCurrentWave();
+                waveProgressSlider.value = _managerWave.GetWaveProgress();
                 break;
 
             case GameState.Dead:
@@ -66,11 +70,25 @@ public class ManagerHUD : MonoBehaviour {
     
     // ------ EVENT METHODS ------
 
+    void OnWeaponEquip(DataWeapon weapon, int slot) {
+        switch (slot) {
+            default:
+                tapDisplay.SetIcon(weapon.icon);
+                break;
+            case 1:
+                swipeDisplay.SetIcon(weapon.icon);
+                break;
+            case 2:
+                shakeDisplay.SetIcon(weapon.icon);
+                break;
+        }
+    }
+    
     private void HordeSpawnNotify(int intval, bool boolval) => StartCoroutine(DisplayText());
 
     IEnumerator DisplayText() {
-        _HordeText.SetActive(true);
+        hordeText.SetActive(true);
         yield return new WaitForSeconds(_managerWave.hordeStartDelay);
-        _HordeText.SetActive(false);
+        hordeText.SetActive(false);
     }
 }
