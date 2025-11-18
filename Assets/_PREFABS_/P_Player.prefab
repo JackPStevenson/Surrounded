@@ -2394,9 +2394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9464dca3b7971f54a98de7a3bdfe0d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tapSlot: {fileID: 0}
-  swipeSlot: {fileID: 0}
-  shakeSlot: {fileID: 0}
   floorHeight: 0.5
   tapOffsetTowardsCamera: 0
   tapHeightOffset: 0
@@ -2796,6 +2793,7 @@ GameObject:
   - component: {fileID: 333783503154124689}
   - component: {fileID: 2381090258564153888}
   - component: {fileID: 2077361900532515836}
+  - component: {fileID: 3045114917656183840}
   m_Layer: 0
   m_Name: P_Player
   m_TagString: Untagged
@@ -2832,6 +2830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def108bc72e7cb741b3c2f2bac7d3ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioPlayer: {fileID: 0}
   maxHealth: 100
 --- !u!114 &8819562504221582743
 MonoBehaviour:
@@ -2906,6 +2905,18 @@ MonoBehaviour:
   - PoorSoulDeath
   clipIndexes: 
   getAudioIndexAtStart: 1
+--- !u!114 &3045114917656183840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058431072282217707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8dbab2a3d5479d988e9ce34b85f14a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8433446708665674890
 PrefabInstance:
   m_ObjectHideFlags: 0

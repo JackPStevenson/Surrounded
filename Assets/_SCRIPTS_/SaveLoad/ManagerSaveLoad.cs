@@ -5,6 +5,9 @@ using UnityEngine;
 public class ManagerSaveLoad : MonoBehaviour {
     public static ManagerSaveLoad Instance;
     
+    public static event Action<int> EventPlayerGainExp;
+    public static event Action<int> EventPlayerLevelUp;
+    
     private const string PlayerSaveName = "PlayerSave";
     private const string PlayerSettingsName = "PlayerSettings";
     private static string DataDir => Application.persistentDataPath + "/";
@@ -21,19 +24,55 @@ public class ManagerSaveLoad : MonoBehaviour {
     private bool PlayerSaveLoaded => _playerSave != null;
     private bool SettingsLoaded => _playerSettings != null;
     
-    // ------ STATIC METHODS ------
+    // ------ STATIC SAVE LOAD METHODS ------
 
+    public static bool IsPlayerSaveLoaded => Instance.PlayerSaveLoaded;
+    public static bool IsSettingsLoaded => Instance.SettingsLoaded;
+    
     public static void ForceSave() => Instance.SaveData();
     public static void ForceLoad() => Instance.LoadData();
-    
     public static void ClearPlayerSave() => Instance.ResetPlayerSave();
     public static void ClearPlayerSettings() => Instance.ResetSettings();
     public static void ClearAllData() { ClearPlayerSave(); ClearPlayerSettings(); }
     
-    public static bool IsPlayerSaveLoaded => Instance.PlayerSaveLoaded;
-    public static bool IsSettingsLoaded => Instance.SettingsLoaded;
+    // ------ STATIC PROGRESSION METHODS ------
+    
+    public static int GetLevel() => Instance._playerSave.level;
+    public static int GetExperience() => Instance._playerSave.experience;
+    public static void AddExperience(int exp) {
+        EventPlayerGainExp?.Invoke(exp);
+        if (Instance._playerSave.AddExperience(exp) > 0)
+            EventPlayerLevelUp?.Invoke(GetLevel());
+    }
+    
+    public static int GetZombieBlood() => Instance._playerSave.zombieBlood;
+    public static void AddZombieBlood(int amount) => Instance._playerSave.AddZombieBlood(amount);
+    public static bool TrySpendZombieBlood(int cost) => Instance._playerSave.TrySpendZombieBlood(cost);
 
+    public static int GetLootboxes() => Instance._playerSave.lootboxes;
+    public static void AddLootboxes(int amount) => Instance._playerSave.AddLootboxes(amount);
+    public static bool TryConsumeLootbox() => Instance._playerSave.TryConsumeLootbox();
+    
+    public static SaveLoadFilePerk[] GetPerkInstances(string perkName) => Instance._playerSave.GetPerkInstances();
+    public static void AddPerkInstance(string perkName) => Instance._playerSave.AddPerkInstance(perkName);
+    
+    // ------ STATIC CAREER METHODS ------
 
+    public static int GetCareerMaxWave() => Instance._playerSave.careerMaxWave;
+    public static void SetCareerMaxWave(int wave) => Instance._playerSave.SetCareerMaxWave(wave);
+    
+    public static int GetCareerZombieBloodEarned() => Instance._playerSave.careerZombieBloodEarned;
+    
+    public static int GetCareerLootboxesOpened() => Instance._playerSave.careerLootboxesOpened;
+    
+    public static StringIntPair[] GetCareerZombieKillCounts() => Instance._playerSave.careerZombieKillCounts.ToArray();
+    public static int GetCareerZombieKillCount(string zombieName) => Instance._playerSave.GetCareerZombieKillCount(zombieName);
+    public static void AddCareerZombieKillCount(string zombieName, int kills = 1) => Instance._playerSave.AddCareerZombieKillCount(zombieName, kills);
+
+    public static StringIntPair[] GetCareerDeathCauses() => Instance._playerSave.careerDeathCauses.ToArray();
+    public static int GetCareerDeathCause(string deathSource) => Instance._playerSave.GetCareerDeathCause(deathSource);
+    public static void AddCareerDeathCause(string deathSource, int deaths = 1) => Instance._playerSave.AddCareerDeathCause(deathSource, deaths);
+    
     // ------ START METHODS ------
     
     void Awake() {

@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ManagerGame : MonoBehaviour
-{
+public class ManagerGame : MonoBehaviour {
     public event Action<GameState, int> OnGameStateChanged;
     public static ManagerGame Instance;
 
@@ -23,19 +22,16 @@ public class ManagerGame : MonoBehaviour
 
     // ------ START FUNCTIONS ------
 
-    void Awake()
-    {
+    void Awake() {
         Instance = this;
     }
 
-    void Start()
-    {
+    void Start() {
         _managerWave = ManagerWave.Instance;
         _managerWave.OnAllZombiesDead += OnAllZombiesDead;
 
         _player = PlayerCore.Instance;
         _player.Health.EventDeath += EventPlayerDeath;
-        _player.Health.EventDeath += loseMenu.Enable;
 
         _managerWave.SetMainTarget(_player.Health);
 
@@ -44,37 +40,28 @@ public class ManagerGame : MonoBehaviour
 
     // ------ UPDATE FUNCTIONS ------
 
-    void Update()
-    {
+    void Update() {
 
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         if (_gameState is not GameState.Intermission) return;
-
         if (_lastIntermission + intermissionTime < Time.time) SetGameState(GameState.InProgress);
     }
 
     // ------ EVENT FUNCTIONS ------
 
-    private void OnAllZombiesDead()
-    {
-        SetGameState(GameState.Intermission);
-    }
-
-    private void EventPlayerDeath()
-    {
+    private void OnAllZombiesDead() => SetGameState(GameState.Intermission);
+    private void EventPlayerDeath(string deathSource = "") {
         SetGameState(GameState.Dead);
+        loseMenu.Enable();
     }
 
-    private void SetGameState(GameState newState)
-    {
+    private void SetGameState(GameState newState) {
         _gameState = newState;
 
 
-        switch (newState)
-        {
+        switch (newState) {
             case GameState.Intermission:
                 _currentWave = Mathf.Max(_currentWave + 1, 1);
                 PlayerPrefs.SetInt("MaxWaveReached", Mathf.Max(PlayerPrefs.GetInt("MaxWaveReached", 1), _currentWave));
@@ -90,13 +77,11 @@ public class ManagerGame : MonoBehaviour
         OnGameStateChanged?.Invoke(_gameState, _currentWave);
     }
 
-    public void Pause()
-    {
+    public void Pause() {
         Time.timeScale = 0;
     }
 
-    public void Resume()
-    {
+    public void Resume() {
         Time.timeScale = 1;
     }
 
@@ -106,6 +91,4 @@ public class ManagerGame : MonoBehaviour
     public GameState GetGameState() => _gameState;
     public int GetCurrentWave() => Mathf.Max(_currentWave, 1);
     public PlayerCore GetPoorSoul() => _player;
-
-
 }

@@ -7,10 +7,11 @@ public class DataZombie : ScriptableObject {
     [Header("References")]
     public GameObject visualPrefab;
 
+    [Header("General")]
+    public new string name;
+    
     [Header("Body")]
     public float health;
-
-    [Header("Movement")]
     public float speed;
 
     [Header("Attacking")]

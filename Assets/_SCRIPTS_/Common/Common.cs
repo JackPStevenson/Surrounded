@@ -13,6 +13,13 @@ public class StringIntPair {
     public bool CompareName(string compareTo) => string.CompareOrdinal(str, compareTo) == 0;
     public void ModValue(int delta) => value += delta;
 
+    // ------ HELPER METHODS ------
+    
+    public static int TryGetFromList(List<StringIntPair> list, string name, int fallback) {
+        // Try to find entry with given name. If found, add return its value. Otherwise, return fallback.
+        return list.FirstOrDefault(t => t.CompareName(name))?.value ?? fallback;
+    }
+    
     public static void TryAddToList(List<StringIntPair> list, string name, int value) {
         // Try to find entry with given name.
         StringIntPair entry = list.FirstOrDefault(t => t.CompareName(name));

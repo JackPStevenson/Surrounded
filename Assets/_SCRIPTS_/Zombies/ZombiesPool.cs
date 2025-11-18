@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 [RequireComponent(typeof(ManagerZombies))]
 public class ZombiesPool : MonoBehaviour, IUpdateCustom {
     public event Action<ZombieCore> EventZombieSpawned;
-    public event Action<ZombieCore> EventZombieReturned;
+    public event Action<DataZombie> EventZombieReturned;
     public event Action EventPoolDepleted;
     
     private ManagerZombies _manager;
@@ -68,11 +68,11 @@ public class ZombiesPool : MonoBehaviour, IUpdateCustom {
         }
     }
     
-    public void Release(CharacterCore zombie) {
+    public void Release(CharacterCore zombie, string deathSource = "") {
         ZombieCore z = zombie as ZombieCore;
         _activeZombies.Remove(z);
         _pooledZombies.Enqueue(z);
-        EventZombieReturned?.Invoke(z);
+        EventZombieReturned?.Invoke(z?.Data);
     }
     
     public void Deplete() {

@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ManagerLoadout : MonoBehaviour {
     public static ManagerLoadout Instance;
+
+    private ManagerWeapon _weapons;
+    private PlayerCore _player;
 
     // --- TAP WEAPONS ---
     private readonly List<DataWeaponTap> _tapWeapons = new List<DataWeaponTap>();
@@ -26,20 +30,21 @@ public class ManagerLoadout : MonoBehaviour {
     private readonly DataPerkPlayer[] _playerPerks = new DataPerkPlayer[3];
     public void SetPerkPlayer(DataPerkPlayer data, int index) => _playerPerks[index] = data;
 
-    private bool configured = false;
+    private bool loadOnNextScene;
 
     // ------ START METHODS ------
 
     void Awake() {
+        if (Instance) {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+            return;
+        }
+        
         Instance = this;
-    }
-
-    void Start() {
-        if (configured) return;
         DontDestroyOnLoad(gameObject);
-
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
-        configured = true;
     }
     
     // ------ EVENT METHODS ------
@@ -47,16 +52,18 @@ public class ManagerLoadout : MonoBehaviour {
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) => ApplyLoadout();
 
     void ApplyLoadout() {
-        ManagerWeapon managerWeapon = ManagerWeapon.Instance;
-        PlayerCore player = PlayerCore.Instance;
-        if (!managerWeapon || !player) return;
+        _weapons = ManagerWeapon.Instance;
+        _player = PlayerCore.Instance;
         
+        if (!_weapons || !_player) return;
 
-        foreach (DataWeaponTap w in _tapWeapons) if(w) managerWeapon.AddTap(w);
-        foreach (DataWeaponSwipe w in _swipeWeapons) if(w) managerWeapon.AddSwipe(w);
-        foreach (DataWeaponShake w in _shakeWeapons) if(w) managerWeapon.AddShake(w);
-        foreach (DataPerkPlayer t in _playerPerks) if(t) player.AddPerk(t);
-        
-        Destroy(gameObject);
+        foreach (DataWeaponTap w in _tapWeapons) if(w) _weapons.AddTap(w);
+        foreach (DataWeaponSwipe w in _swipeWeapons) if(w) _weapons.AddSwipe(w);
+        foreach (DataWeaponShake w in _shakeWeapons) if(w) _weapons.AddShake(w);
+        foreach (DataPerkPlayer t in _playerPerks) if(t) _player.AddPerk(t);
+    }
+
+    private void OnDestroy() {
+        Instance = null;
     }
 }
