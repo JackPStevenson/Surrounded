@@ -22,11 +22,9 @@ public class UIGridSelect : MonoBehaviour {
 
     public void Initialize<T>(T[] displayables, string typeName) where T : DataDisplayable {
         if (!_grid) Awake();
-        
-        Array.Sort(displayables);
         _items = new UIDisplayItem[displayables.Length];
-        for (int i = 0; i < displayables.Length; i++)
-            MakeDisplayItem(displayables, i);
+        
+        for (int i = 0; i < displayables.Length; i++) MakeDisplayItem(displayables, i);
 
         if (_chooseText) _chooseText.text = "Choose a " + typeName;
         gameObject.SetActive(true);
@@ -51,7 +49,7 @@ public class UIGridSelect : MonoBehaviour {
         GameObject e = Instantiate(displayItemPrefab, _grid);
         e.TryGetComponent(out UIDisplayItem i);
         Items.Add(e);
-        i.SetInfo(displayables[index], ManagerSaveLoad.GetLevel());
+        i.SetInfo(displayables[index], true);
         i.Button.onClick.AddListener(() => Select(index));
         _items[index] = i;
     }

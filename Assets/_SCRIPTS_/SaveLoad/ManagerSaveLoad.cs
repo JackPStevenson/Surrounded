@@ -36,7 +36,9 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     // ------ STATIC PROGRESSION METHODS ------
     
     public static int GetLevel() => Inst._playerSave.level;
+    public static bool CheckLevel(int level) => GetLevel() >= level;
     public static int GetExperience() => Inst._playerSave.experience;
+    public static float GetLevelProgress() => (float) Inst._playerSave.experience / SaveLoadPlayer.ExperiencePerLevel;
     public static void AddExperience(int exp) {
         EventPlayerGainExp?.Invoke(exp * 15);
         Debug.Log("Player exp is boofin (fix for release)");

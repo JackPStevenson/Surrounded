@@ -12,21 +12,24 @@ public class DataBundleWeapons : DataBundle {
     
     // ------ FETCH METHODS ------
     
-    private T[] GetWeapons<T>() where T : DataWeapon => GetItems<T, DataWeapon>(weapons);
-    private T First<T>() where T : DataWeapon => GetFirst<T, DataWeapon>(weapons);
+    private T[] GetWeapons<T>(bool sorted = false) where T : DataWeapon => GetItems<T, DataWeapon>(weapons, sorted);
+    private T First<T>(bool sorted = false) where T : DataWeapon => GetFirst<T, DataWeapon>(weapons, sorted);
     
     // ------ TAP FETCH METHODS ------
     
-    public DataWeaponTap[] Taps => GetWeapons<DataWeaponTap>();
-    public DataWeaponTap FirstTap => First<DataWeaponTap>();
+    public DataWeaponTap[] Taps => GetWeapons<DataWeaponTap>(true);
+    public DataWeaponTap[] TapsUnsorted => GetWeapons<DataWeaponTap>();
+    public DataWeaponTap FirstTap => First<DataWeaponTap>(true);
     
     // ------ SWIPE FETCH METHODS ------
     
-    public DataWeaponSwipe[] Swipes => GetWeapons<DataWeaponSwipe>();
-    public DataWeaponSwipe FirstSwipe => First<DataWeaponSwipe>();
+    public DataWeaponSwipe[] Swipes => GetWeapons<DataWeaponSwipe>(true);
+    public DataWeaponSwipe[] SwipesUnsorted => GetWeapons<DataWeaponSwipe>();
+    public DataWeaponSwipe FirstSwipe => First<DataWeaponSwipe>(true);
     
     // ------ SHAKE FETCH METHODS ------
     
-    public DataWeaponShake[] Shakes => GetWeapons<DataWeaponShake>();
-    public DataWeaponShake FirstShake => First<DataWeaponShake>();
+    public DataWeaponShake[] Shakes => GetWeapons<DataWeaponShake>(true);
+    public DataWeaponShake[] ShakesUnsorted => GetWeapons<DataWeaponShake>();
+    public DataWeaponShake FirstShake => First<DataWeaponShake>(true);
 }

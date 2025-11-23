@@ -17,6 +17,7 @@ public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
     
     void OnPlayerDeath(CharacterCore obj, string deathSource) {
         ManagerSaveLoad.AddCareerDeathCause(deathSource);
+        ManagerSaveLoad.ForceSave();
     }
     
     void OnZombieReturnedToPool(DataZombie data) {
@@ -29,6 +30,8 @@ public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
         ManagerSaveLoad.AddExperience(data.experienceOnDeath);
         ManagerSaveLoad.AddCareerZombieKillCount(data.name);
     }
+    
+    
 
     void OnDestroy() {
         ManagerSaveLoad.ForceSave();
