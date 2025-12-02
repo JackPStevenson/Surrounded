@@ -10,8 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de44653037d9ee14d939ce75b989b593, type: 3}
-  m_Name: Level4Reward
+  m_Name: D_GenericReward_Perk
   m_EditorClassIdentifier: 
-  type: 0
-  ZombieBloodReward: 500
-  WeaponToAdd: {fileID: 0}
+  displayName: Perk
+  description: 
+  icon: {fileID: 21300000, guid: 629f605a0d65e8446be56ac8a989d06f, type: 3}
+  levelToUnlock: 0
+  type: 2
+  amount: 0

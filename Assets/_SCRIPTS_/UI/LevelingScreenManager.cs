@@ -29,7 +29,7 @@ public class LevelingScreenManager : MonoBehaviour {
     private void Update() {
         if (a) {
             a = false;
-            LoadRewards();
+            //LoadRewards();
         }
     }
     public void UpdateLevelDisplay() {
@@ -64,23 +64,23 @@ public class LevelingScreenManager : MonoBehaviour {
         }
     }
 
-    private void LoadRewards() {
-        Transform currentButton;
-        LevelUpReward currentReward;
-        for (int i = 0; i < rewardsIndex.rewards.Length && i < rewardButtonParent.childCount; i++) {
-            currentButton = rewardButtonParent.GetChild(i);
-            currentReward = rewardsIndex.rewards[i];
-            if (currentReward.itemToAdd != null) {
-                currentButton.GetChild(0).GetComponent<TMP_Text>().text = currentReward.itemToAdd.displayName;
-                currentButton.GetChild(1).GetComponent<Image>().sprite = currentReward.itemToAdd.icon;
-            }
-            else {
-                currentButton.GetChild(0).GetComponent<TMP_Text>().text = "Missing item ";
-            }
-        }
-    }
+    // private void LoadRewards() {
+    //     Transform currentButton;
+    //     DataLevelGenericReward currentGenericReward;
+    //     for (int i = 0; i < rewardsIndex.rewards.Length && i < rewardButtonParent.childCount; i++) {
+    //         currentButton = rewardButtonParent.GetChild(i);
+    //         currentGenericReward = rewardsIndex.rewards[i];
+    //         if (currentGenericReward.itemToAdd != null) {
+    //             currentButton.GetChild(0).GetComponent<TMP_Text>().text = currentGenericReward.itemToAdd.displayName;
+    //             currentButton.GetChild(1).GetComponent<Image>().sprite = currentGenericReward.itemToAdd.icon;
+    //         }
+    //         else {
+    //             currentButton.GetChild(0).GetComponent<TMP_Text>().text = "Missing item ";
+    //         }
+    //     }
+    // }
 
-    public LevelUpReward GetReward(int index) {
+    public DataLevelGenericReward GetReward(int index) {
         return rewardsIndex.rewards[index];
     }
 

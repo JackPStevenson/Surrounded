@@ -11,7 +11,8 @@ public class SaveLoadPlayer {
     // --- PROGRESSION ---
     public int level;
     public int experience;
-    
+
+    public int lastRewardedLevel;
     public int zombieBlood;
     public int lootboxes;
 
@@ -26,10 +27,13 @@ public class SaveLoadPlayer {
     
     // ------ CONSTRUCTORS ------
     
-    public SaveLoadPlayer(int level = 1, int experience = 0, int zombieBlood = 0, int lootboxes = 0, int careerMaxWave = 0, int careerZombieBloodEarned = 0, int careerLootboxesOpened = 0) {
+    public SaveLoadPlayer(int level = 1, int experience = 0, int lastRewardedLevel = 0, int zombieBlood = 0, int lootboxes = 0, int careerMaxWave = 0, int careerZombieBloodEarned = 0, int careerLootboxesOpened = 0) {
         this.level = level;
         this.experience = experience;
+        
+        this.lastRewardedLevel = lastRewardedLevel;
         this.zombieBlood = zombieBlood;
+        this.lootboxes = lootboxes;
         
         perkInstances = new List<SaveLoadFilePerk>();
         
@@ -54,6 +58,29 @@ public class SaveLoadPlayer {
         return levelsGained;
     }
     
+    public void UpdateLastRewardedLevel() => lastRewardedLevel = level;
+    
+    public bool CheckRewardsForPlayer(bool updateLastRewardedLevel = false) {
+        if (lastRewardedLevel >= level) return false;
+        if (updateLastRewardedLevel) lastRewardedLevel = level;
+        return true;
+    }
+    
+    public int[] GetLevelsToBeRewarded(bool updateLastRewardedLevel = false) {
+        if (lastRewardedLevel >= level) return Array.Empty<int>();
+
+        // Add each level that needs to be rewarded to a list.
+        int[] levelsToReward = new int[level - lastRewardedLevel];
+        for (int i = 1; i <= levelsToReward.Length; i++)
+            levelsToReward[i] = lastRewardedLevel + i;
+
+        if (updateLastRewardedLevel)
+            UpdateLastRewardedLevel();
+        
+        // Return list of each level to be rewarded.
+        return levelsToReward;
+    }
+    
     public void AddZombieBlood(int amount) {
         zombieBlood += Mathf.Max(amount, 0);
         careerZombieBloodEarned += Mathf.Max(amount, 0);
@@ -71,7 +98,6 @@ public class SaveLoadPlayer {
         careerLootboxesOpened++;
         return true;
     }
-
     public void AddPerkInstance(string perkName) => perkInstances.Add(new SaveLoadFilePerk(perkName));
     public SaveLoadFilePerk[] GetPerkInstances() => perkInstances.ToArray();
 

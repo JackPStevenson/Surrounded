@@ -46,6 +46,8 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
             EventPlayerLevelUp?.Invoke(GetLevel());
     }
     
+    public static int GetLastRewardedLevel() => Inst._playerSave.lastRewardedLevel;
+    public static bool CheckRewardsForPlayer(bool updateLastRewardedLevel = false) => Inst._playerSave.CheckRewardsForPlayer(updateLastRewardedLevel);
     public static int GetZombieBlood() => Inst._playerSave.zombieBlood;
     public static void AddZombieBlood(int amount) => Inst._playerSave.AddZombieBlood(amount);
     public static bool TrySpendZombieBlood(int cost) => Inst._playerSave.TrySpendZombieBlood(cost);

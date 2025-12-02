@@ -4,31 +4,38 @@ using UnityEngine.UI;
 
 public class UIDisplayItem : MonoBehaviour {
     private TMP_Text _nameText;
-    protected TMP_Text Name { get { if (!_nameText) transform.Find("Name")?.TryGetComponent(out _nameText); return _nameText; } }
+    protected TMP_Text Name => ChildAutoFetch(_nameText, "Name");
     
     private TMP_Text _descText;
-    protected TMP_Text Desc { get { if (!_descText) transform.Find("Desc")?.TryGetComponent(out _descText); return _descText; } }
+    protected TMP_Text Desc => ChildAutoFetch(_descText, "Desc");
     
     private Button _button;
-    public Button Button { get { if (!_button) TryGetComponent(out _button); return _button; } }
+    public Button Button => AutoFetch(_button);
     
     private Image _iconDisplay;
-    public Image Icon { 
-        get {
-            if (!_iconDisplay && (!transform.Find("Icon") || !transform.Find("Icon").TryGetComponent(out _iconDisplay)))
-                transform.Find("IconBorder")?.Find("Icon")?.TryGetComponent(out _iconDisplay);
-            return _iconDisplay;
-        }
-    }
+    // Icon image should be parented to either this script's transform or a child of it with name IconBorder.
+    public Image Icon => ChildAutoFetch(_iconDisplay, "Icon") ?? ChildAutoFetch(_iconDisplay, "Icon", transform.Find("IconBorder"));
 
+    // ------ SETUP METHODS ------
+    
     public virtual void SetInfo(DataDisplayable d, bool allowDescLock = false) {
         bool unlocked = ManagerSaveLoad.CheckLevel(d.levelToUnlock) || allowDescLock;
         SetInfo(d.displayName, unlocked ? d.description : "Locked (Lvl " + d.levelToUnlock  + ")", d.icon, unlocked);
     }
     public void SetInfo(string name, string desc, Sprite icon, bool buttonActive = false) { SetName(name); SetDesc(desc); SetIcon(icon); SetButton(buttonActive); }
 
+    // ------ SINGLE SETUP METHODS ------
+
     public void SetName(string name) => Name?.SetText(name);
     public void SetDesc(string desc) => Desc?.SetText(desc);
     public void SetButton(bool active) { if(Button) Button.interactable = active; }
     public void SetIcon(Sprite icon) { if (Icon) { Icon.enabled = icon; Icon.sprite = icon; } }
+
+    // ------ HELPER METHODS ------
+    
+    protected T AutoFetch<T>(T compVar) where T : Component => AutoFetch(compVar, transform);
+    protected T AutoFetch<T>(T compVar, Transform holder) where T : Component { if(!compVar) holder?.TryGetComponent(out compVar); return compVar; }
+    
+    protected T ChildAutoFetch<T>(T compVar, string child) where T : Component => ChildAutoFetch(compVar, child, transform);
+    protected T ChildAutoFetch<T>(T compVar, string child, Transform parent) where T : Component { if (!compVar) parent?.Find(child)?.TryGetComponent(out compVar); return compVar; }
 }
