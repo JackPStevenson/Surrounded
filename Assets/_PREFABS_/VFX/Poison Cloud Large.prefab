@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1295894774672546268}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.08, z: 0}
+  m_LocalPosition: {x: 0, y: 2.11, z: -2.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -70,7 +70,7 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 10, y: 1, z: 10}
+      - m_Value: {x: 20, y: 1, z: 15}
         m_Name: Box Size
         m_Overridden: 1
     m_Vector4f:
@@ -119,7 +119,7 @@ VisualEffect:
           m_NumColorKeys: 2
           m_NumAlphaKeys: 4
         m_Name: Gradient
-        m_Overridden: 1
+        m_Overridden: 0
     m_NamedObject:
       m_Array: []
     m_Bool:
