@@ -35,8 +35,7 @@ public class UIGameOver : MonoBehaviour {
     [Space]
     public UILevelRewards levelRewards;
 
-    public void StartDisplay() {
-    }
+    public void StartDisplay() => StartCoroutine(DoPerformancePanel());
 
     IEnumerator DoPerformancePanel() {
         PlayerStats stats = PlayerStatTracker.PlayerStats;

@@ -7,6 +7,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     // ------ START METHODS ------
 
     private void Awake() {
+        if (typeof(T) == typeof(ManagerGame)) Debug.Log("EEEE");
         if (Inst) {
             if (Inst != this) {
                 enabled = false;
@@ -22,10 +23,11 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     protected abstract void OnAwake();
     
     private void OnDestroy() {
-        if (Inst == this) {
-            Inst = null;
-            OnDestroyed(true);
-        }
+        // WARNING: Commented code below causes issues with saving when exiting game abruptly.
+        // if (Inst == this) {
+        //     Inst = null;
+        //     OnDestroyed(true);
+        // }
         
         OnDestroyed(false);
     }

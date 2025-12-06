@@ -9,7 +9,7 @@ public class UIDisplayItemLevelReward : UIDisplayItem {
     public Slider Slider => ChildAutoFetch<Slider>(_slider, "Slider");
 
     private Transform _nextReward;
-    protected GameObject NextReward => ChildAutoFetch(_nextReward, "Next Reward").gameObject;
+    protected GameObject NextReward => ChildAutoFetch(_nextReward, "Next Reward")?.gameObject;
 
     // ------ SETUP METHODS ------
     

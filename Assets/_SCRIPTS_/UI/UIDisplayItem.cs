@@ -19,7 +19,7 @@ public class UIDisplayItem : MonoBehaviour {
     // ------ SETUP METHODS ------
     
     public virtual void SetInfo(DataDisplayable d, bool allowLock = false) => SetInfo(d.displayName, d.description, d.icon, d.levelToUnlock, allowLock);
-    public void SetInfo(string name, string desc, Sprite icon = null, int level = 0, bool allowLock = false) { SetName(name); SetDesc(desc, level, allowLock); SetIcon(icon); SetButton(level, allowLock); }
+    public void SetInfo(string name, string desc, Sprite icon = null, int level = 0, bool allowLock = false) { gameObject.SetActive(true); SetName(name); SetDesc(desc, level, allowLock); SetIcon(icon); SetButton(level, allowLock); }
 
     // ------ SINGLE SETUP METHODS ------
 

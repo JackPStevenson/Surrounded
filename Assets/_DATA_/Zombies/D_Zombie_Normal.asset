@@ -25,4 +25,4 @@ MonoBehaviour:
   hurtSound: SFX_StandardZombieHurt
   attackSound: SFX_StandardZombieAttack
   deathSound: SFX_StandardZombieDeath
-  experienceOnDeath: 10
+  bloodOnDeath: 10

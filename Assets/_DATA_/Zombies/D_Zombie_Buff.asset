@@ -25,4 +25,4 @@ MonoBehaviour:
   hurtSound: SFX_BuffZombieHurt
   attackSound: SFX_BuffZombieAttack
   deathSound: SFX_BuffZombieDeath
-  experienceOnDeath: 50
+  bloodOnDeath: 30

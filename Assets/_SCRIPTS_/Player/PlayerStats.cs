@@ -11,12 +11,9 @@ public class PlayerStat {
 
     public PlayerStat(string name) => Name = name;
     public PlayerStat(string name, int amount) { Name = name; Amount = amount; }
-    public PlayerStat(string name, int amount, int blood, int exp) { Name = name; Amount = amount; SetBloodAndExp(blood, exp); }
+    public PlayerStat(string name, int amount, int blood, int exp) { Name = name; Amount = amount; Blood = blood; Exp = exp; }
     
     public void OffsetAmount(int offset) => Amount += offset; 
-    public void SetBloodAndExp(int blood, int exp) { Blood = blood; Exp = exp; }
-    public void OffsetBloodAndExp(int bloodOffset, int expOffset) { Blood += bloodOffset; Exp += expOffset; }
-    public void Reset() { Amount = 0; SetBloodAndExp(0, 0); }
 }
 
 public class PlayerStats {
@@ -45,22 +42,23 @@ public class PlayerStats {
         KilledBy = killedBy;
         
         // Calculate blood and experience from waves.
-        int bloodFromWaves = ManagerRewards.GetBloodFromWaves(WaveReached.Amount);
-        WaveReached.SetBloodAndExp(bloodFromWaves, ManagerRewards.GetExp(bloodFromWaves, WaveReached.Amount));
+        int waveCount = Mathf.Max(WaveReached.Amount - 1, 0);
+        WaveReached.Blood = ManagerRewards.GetBloodFromWaves(waveCount);
+        WaveReached.Exp = ManagerRewards.GetExp(WaveReached.Blood, waveCount);
 
         // Calculate blood and experience from specific zombie kills.
-        TotalZombieKills.Reset();
         foreach (PlayerStat stat in SpecificZombieKills) {
-            int bloodFromKills = ManagerRewards.GetBloodFromZombies(stat.Name, stat.Amount);
-            stat.SetBloodAndExp(bloodFromKills, ManagerRewards.GetExp(bloodFromKills, stat.Amount));
+            stat.Blood = ManagerRewards.GetBloodFromZombies(stat.Name, stat.Amount);
+            stat.Exp = ManagerRewards.GetExp(stat.Blood, stat.Amount);
             
             // Add amount, blood, and experience from specific zombie kills to total.
             TotalZombieKills.Amount += stat.Amount;
-            TotalZombieKills.OffsetBloodAndExp(stat.Blood, stat.Exp);
+            TotalZombieKills.Blood += stat.Blood;
+            TotalZombieKills.Exp += stat.Exp;
         }
         
         // Calculate total earnings from wave reached and total zombie kills.
-        TotalEarnings.Reset();
-        TotalEarnings.SetBloodAndExp(WaveReached.Blood + TotalZombieKills.Blood, WaveReached.Exp + TotalEarnings.Exp);
+        TotalEarnings.Blood = WaveReached.Blood + TotalZombieKills.Blood;
+        TotalEarnings.Exp = WaveReached.Exp + TotalZombieKills.Exp;
     }
 }

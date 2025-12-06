@@ -25,7 +25,7 @@ public class SaveLoadPlayer {
     
     // ------ CONSTRUCTORS ------
     
-    public SaveLoadPlayer(int level = 1, int experience = 0, int lastRewardLevel = 0, int zombieBlood = 0, int careerMaxWave = 0, int careerZombieBloodEarned = 0) {
+    public SaveLoadPlayer(int level = 0, int experience = 0, int lastRewardLevel = 0, int zombieBlood = 0, int careerMaxWave = 0, int careerZombieBloodEarned = 0) {
         this.level = level;
         this.experience = experience;
         

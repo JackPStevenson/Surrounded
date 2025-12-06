@@ -12,7 +12,7 @@ public class UIPerformanceStatDisplay : UIDisplayItem {
     // ------ SETUP METHODS ------
 
     public void SetInfo(PlayerStat stat) => SetInfo(stat.Name, stat.Amount, stat.Blood, stat.Exp);
-    public void SetInfo(string statName, int statAmount, int blood, int experience) { gameObject.SetActive(true); SetInfo(statName, statAmount.ToString("N0")); SetBlood(blood); SetExperience(experience); }
+    public void SetInfo(string statName, int statAmount, int blood, int experience) { SetInfo(statName, statAmount.ToString("N0")); SetBlood(blood); SetExperience(experience); }
     
     
     // ------ SINGLE SETUP METHODS ------

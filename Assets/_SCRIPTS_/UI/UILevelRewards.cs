@@ -29,10 +29,11 @@ public class UILevelRewards : MonoBehaviour {
             Toggle(false);
     }
 
-    public void Toggle(bool active, bool autoInitialize = true) => Toggle(active, false, autoInitialize);
-    public void Toggle(bool active, bool forceToggle, bool autoInitialize) {
+    public void Toggle(bool active) => Toggle(active, true, false);
+    public void Toggle(bool active, bool autoInitialize) => Toggle(active, autoInitialize, false);
+    public void Toggle(bool active, bool autoInitialize, bool forceToggle) {
+        print(active);
         if (active == gameObject.activeSelf && !forceToggle) return;
-
         bool noRewardsToShow = onlyPending && !ManagerSaveLoad.CheckForRewards();
         if (active && !noRewardsToShow) {
             if (autoInitialize) CreateRewardDisplays();
