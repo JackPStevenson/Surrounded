@@ -55,7 +55,8 @@ public class SaveLoadPlayer {
     }
     
     public void UpdateLastRewardLevel() => lastRewardLevel = level;
-    public bool HasPendingRewards() => lastRewardLevel < level;
+    public bool HasPendingRewards() => GetPendingRewardCount() > 0;
+    public int GetPendingRewardCount() => Mathf.Max(level - lastRewardLevel, 0);
     
     public int[] GetRewards() {
         if (lastRewardLevel >= level) return Array.Empty<int>();

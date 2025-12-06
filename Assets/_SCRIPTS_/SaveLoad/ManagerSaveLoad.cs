@@ -41,6 +41,7 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     public static int GetLevel(int offset = 0) => Inst._playerSave.level + offset;
     public static bool CheckLevel(int level) => level < 1 || GetLevel() >= level;
     public static int GetExperience() => Inst._playerSave.experience;
+    public static int GetExperiencePerLevel() => SaveLoadPlayer.ExperiencePerLevel;
     public static float GetLevelProgress() => (float) Inst._playerSave.experience / SaveLoadPlayer.ExperiencePerLevel;
     public static void AddExperience(int exp) {
         EventPlayerGainExp?.Invoke(exp * 15);
@@ -50,6 +51,7 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     }
 
     public static int GetLastRewardLevel() => Inst._playerSave.lastRewardLevel;
+    public static int GetPendingRewardCount() => Inst._playerSave.GetPendingRewardCount();
     public static void UpdateLastRewardLevel() => Inst._playerSave.UpdateLastRewardLevel();
     public static bool CheckForRewards() => Inst._playerSave.HasPendingRewards();
     public static int GetZombieBlood() => Inst._playerSave.zombieBlood;

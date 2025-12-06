@@ -18,11 +18,11 @@ public class UIPerformanceStatDisplay : UIDisplayItem {
     // ------ SETUP METHODS ------
 
     public void SetInfo(UIStat stat) => SetInfo(stat.Name, stat.Amount, stat.Blood, stat.Exp);
-    public void SetInfo(string statName, int statAmount, int blood, int experience) { gameObject.SetActive(true); SetInfo(statName, statAmount.ToString()); SetBlood(blood); SetExperience(experience); }
+    public void SetInfo(string statName, int statAmount, int blood, int experience) { gameObject.SetActive(true); SetInfo(statName, statAmount.ToString("N0")); SetBlood(blood); SetExperience(experience); }
     
     
     // ------ SINGLE SETUP METHODS ------
 
-    public void SetBlood(int amount) => Blood?.SetText(amount.ToString());
-    public void SetExperience(int amount) => Experience?.SetText(amount.ToString());
+    public void SetBlood(int amount) => Blood?.SetText(amount.ToString("N0"));
+    public void SetExperience(int amount) => Experience?.SetText(amount.ToString("N0"));
 }

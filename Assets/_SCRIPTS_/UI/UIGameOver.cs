@@ -24,6 +24,8 @@ public class UIGameOver : MonoBehaviour {
     public GameObject levelPanelObject;
     [Space]
     public float levelProgressTime = 3;
+    public TMP_Text currentLevelText;
+    public TMP_Text nextLevelText;
     public Slider baseLevelSlider;
     public Slider expGainedSlider;
     public UIDisplayItemLevelReward nextLevelReward;
@@ -33,12 +35,12 @@ public class UIGameOver : MonoBehaviour {
     [Space]
     public UILevelRewards levelRewards;
 
-    public void StartDisplay(UIStat wave, UIStat[] generic, UIStat totalZombieKills, UIStat[] zombieKills, UIStat totalEarnings, int startLevel, int newLevel) {
+    public void StartDisplay(UIStat wave, UIStat[] generic, UIStat totalZombieKills, UIStat[] zombieKills, UIStat totalEarnings, int startLevel, int startExp) {
         
-        StartCoroutine(DoPerformancePanel(wave, generic, totalZombieKills, zombieKills, totalEarnings, startLevel, newLevel));
+        StartCoroutine(DoPerformancePanel(wave, generic, totalZombieKills, zombieKills, totalEarnings, startLevel, startExp));
     }
 
-    IEnumerator DoPerformancePanel(UIStat wave, UIStat[] generic, UIStat totalZombieKills, UIStat[] zombieKills, UIStat totalEarnings, int startLevel, int newLevel) {
+    IEnumerator DoPerformancePanel(UIStat wave, UIStat[] generic, UIStat totalZombieKills, UIStat[] zombieKills, UIStat totalEarnings, int startLevel, int startExp) {
         UIPerformanceStatDisplay temp;
         
         // Show performance panel after delay.
@@ -66,20 +68,58 @@ public class UIGameOver : MonoBehaviour {
         // Show total earnings. After, start level panel display.
         yield return new WaitForSeconds(microDelay);
         totalEarningsDisplay.SetInfo(totalEarnings);
-        StartCoroutine(DoLevelPanel(startLevel, newLevel));
+        StartCoroutine(DoLevelPanel(startLevel, startExp));
     }
 
-    IEnumerator DoLevelPanel(int startLevel, int newLevel) {
+    IEnumerator DoLevelPanel(int startLevel, int startExp) {
         // Show level panel after delay.
         yield return new WaitForSeconds(macroDelay);
         levelPanelObject.SetActive(true);
         
-        StartCoroutine(DoRewardsPanel(newLevel));
+        yield return new WaitForSeconds(microDelay);
+        currentLevelText.text = startLevel.ToString("N0");
+        nextLevelText.text = (startLevel + 1).ToString("N0");
+
+        float startProgress = ((float) startExp / ManagerSaveLoad.GetExperiencePerLevel());
+        float targetLevelAndProgress = ManagerSaveLoad.GetLevel() + ManagerSaveLoad.GetLevelProgress();
+            
+        baseLevelSlider.value = expGainedSlider.value = startProgress;
+        
+        currentLevelText.gameObject.SetActive(true);
+        nextLevelText.gameObject.SetActive(true);
+        baseLevelSlider.gameObject.SetActive(true);
+        
+        float elapsed = 0;
+        float currentLevelAndProgress = startLevel + startProgress;
+        while (elapsed <= 1) {
+            yield return new WaitForEndOfFrame();
+            elapsed += (Time.deltaTime / Mathf.Max(levelProgressTime, 0.0001f));
+            
+            currentLevelAndProgress = Mathf.Lerp(startLevel + startProgress, targetLevelAndProgress, elapsed);
+            int currentLevel = Mathf.FloorToInt(currentLevelAndProgress);
+
+            if (currentLevel > startLevel) baseLevelSlider.value = 0;
+            expGainedSlider.value = currentLevelAndProgress % 1;
+            
+            currentLevelText.text = currentLevel.ToString("N0");
+            nextLevelText.text = (currentLevel + 1).ToString("N0");
+        }
+        
+        StartCoroutine(DoRewardsPanel());
     }
     
-    IEnumerator DoRewardsPanel(int newLevel) {
+    IEnumerator DoRewardsPanel() {
         // Show rewards panel after delay.
         yield return new WaitForSeconds(macroDelay);
         levelPanelObject.SetActive(true);
+        levelRewards.Toggle(true, false);
+        
+        for (int i = ManagerSaveLoad.GetLastRewardLevel(); i < ManagerSaveLoad.GetLevel(); i++) {
+            yield return new WaitForSeconds(microDelay);
+            levelRewards.CreateSingleRewardDisplay(i + 1);
+        }
+        
+        yield return new WaitForSeconds(microDelay);
+        nextLevelReward.SetInfo(ManagerLevelRewards.GetReward(ManagerSaveLoad.GetLevel(1)));
     }
 }

@@ -6,13 +6,14 @@ using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class ManagerLevelRewards : MonoSingleton<ManagerLevelRewards> {
+    public const int BloodRewardAmount = 250;
+
     [Header("Item Rewards")]
     public DataBundleWeapons weaponRewards;
     public DataBundlePerks perkRewards;
 
     [Header("Blood Reward")]
     public DataLevelGenericReward bloodRewardDisplayable;
-    public int bloodRewardAmount = 250;
     
     public static DataDisplayable GetReward(int level) => Inst.GetRewardAtLevel(level);
     public static DataDisplayable[] GetRewards(int startLevel, int endLevel) => Inst.GetRewardsInLevelRange(startLevel, endLevel);
@@ -38,7 +39,7 @@ public class ManagerLevelRewards : MonoSingleton<ManagerLevelRewards> {
         DataDisplayable[] rewards = GetRewardsToBeRewarded();
         foreach (DataDisplayable reward in rewards)
             if (reward is DataLevelGenericReward)
-                ManagerSaveLoad.AddZombieBlood(bloodRewardAmount);
+                ManagerSaveLoad.AddZombieBlood(BloodRewardAmount);
             
         ManagerSaveLoad.UpdateLastRewardLevel();
         ManagerSaveLoad.ForceSave();

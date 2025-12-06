@@ -8,14 +8,13 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     private GameState _gameState = GameState.Intermission;
     private int _currentWave;
     private float _lastIntermission;
-
-    [Header("General")]
-    public GameObject hudPanel;
-    public GameObject losePanel;
-
-    // Parameters
+    
     [Header("General")]
     public float intermissionTime = 5;
+    
+    [Header("UI")]
+    public UILayoutManager hudLayout;
+    public int gameOverCanvasIndex;
 
 
     // ------ START FUNCTIONS ------
@@ -45,8 +44,7 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     private void OnAllZombiesDead() => SetGameState(GameState.Intermission);
     private void EventPlayerDeath(string deathSource = "") {
         SetGameState(GameState.Dead);
-        hudPanel.SetActive(false);
-        losePanel.SetActive(true);
+        hudLayout.SwitchCanvas(gameOverCanvasIndex);
     }
 
     private void SetGameState(GameState newState) {

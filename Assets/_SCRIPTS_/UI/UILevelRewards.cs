@@ -12,11 +12,11 @@ public class UILevelRewards : MonoBehaviour {
     [Header("Display")]
     public GameObject levelRewardPrefab;
     public int maxLevelToDisplay = 50;
-    public bool onlyRewardsToBeRewarded = false;
+    public bool onlyPending = false;
     public bool displayOnEnable = false;
 
     // ------ START METHODS ------
-    
+
     // ------ EVENT METHODS ------
 
     private void OnEnable() {
@@ -28,42 +28,37 @@ public class UILevelRewards : MonoBehaviour {
         if (displayOnEnable)
             Toggle(false);
     }
-    
-    public void Toggle(bool active) => Toggle(active, false);
-    public void Toggle(bool active, bool forceToggle) {
+
+    public void Toggle(bool active, bool autoInitialize = true) => Toggle(active, false, autoInitialize);
+    public void Toggle(bool active, bool forceToggle, bool autoInitialize) {
         if (active == gameObject.activeSelf && !forceToggle) return;
 
-        bool noRewardsToShow = onlyRewardsToBeRewarded && !ManagerSaveLoad.CheckForRewards();
+        bool noRewardsToShow = onlyPending && !ManagerSaveLoad.CheckForRewards();
         if (active && !noRewardsToShow) {
-            CreateDisplayItems();
-
-            if(levelText) levelText.text = "Level " + ManagerSaveLoad.GetLevel();
+            if (autoInitialize) CreateRewardDisplays();
+            if (levelText) levelText.text = "Level " + ManagerSaveLoad.GetLevel();
             scroller.horizontalNormalizedPosition = 0;
         }
-        else {
+        else
             for (int i = ScrollerContent.childCount - 1; i >= 0; i--)
                 Destroy(ScrollerContent.GetChild(i).gameObject);
-        }
 
         gameObject.SetActive(active);
     }
+    
+    // ------ DISPLAY CREATION METHODS ------
 
-    private void CreateDisplayItems() {
-        DataDisplayable[] rewards = onlyRewardsToBeRewarded
-            ? ManagerLevelRewards.GetUnrewardedRewards()
-            : ManagerLevelRewards.GetRewards(1, maxLevelToDisplay);
+    private void CreateRewardDisplays() {
+        for (int i = (onlyPending ? ManagerSaveLoad.GetLastRewardLevel() : 0); i < (onlyPending ? ManagerSaveLoad.GetLevel() : maxLevelToDisplay); i++)
+            CreateSingleRewardDisplay(i + 1);
+    }
 
-        for (int i = 0; i < rewards.Length; i++) {
-            Instantiate(levelRewardPrefab, ScrollerContent).TryGetComponent(out UIDisplayItemLevelReward rewardDisplay);
+    public void CreateSingleRewardDisplay(int rewardLevel) {
+        DataDisplayable reward = ManagerLevelRewards.GetReward(rewardLevel);
+        
+        Instantiate(levelRewardPrefab, ScrollerContent).TryGetComponent(out UIDisplayItemLevelReward rewardDisplay);
+        rewardDisplay.SetInfo(reward, rewardLevel);
 
-            int rewardLevel = (i + 1) + (onlyRewardsToBeRewarded ? ManagerSaveLoad.GetLastRewardLevel() : 0);
-            if (rewards[i] is DataLevelGenericReward) {
-                rewardDisplay.SetInfo(rewards[i], rewardLevel);
-                rewardDisplay.SetName("Blood (" + ManagerLevelRewards.Inst.bloodRewardAmount + ")");
-            }
-            else {
-                rewardDisplay.SetInfo(rewards[i], rewardLevel);
-            }
-        }
+        if (reward is DataLevelGenericReward) rewardDisplay.SetName("Blood (" + ManagerLevelRewards.BloodRewardAmount + ")");
     }
 }
