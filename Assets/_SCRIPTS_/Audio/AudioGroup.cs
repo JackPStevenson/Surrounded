@@ -19,12 +19,12 @@ public class AudioGroup : ScriptableObject
     // gets an audio clip at the desired index 
     public AudioClip GetClip(int index)
     {
-        Debug.Log("getting clip at index " + index);
+        //Debug.Log("getting clip at index " + index);
         // if the index is within the bounds of the array
         if (index < _clips.Length)
         {
             // return the clip at [index]
-            Debug.Log("returned " + _clips[index].ToString());
+            //Debug.Log("returned " + _clips[index].ToString());
             return _clips[index];
         }
 
@@ -42,6 +42,6 @@ public class AudioGroup : ScriptableObject
             AudioClip clip = _clips[i];
             msg += i + " | " + clip.name.ToString() + "\n";
         }
-        Debug.Log(msg);
+        //Debug.Log(msg);
     }
 }

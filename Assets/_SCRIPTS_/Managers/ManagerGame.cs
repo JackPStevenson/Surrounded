@@ -10,7 +10,8 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     private float _lastIntermission;
 
     [Header("General")]
-    public MenuBase loseMenu;
+    public GameObject hudPanel;
+    public GameObject losePanel;
 
     // Parameters
     [Header("General")]
@@ -29,6 +30,8 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
 
         SetGameState(GameState.Intermission);
     }
+    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     // ------ UPDATE FUNCTIONS ------
 
@@ -42,7 +45,8 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     private void OnAllZombiesDead() => SetGameState(GameState.Intermission);
     private void EventPlayerDeath(string deathSource = "") {
         SetGameState(GameState.Dead);
-        loseMenu.Enable();
+        hudPanel.SetActive(false);
+        losePanel.SetActive(true);
     }
 
     private void SetGameState(GameState newState) {

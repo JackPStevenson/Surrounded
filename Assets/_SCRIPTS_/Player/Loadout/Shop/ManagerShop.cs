@@ -23,6 +23,7 @@ public class ManagerShop : MonoSingleton<ManagerShop> {
     // ------ START METHODS ------
 
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     private void Start() => SetUpShop();
 

@@ -9,18 +9,19 @@ public class UIDisplayItemLevelReward : UIDisplayItem {
     public Slider Slider => ChildAutoFetch<Slider>(_slider, "Slider");
 
     private Transform _nextReward;
-    protected Transform NextReward => ChildAutoFetch(_nextReward, "Next Reward");
-    //{ get { if (!_nextReward) _nextReward = transform.Find("Next Reward")?.gameObject; return _nextReward; } }
+    protected GameObject NextReward => ChildAutoFetch(_nextReward, "Next Reward").gameObject;
 
     // ------ SETUP METHODS ------
     
-    public override void SetInfo(DataDisplayable d, bool allowDescLock = false) => SetInfo(d.levelToUnlock, allowDescLock ? 1 : ManagerSaveLoad.GetLevelProgress(), d.icon);
-    public void SetInfo(int rewardLevel, Sprite icon) => SetInfo(rewardLevel, Mathf.Clamp01((ManagerSaveLoad.GetLevel() - (rewardLevel - 1)) + ManagerSaveLoad.GetLevelProgress()), icon);
-    public void SetInfo(int rewardLevel, float progress, Sprite icon) { SetName(rewardLevel + ""); SetSlider(progress); SetColor(progress >= 1); SetIcon(icon); ToggleNextReward(rewardLevel == ManagerSaveLoad.GetLevel() + 1); }
-
+    public override void SetInfo(DataDisplayable d, bool allowLock = false) => SetInfo(d, d.levelToUnlock, ManagerSaveLoad.GetLevelProgress());
+    public void SetInfo(DataDisplayable d, int level) { SetInfo(d, level, ManagerSaveLoad.GetLevelProgress()); }
+    public void SetInfo(DataDisplayable d, int level, float progress) { base.SetInfo(d); SetLevel(level, progress); }
+    
+    public void SetLevel(int level, float progress) { float realProgress = progress + ((ManagerSaveLoad.GetLevel(1)) - level); SetDesc(level.ToString()); SetSlider(realProgress); SetDescColor(realProgress); ToggleNext(realProgress); }
+    
     // ------ SINGLE SETUP METHODS ------
 
-    public void SetColor(bool unlocked) { if (Name) Name.color = unlocked ? unlockedColor : lockedColor; }
-    public void SetSlider(float value) => Slider?.SetValueWithoutNotify(value);
-    public void ToggleNextReward(bool active) => NextReward?.gameObject.SetActive(active);
+    public void SetDescColor(float progress) => SetDescColor(progress >= 1 ? unlockedColor : lockedColor);
+    public void SetSlider(float value) => Slider?.SetValueWithoutNotify(Mathf.Clamp01(value));
+    public void ToggleNext(float progress) => NextReward?.SetActive(progress is >= 0 and < 1);
 }

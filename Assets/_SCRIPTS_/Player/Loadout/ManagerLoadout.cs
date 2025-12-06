@@ -33,7 +33,8 @@ public class ManagerLoadout : MonoSingleton<ManagerLoadout> {
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
+
     // ------ EVENT METHODS ------
 
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) => ApplyLoadout();

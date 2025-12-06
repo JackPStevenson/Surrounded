@@ -15,6 +15,10 @@ public class DataBundleWeapons : DataBundle {
     private T[] GetWeapons<T>(bool sorted = false) where T : DataWeapon => GetItems<T, DataWeapon>(weapons, sorted);
     private T First<T>(bool sorted = false) where T : DataWeapon => GetFirst<T, DataWeapon>(weapons, sorted);
     
+    public DataWeapon GetWeaponAtLevel(int weaponLevel) => GetFirst<DataWeapon, DataWeapon>(weapons, weaponLevel);
+    public bool HasWeaponAtLevel(int weaponLevel) => GetFirst<DataWeapon, DataWeapon>(weapons, weaponLevel);
+    public bool HasWeaponAtLevel(int weaponLevel, out DataWeapon weapon) { weapon = GetFirst<DataWeapon, DataWeapon>(weapons, weaponLevel); return weapon; }
+    
     // ------ TAP FETCH METHODS ------
     
     public DataWeaponTap[] Taps => GetWeapons<DataWeaponTap>(true);

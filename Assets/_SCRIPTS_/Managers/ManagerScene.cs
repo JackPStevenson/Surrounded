@@ -9,7 +9,8 @@ public class ManagerScene : MonoSingleton<ManagerScene> {
     // ------ START METHODS ------
 
     protected override void OnAwake() { }
-    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
+
     // ------ EVENT METHODS ------
 
     public void LoadScene(int sceneId) {

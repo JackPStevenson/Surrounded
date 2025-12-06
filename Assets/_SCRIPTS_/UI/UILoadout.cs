@@ -36,12 +36,16 @@ public class UILoadout : MonoSingleton<UILoadout> {
     public TMP_Text levelText;
     public UIDisplayItemLevelReward nextRewardDisplay;
     
+    [Header("Currency")]
+    public TMP_Text bloodText;
+    
 
     private SelectType _currentSelectType = SelectType.None;
 
     // ------ START METHODS ------
     
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         gridSelect.OnSelected += OnSelected;
@@ -64,7 +68,11 @@ public class UILoadout : MonoSingleton<UILoadout> {
 
         int level = ManagerSaveLoad.GetLevel();
         levelText.text = "Level " + level;
-        nextRewardDisplay.SetInfo(level + 1, ManagerLevelRewards.Inst.GetRewardAtLevel(level + 1).icon);
+        nextRewardDisplay.SetInfo(ManagerLevelRewards.GetReward(level + 1));
+    }
+
+    void FixedUpdate() {
+        bloodText.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
     }
 
     // ------ EVENT METHODS ------

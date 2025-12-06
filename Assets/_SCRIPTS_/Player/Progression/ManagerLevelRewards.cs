@@ -2,34 +2,53 @@ using System;
 using System.Linq;
 using Unity.Android.Gradle;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class ManagerLevelRewards : MonoSingleton<ManagerLevelRewards> {
-    public int rewardSeed = 0;
+    [Header("Item Rewards")]
     public DataBundleWeapons weaponRewards;
     public DataBundlePerks perkRewards;
 
-    public DataLevelGenericReward[] genericRewards;
-
-    public int bloodPerBloodReward;
-    public int lootboxesPerLootboxReward;
+    [Header("Blood Reward")]
+    public DataLevelGenericReward bloodRewardDisplayable;
+    public int bloodRewardAmount = 250;
+    
+    public static DataDisplayable GetReward(int level) => Inst.GetRewardAtLevel(level);
+    public static DataDisplayable[] GetRewards(int startLevel, int endLevel) => Inst.GetRewardsInLevelRange(startLevel, endLevel);
+    public static DataDisplayable[] GetUnrewardedRewards() => Inst.GetRewardsToBeRewarded();
 
     // ------ START METHODS ------
 
-    protected override void OnAwake() {
+    protected override void OnAwake() => DontDestroyOnLoad(gameObject);
+    private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1) => TryGrantRewards();
 
+    private void Start() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        TryGrantRewards();
     }
+    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
+    // ------ EVENT METHODS ------
+    
+    public void TryGrantRewards() {
+        if (!ManagerSaveLoad.CheckForRewards()) return;
+        
+        DataDisplayable[] rewards = GetRewardsToBeRewarded();
+        foreach (DataDisplayable reward in rewards)
+            if (reward is DataLevelGenericReward)
+                ManagerSaveLoad.AddZombieBlood(bloodRewardAmount);
+            
+        ManagerSaveLoad.UpdateLastRewardLevel();
+        ManagerSaveLoad.ForceSave();
+    }
+    
     // ------ HELPER METHODS ------
 
-    public DataDisplayable GetRewardAtLevel(int level) {
-        if (weaponRewards.weapons.FirstOrDefault(w => w.levelToUnlock == level) is DataDisplayable reward) return reward;
-        
-        Random.InitState(level + rewardSeed);
-        return genericRewards[Random.Range(0, genericRewards.Length)];
-    }
+    private DataDisplayable GetRewardAtLevel(int level) => weaponRewards.HasWeaponAtLevel(level, out DataWeapon weapon) ? weapon : bloodRewardDisplayable;
 
-    public DataDisplayable[] GetRewardsInLevelRange(int startLevel, int endLevel) {
+    private DataDisplayable[] GetRewardsInLevelRange(int startLevel, int endLevel) {
         startLevel = Mathf.Max(startLevel, 1);
         if (endLevel < 1 || startLevel > endLevel) return Array.Empty<DataDisplayable>();
         
@@ -40,5 +59,5 @@ public class ManagerLevelRewards : MonoSingleton<ManagerLevelRewards> {
         return rewards;
     }
 
-    public DataDisplayable[] GetRewardsToBeRewarded() => ManagerSaveLoad.CheckRewardsForPlayer() ? GetRewardsInLevelRange(ManagerSaveLoad.GetLastRewardedLevel() + 1, ManagerSaveLoad.GetLevel()) : null;
+    private DataDisplayable[] GetRewardsToBeRewarded() => ManagerSaveLoad.CheckForRewards() ? GetRewardsInLevelRange(ManagerSaveLoad.GetLastRewardLevel() + 1, ManagerSaveLoad.GetLevel()) : null;
 }

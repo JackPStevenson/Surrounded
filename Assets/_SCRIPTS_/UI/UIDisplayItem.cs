@@ -18,18 +18,17 @@ public class UIDisplayItem : MonoBehaviour {
 
     // ------ SETUP METHODS ------
     
-    public virtual void SetInfo(DataDisplayable d, bool allowDescLock = false) {
-        bool unlocked = ManagerSaveLoad.CheckLevel(d.levelToUnlock) || allowDescLock;
-        SetInfo(d.displayName, unlocked ? d.description : "Locked (Lvl " + d.levelToUnlock  + ")", d.icon, unlocked);
-    }
-    public void SetInfo(string name, string desc, Sprite icon, bool buttonActive = false) { SetName(name); SetDesc(desc); SetIcon(icon); SetButton(buttonActive); }
+    public virtual void SetInfo(DataDisplayable d, bool allowLock = false) => SetInfo(d.displayName, d.description, d.icon, d.levelToUnlock, allowLock);
+    public void SetInfo(string name, string desc, Sprite icon = null, int level = 0, bool allowLock = false) { SetName(name); SetDesc(desc, level, allowLock); SetIcon(icon); SetButton(level, allowLock); }
 
     // ------ SINGLE SETUP METHODS ------
 
     public void SetName(string name) => Name?.SetText(name);
-    public void SetDesc(string desc) => Desc?.SetText(desc);
+    public void SetDesc(string desc, int level = 0, bool allowLock = false) => Desc?.SetText(!allowLock || ManagerSaveLoad.CheckLevel(level) ? desc : "Locked (Level " + level  + ")");
+    public void SetButton(int level, bool allowLock) => SetButton(!allowLock || ManagerSaveLoad.CheckLevel(level));
     public void SetButton(bool active) { if(Button) Button.interactable = active; }
     public void SetIcon(Sprite icon) { if (Icon) { Icon.enabled = icon; Icon.sprite = icon; } }
+    public void SetDescColor(Color color) { if (Desc) Desc.color = color; }
 
     // ------ HELPER METHODS ------
     

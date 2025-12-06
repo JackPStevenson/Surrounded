@@ -35,6 +35,7 @@ public class ManagerWeapon : MonoSingleton<ManagerWeapon> {
     // ------ START METHODS ------
 
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         _camera = Camera.main;

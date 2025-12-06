@@ -30,10 +30,8 @@ public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
         ManagerSaveLoad.AddExperience(data.experienceOnDeath);
         ManagerSaveLoad.AddCareerZombieKillCount(data.name);
     }
-    
-    
 
-    void OnDestroy() {
-        ManagerSaveLoad.ForceSave();
-    }
+
+
+    protected override void OnDestroyed(bool isDeletedInstance) => ManagerSaveLoad.ForceSave();
 }

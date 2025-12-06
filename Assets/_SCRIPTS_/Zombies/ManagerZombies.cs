@@ -31,6 +31,8 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
     protected override void OnAwake() {
         TryGetComponent(out _zombiePool);
     }
+    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         ManagerWave.Inst.OnHordeSpawn += SpawnZombieHorde;
