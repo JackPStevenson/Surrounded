@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class ManagerGame : MonoSingleton<ManagerGame> {
     public event Action<GameState, int> OnGameStateChanged;
-    public static ManagerGame Instance;
-
-    private GameState _gameState = GameState.Intermission;
-    private int _currentWave;
-    private float _lastIntermission;
     
     [Header("General")]
     public float intermissionTime = 5;
@@ -15,7 +10,16 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     [Header("UI")]
     public UILayoutManager hudLayout;
     public int gameOverCanvasIndex;
+    public UIGameOver gameOver;
 
+    private int _startingLevel;
+    private int _startingExperience;
+    
+    private GameState _gameState = GameState.Intermission;
+    private int _currentWave;
+    private float _lastIntermission;
+
+    public static int CurrentWave => Inst._currentWave;
 
     // ------ START FUNCTIONS ------
 
@@ -23,9 +27,11 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
 
     void Start() {
         PlayerCore.Inst.Health.EventDeath += EventPlayerDeath;
-        
         ManagerWave.Inst.OnAllZombiesDead += OnAllZombiesDead;
         ManagerWave.Inst.SetMainTarget(PlayerCore.Inst.Health);
+
+        _startingLevel = ManagerSaveLoad.GetLevel();
+        _startingExperience = ManagerSaveLoad.GetExperience();
 
         SetGameState(GameState.Intermission);
     }
@@ -45,6 +51,7 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     private void EventPlayerDeath(string deathSource = "") {
         SetGameState(GameState.Dead);
         hudLayout.SwitchCanvas(gameOverCanvasIndex);
+        gameOver.StartDisplay();
     }
 
     private void SetGameState(GameState newState) {

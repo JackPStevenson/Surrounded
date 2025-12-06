@@ -54,11 +54,11 @@ public class UILevelRewards : MonoBehaviour {
     }
 
     public void CreateSingleRewardDisplay(int rewardLevel) {
-        DataDisplayable reward = ManagerLevelRewards.GetReward(rewardLevel);
+        DataDisplayable reward = ManagerRewards.GetLevelReward(rewardLevel);
         
         Instantiate(levelRewardPrefab, ScrollerContent).TryGetComponent(out UIDisplayItemLevelReward rewardDisplay);
         rewardDisplay.SetInfo(reward, rewardLevel);
 
-        if (reward is DataLevelGenericReward) rewardDisplay.SetName("Blood (" + ManagerLevelRewards.BloodRewardAmount + ")");
+        if (reward is DataLevelGenericReward) rewardDisplay.SetName("Blood (" + ManagerRewards.BloodLevelRewardAmount + ")");
     }
 }

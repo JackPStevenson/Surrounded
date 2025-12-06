@@ -64,7 +64,7 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     // ------ STATIC CAREER METHODS ------
 
     public static int GetCareerMaxWave() => Inst._playerSave.careerMaxWave;
-    public static void SetCareerMaxWave(int wave) => Inst._playerSave.SetCareerMaxWave(wave);
+    public static void TrySetCareerMaxWave(int wave) => Inst._playerSave.SetCareerMaxWave(Mathf.Max(GetCareerMaxWave(), wave));
 
     public static int GetCareerZombieBloodEarned() => Inst._playerSave.careerZombieBloodEarned;
 

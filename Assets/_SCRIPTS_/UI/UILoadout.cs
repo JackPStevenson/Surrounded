@@ -68,7 +68,7 @@ public class UILoadout : MonoSingleton<UILoadout> {
 
         int level = ManagerSaveLoad.GetLevel();
         levelText.text = "Level " + level;
-        nextRewardDisplay.SetInfo(ManagerLevelRewards.GetReward(level + 1));
+        nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1));
     }
 
     void FixedUpdate() {

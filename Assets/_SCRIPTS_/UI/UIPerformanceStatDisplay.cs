@@ -1,12 +1,6 @@
 using TMPro;
 using UnityEngine;
 
-public struct UIStat {
-    public string Name;
-    public int Amount, Blood, Exp;
-    
-    public UIStat(string name, int amount, int blood, int exp) { Name = name; Amount = amount; Blood = blood; Exp = exp; }
-}
 
 public class UIPerformanceStatDisplay : UIDisplayItem {
     private TMP_Text _bloodText;
@@ -17,7 +11,7 @@ public class UIPerformanceStatDisplay : UIDisplayItem {
     
     // ------ SETUP METHODS ------
 
-    public void SetInfo(UIStat stat) => SetInfo(stat.Name, stat.Amount, stat.Blood, stat.Exp);
+    public void SetInfo(PlayerStat stat) => SetInfo(stat.Name, stat.Amount, stat.Blood, stat.Exp);
     public void SetInfo(string statName, int statAmount, int blood, int experience) { gameObject.SetActive(true); SetInfo(statName, statAmount.ToString("N0")); SetBlood(blood); SetExperience(experience); }
     
     

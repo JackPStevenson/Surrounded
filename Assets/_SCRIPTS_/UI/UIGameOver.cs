@@ -12,8 +12,8 @@ public class UIGameOver : MonoBehaviour {
     public GameObject performanceStatPrefab;
     public GameObject performancePanelObject;
     [Space]
+    public UIDisplayItem killedByDisplay;
     public UIPerformanceStatDisplay wavesDisplay;
-    public Transform genericSubDisplayHolder;
     [Space]
     public UIPerformanceStatDisplay totalZombiesDisplay;
     public Transform zombiesSubDisplayHolder;
@@ -35,31 +35,29 @@ public class UIGameOver : MonoBehaviour {
     [Space]
     public UILevelRewards levelRewards;
 
-    public void StartDisplay(UIStat wave, UIStat[] generic, UIStat totalZombieKills, UIStat[] zombieKills, UIStat totalEarnings, int startLevel, int startExp) {
-        
-        StartCoroutine(DoPerformancePanel(wave, generic, totalZombieKills, zombieKills, totalEarnings, startLevel, startExp));
+    public void StartDisplay() {
     }
 
-    IEnumerator DoPerformancePanel(UIStat wave, UIStat[] generic, UIStat totalZombieKills, UIStat[] zombieKills, UIStat totalEarnings, int startLevel, int startExp) {
+    IEnumerator DoPerformancePanel() {
+        PlayerStats stats = PlayerStatTracker.PlayerStats;
         UIPerformanceStatDisplay temp;
         
         // Show performance panel after delay.
         yield return new WaitForSeconds(macroDelay);
         performancePanelObject.SetActive(true);
         
-        // Show wave stat after delay. After, display each generic sub-stat.
+        // Show killed by stat after delay.
         yield return new WaitForSeconds(microDelay);
-        wavesDisplay.SetInfo(wave);
-        foreach (UIStat genericStat in generic) {
-            yield return new WaitForSeconds(microDelay);
-            Instantiate(performanceStatPrefab, genericSubDisplayHolder).TryGetComponent(out temp);
-            temp.SetInfo(genericStat);
-        }
+        killedByDisplay.SetInfo("Eaten By", stats.KilledBy);
+        
+        // Show wave stat after delay.
+        yield return new WaitForSeconds(microDelay);
+        wavesDisplay.SetInfo(stats.WaveReached);
         
         // Show total zombies stat after delay. After, display each zombie sub-stat.
         yield return new WaitForSeconds(microDelay);
-        totalZombiesDisplay.SetInfo(totalZombieKills);
-        foreach (UIStat zombieKillStat in generic) {
+        totalZombiesDisplay.SetInfo(stats.TotalZombieKills);
+        foreach (PlayerStat zombieKillStat in stats.SpecificZombieKills) {
             yield return new WaitForSeconds(microDelay);
             Instantiate(performanceStatPrefab, zombiesSubDisplayHolder).TryGetComponent(out temp);
             temp.SetInfo(zombieKillStat);
@@ -67,20 +65,22 @@ public class UIGameOver : MonoBehaviour {
         
         // Show total earnings. After, start level panel display.
         yield return new WaitForSeconds(microDelay);
-        totalEarningsDisplay.SetInfo(totalEarnings);
-        StartCoroutine(DoLevelPanel(startLevel, startExp));
+        totalEarningsDisplay.SetInfo(stats.TotalEarnings);
+        StartCoroutine(DoLevelPanel());
     }
 
-    IEnumerator DoLevelPanel(int startLevel, int startExp) {
+    IEnumerator DoLevelPanel() {
+        PlayerStats stats = PlayerStatTracker.PlayerStats;
+        
         // Show level panel after delay.
         yield return new WaitForSeconds(macroDelay);
         levelPanelObject.SetActive(true);
         
         yield return new WaitForSeconds(microDelay);
-        currentLevelText.text = startLevel.ToString("N0");
-        nextLevelText.text = (startLevel + 1).ToString("N0");
+        currentLevelText.text = stats.StartLevel.ToString("N0");
+        nextLevelText.text = (stats.StartExp + 1).ToString("N0");
 
-        float startProgress = ((float) startExp / ManagerSaveLoad.GetExperiencePerLevel());
+        float startProgress = ((float) stats.StartExp / ManagerSaveLoad.GetExperiencePerLevel());
         float targetLevelAndProgress = ManagerSaveLoad.GetLevel() + ManagerSaveLoad.GetLevelProgress();
             
         baseLevelSlider.value = expGainedSlider.value = startProgress;
@@ -90,15 +90,15 @@ public class UIGameOver : MonoBehaviour {
         baseLevelSlider.gameObject.SetActive(true);
         
         float elapsed = 0;
-        float currentLevelAndProgress = startLevel + startProgress;
+        float currentLevelAndProgress = stats.StartLevel + startProgress;
         while (elapsed <= 1) {
             yield return new WaitForEndOfFrame();
             elapsed += (Time.deltaTime / Mathf.Max(levelProgressTime, 0.0001f));
             
-            currentLevelAndProgress = Mathf.Lerp(startLevel + startProgress, targetLevelAndProgress, elapsed);
+            currentLevelAndProgress = Mathf.Lerp(stats.StartLevel + startProgress, targetLevelAndProgress, elapsed);
             int currentLevel = Mathf.FloorToInt(currentLevelAndProgress);
 
-            if (currentLevel > startLevel) baseLevelSlider.value = 0;
+            if (currentLevel > stats.StartLevel) baseLevelSlider.value = 0;
             expGainedSlider.value = currentLevelAndProgress % 1;
             
             currentLevelText.text = currentLevel.ToString("N0");
@@ -109,6 +109,8 @@ public class UIGameOver : MonoBehaviour {
     }
     
     IEnumerator DoRewardsPanel() {
+        PlayerStats stats = PlayerStatTracker.PlayerStats;
+        
         // Show rewards panel after delay.
         yield return new WaitForSeconds(macroDelay);
         levelPanelObject.SetActive(true);
@@ -120,6 +122,6 @@ public class UIGameOver : MonoBehaviour {
         }
         
         yield return new WaitForSeconds(microDelay);
-        nextLevelReward.SetInfo(ManagerLevelRewards.GetReward(ManagerSaveLoad.GetLevel(1)));
+        nextLevelReward.SetInfo(ManagerRewards.GetLevelReward(ManagerSaveLoad.GetLevel(1)));
     }
 }
