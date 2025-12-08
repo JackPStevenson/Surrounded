@@ -25,4 +25,4 @@ MonoBehaviour:
   hurtSound: SFX_TankyZombieHurt
   attackSound: SFX_TankyZombieAttack
   deathSound: SFX_TankyZombieDeath
-  experienceOnDeath: 30
+  bloodOnDeath: 20

@@ -17,4 +17,4 @@ MonoBehaviour:
   defaultSwipe: {fileID: 11400000, guid: b5b573ece82407c428abbfa1f19d7dd4, type: 2}
   defaultShake: {fileID: 11400000, guid: 530360fab6cb373448419deec47e92e9, type: 2}
   Perks: {fileID: 11400000, guid: bc6edf5dddfc7874a8a865bba44a8245, type: 2}
-  BundleZombies: {fileID: 11400000, guid: c970eade7a0b6dd429763ae2334773d7, type: 2}
+  Zombies: {fileID: 11400000, guid: c970eade7a0b6dd429763ae2334773d7, type: 2}

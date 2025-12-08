@@ -42,6 +42,7 @@ public class ManagerWave : MonoSingleton<ManagerWave> {
     // ------ START FUNCTIONS ------
     
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         ManagerGame.Inst.OnGameStateChanged += OnManagerGameStateChanged;

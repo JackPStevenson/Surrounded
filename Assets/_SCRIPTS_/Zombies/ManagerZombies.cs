@@ -20,7 +20,7 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
 
     [Header("Spawning")]
     public Transform[] spawnPoints;
-    public List<DataZombie> ZombieDataEntries => masterBundle.BundleZombies.Zombies;
+    public List<DataZombie> ZombieDataEntries => masterBundle.Zombies.Zombies;
     public int ActiveZombieCount => ZombiePool.ActiveZombieCount;
     private int _spawnRandSeed = 0;
 
@@ -31,6 +31,8 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
     protected override void OnAwake() {
         TryGetComponent(out _zombiePool);
     }
+    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         ManagerWave.Inst.OnHordeSpawn += SpawnZombieHorde;

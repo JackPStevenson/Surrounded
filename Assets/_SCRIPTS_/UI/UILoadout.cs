@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public enum SelectType {
@@ -18,9 +19,6 @@ public class UILoadout : MonoSingleton<UILoadout> {
     private DataBundleWeapons Weapons => masterBundle.Weapons;
     private DataBundlePerks Perks => masterBundle.Perks;
 
-    [Header("General")]
-    public UIGridSelect gridSelect;
-
     [Header("Weapon Displays")]
     public UIDisplayItem tapDisplay;
     public UIDisplayItem swipeDisplay;
@@ -30,12 +28,24 @@ public class UILoadout : MonoSingleton<UILoadout> {
     public UIDisplayItem perk1Display;
     public UIDisplayItem perk2Display;
     public UIDisplayItem perk3Display;
+    
+    [Header("Selection")]
+    public UIGridSelect gridSelect;
+    
+    [Header("Leveling")]
+    public TMP_Text levelText;
+    public UIDisplayItemLevelReward nextRewardDisplay;
+    
+    [Header("Currency")]
+    public TMP_Text bloodText;
+    
 
     private SelectType _currentSelectType = SelectType.None;
 
     // ------ START METHODS ------
     
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         gridSelect.OnSelected += OnSelected;
@@ -51,10 +61,18 @@ public class UILoadout : MonoSingleton<UILoadout> {
         ManagerLoadout.Inst.ClearShakes();
         ManagerLoadout.Inst.AddShake(masterBundle.defaultShake);
         shakeDisplay.SetInfo(masterBundle.defaultShake);
-
+        
         perk1Display.SetInfo("None", "", null);
         perk2Display.SetInfo("None", "", null);
         perk3Display.SetInfo("None", "", null);
+
+        int level = ManagerSaveLoad.GetLevel();
+        levelText.text = "Level " + level;
+        nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1));
+    }
+
+    void FixedUpdate() {
+        bloodText.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
     }
 
     // ------ EVENT METHODS ------

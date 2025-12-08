@@ -8,25 +8,22 @@ public class UIGridSelect : MonoBehaviour {
 
     [Header("References")]
     public GameObject displayItemPrefab;
-    private Transform _grid;
+    public Transform content;
     private TMP_Text _chooseText;
 
     UIDisplayItem[] _items;
 
     void Awake() {
-        _grid = transform.Find("Grid");
         transform.Find("OptionsPanel")?.Find("ChooseText")?.TryGetComponent(out _chooseText);
     }
 
     // ------ GRID MANAGEMENT ------
 
     public void Initialize<T>(T[] displayables, string typeName) where T : DataDisplayable {
-        if (!_grid) Awake();
-        
-        Array.Sort(displayables);
+        if (!content) Awake();
         _items = new UIDisplayItem[displayables.Length];
-        for (int i = 0; i < displayables.Length; i++)
-            MakeDisplayItem(displayables, i);
+        
+        for (int i = 0; i < displayables.Length; i++) MakeDisplayItem(displayables, i);
 
         if (_chooseText) _chooseText.text = "Choose a " + typeName;
         gameObject.SetActive(true);
@@ -48,10 +45,10 @@ public class UIGridSelect : MonoBehaviour {
     public List<GameObject> Items = new List<GameObject>();
     /// Makes display item from given displayable at given index in items array. Additionally adds listener to display item's button.
     private void MakeDisplayItem<T>(T[] displayables, int index) where T : DataDisplayable {
-        GameObject e = Instantiate(displayItemPrefab, _grid);
+        GameObject e = Instantiate(displayItemPrefab, content);
         e.TryGetComponent(out UIDisplayItem i);
         Items.Add(e);
-        i.SetInfo(displayables[index], ManagerSaveLoad.GetLevel());
+        i.SetInfo(displayables[index], true);
         i.Button.onClick.AddListener(() => Select(index));
         _items[index] = i;
     }

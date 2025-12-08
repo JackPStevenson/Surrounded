@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Does no damage, but heals tapped barricades. Spawns additional brricades
     if none were hit.
   icon: {fileID: 21300000, guid: 03947114a0e50df49bfa29c91e20678d, type: 3}
-  levelToUnlock: 9
+  levelToUnlock: 13
   prefab: {fileID: 4983778374549918329, guid: e8849c8fcbea155409c4df32430e3b1b, type: 3}
   damage: -30
   range: 0.25

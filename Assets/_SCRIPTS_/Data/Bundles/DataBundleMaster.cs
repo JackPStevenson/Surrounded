@@ -13,5 +13,5 @@ public class DataBundleMaster : DataBundle {
     public DataBundlePerks Perks;
     
     [Header("Zombies")]
-    public DataBundleZombies BundleZombies;
+    public DataBundleZombies Zombies;
 }
