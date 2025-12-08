@@ -50,7 +50,6 @@ public class SaveLoadPlayer {
 
         // Add gained levels to current level and return how many levels were gained.
         level += levelsGained;
-        Debug.Log("Level: " + level + "  Experience: " + experience);
         return levelsGained;
     }
     

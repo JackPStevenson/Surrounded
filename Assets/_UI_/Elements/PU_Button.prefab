@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 8924824146107086973}
   - component: {fileID: 9154442169739765010}
   - component: {fileID: 1490114185665177376}
+  - component: {fileID: 6311062668163359579}
   m_Layer: 5
   m_Name: PU_Button
   m_TagString: Untagged
@@ -334,3 +335,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6311062668163359579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8930910941633520712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca79413dce93374e9910ba96a8bf6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundIndex: 0

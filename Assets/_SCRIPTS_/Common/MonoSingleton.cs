@@ -7,7 +7,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
     // ------ START METHODS ------
 
     private void Awake() {
-        if (typeof(T) == typeof(ManagerGame)) Debug.Log("EEEE");
         if (Inst) {
             if (Inst != this) {
                 enabled = false;

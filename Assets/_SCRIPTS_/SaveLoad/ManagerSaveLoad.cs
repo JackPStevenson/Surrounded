@@ -44,9 +44,8 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     public static int GetExperiencePerLevel() => SaveLoadPlayer.ExperiencePerLevel;
     public static float GetLevelProgress() => (float) Inst._playerSave.experience / SaveLoadPlayer.ExperiencePerLevel;
     public static void AddExperience(int exp) {
-        EventPlayerGainExp?.Invoke(exp * 15);
-        Debug.Log("Player exp is boofin (fix for release)");
-        if (Inst._playerSave.AddExperience(exp * 15) > 0)
+        EventPlayerGainExp?.Invoke(exp);
+        if (Inst._playerSave.AddExperience(exp) > 0)
             EventPlayerLevelUp?.Invoke(GetLevel());
     }
 
@@ -76,6 +75,14 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     public static int GetCareerDeathCause(string deathSource) => Inst._playerSave.GetCareerDeathCause(deathSource);
     public static void AddCareerDeathCause(string deathSource, int deaths = 1) => Inst._playerSave.AddCareerDeathCause(deathSource, deaths);
 
+    // ------ STATIC SETTINGS METHODS ------
+    
+    public static float GetEffectsVolume() => Inst._playerSettings.effectsVolume;
+    public static void SetEffectsVolume(float volume) => Inst._playerSettings.SetEffectsVolume(volume);
+    
+    public static float GetMusicVolume() => Inst._playerSettings.musicVolume;
+    public static void SetMusicVolume(float volume) => Inst._playerSettings.SetMusicVolume(volume);
+    
     // ------ START METHODS ------
 
     protected override void OnAwake() {
