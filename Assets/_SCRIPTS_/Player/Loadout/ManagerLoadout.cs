@@ -22,8 +22,8 @@ public class ManagerLoadout : MonoSingleton<ManagerLoadout> {
     public void ClearShakes() => _shakeWeapons.Clear();
 
     // --- PERKS ---
-    private readonly DataPerkPlayer[] _playerPerks = new DataPerkPlayer[3];
-    public void SetPerkPlayer(DataPerkPlayer data, int index) => _playerPerks[index] = data;
+    private readonly SaveLoadFilePerk[] _playerPerks = new SaveLoadFilePerk[3];
+    public void SetPerkPlayer(SaveLoadFilePerk data, int index) => _playerPerks[index] = data;
 
     private bool loadOnNextScene;
 
@@ -45,6 +45,6 @@ public class ManagerLoadout : MonoSingleton<ManagerLoadout> {
         foreach (DataWeaponTap w in _tapWeapons) if(w) ManagerWeapon.Inst.AddTap(w);
         foreach (DataWeaponSwipe w in _swipeWeapons) if(w) ManagerWeapon.Inst.AddSwipe(w);
         foreach (DataWeaponShake w in _shakeWeapons) if(w) ManagerWeapon.Inst.AddShake(w);
-        foreach (DataPerkPlayer t in _playerPerks) if(t) PlayerCore.Inst.AddPerk(t);
+        foreach (SaveLoadFilePerk t in _playerPerks) if (t != null) PlayerCore.Inst.TryAddPerk(t.Data, t.perkPower);
     }
 }

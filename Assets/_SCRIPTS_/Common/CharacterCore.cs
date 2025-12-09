@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(StatusHandler))]
 public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
+    public const string PerkScalarTag = "PerkScalar";
+    
     public event Action<CharacterCore, string> EventDeath;
 
     // --- CORE REFERENCES ---
@@ -61,8 +64,9 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
 
     public void TryAddEffect(DataStatusEffect newEffect, bool isTemp = true, float potency = 1) => Status.TryAddEffect(newEffect, isTemp, potency);
 
-    public void AddPerk(DataPerkPlayer dataPerkPlayer) {
-        Instantiate(dataPerkPlayer.perkPrefab, transform);
+    public void TryAddPerk(DataPerkPlayer dataPerkPlayer, float scalar) {
+        PartLogicValue part = Instantiate(dataPerkPlayer.perkPrefab, transform).GetComponents<PartLogicValue>().FirstOrDefault(p => p.Compare(PerkScalarTag));
+        if (part) part.SetValue(scalar);
     }
 
     private void OnDynamicModifier(StatusModifiersList modifiers) {

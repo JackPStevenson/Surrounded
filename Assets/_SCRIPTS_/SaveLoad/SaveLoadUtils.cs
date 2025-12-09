@@ -13,7 +13,7 @@ public static class SaveLoadUtils {
             return false;
         }
         
-        Debug.Log("Success! Saved " + typeof(T) + ".");
+        //Debug.Log("Success! Saved " + typeof(T) + ".");
         return true;
     }
 
@@ -28,7 +28,7 @@ public static class SaveLoadUtils {
             return false;
         }
         
-        Debug.Log("Success! Loaded " + typeof(T) + ".");
+        //Debug.Log("Success! Loaded " + typeof(T) + ".");
         return true;
     }
 }

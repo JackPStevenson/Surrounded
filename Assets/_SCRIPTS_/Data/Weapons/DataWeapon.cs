@@ -16,4 +16,7 @@ public abstract class DataWeapon : DataDisplayable {
     
     [Header("Physics")]
     public LayerMask hitMask;
+
+    public abstract int GetTypeId();
+    public bool CheckTypeId(int comparisonId) => comparisonId == GetTypeId();
 }

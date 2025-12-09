@@ -1,24 +1,7 @@
-using System;
 using TMPro;
 using UnityEngine;
 
-public enum SelectType {
-    None,
-    WeaponTap,
-    WeaponSwipe,
-    WeaponShake,
-    Perk1,
-    Perk2,
-    Perk3,
-}
-
-public class UILoadout : MonoSingleton<UILoadout> {
-    
-    [Header("Bundles")]
-    public DataBundleMaster masterBundle;
-    private DataBundleWeapons Weapons => masterBundle.Weapons;
-    private DataBundlePerks Perks => masterBundle.Perks;
-
+public class UILoadout : MonoBehaviour {
     [Header("Weapon Displays")]
     public UIDisplayItem tapDisplay;
     public UIDisplayItem swipeDisplay;
@@ -38,29 +21,23 @@ public class UILoadout : MonoSingleton<UILoadout> {
     
     [Header("Currency")]
     public TMP_Text bloodText;
-    
-
-    private SelectType _currentSelectType = SelectType.None;
 
     // ------ START METHODS ------
     
-    protected override void OnAwake() { }
-    protected override void OnDestroyed(bool isDeletedInstance) { }
-
     void Start() {
         gridSelect.OnSelected += OnSelected;
 
         ManagerLoadout.Inst.ClearTaps();
-        ManagerLoadout.Inst.AddTap(masterBundle.defaultTap);
-        tapDisplay.SetInfo(masterBundle.defaultTap);
+        ManagerLoadout.Inst.AddTap(ManagerData.DefaultTap);
+        tapDisplay.SetInfo(ManagerData.DefaultTap);
             
         ManagerLoadout.Inst.ClearSwipes();
-        ManagerLoadout.Inst.AddSwipe(masterBundle.defaultSwipe);
-        swipeDisplay.SetInfo(masterBundle.defaultSwipe);
+        ManagerLoadout.Inst.AddSwipe(ManagerData.DefaultSwipe);
+        swipeDisplay.SetInfo(ManagerData.DefaultSwipe);
         
         ManagerLoadout.Inst.ClearShakes();
-        ManagerLoadout.Inst.AddShake(masterBundle.defaultShake);
-        shakeDisplay.SetInfo(masterBundle.defaultShake);
+        ManagerLoadout.Inst.AddShake(ManagerData.DefaultShake);
+        shakeDisplay.SetInfo(ManagerData.DefaultShake);
         
         perk1Display.SetInfo("None", "", null);
         perk2Display.SetInfo("None", "", null);
@@ -71,68 +48,55 @@ public class UILoadout : MonoSingleton<UILoadout> {
         nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1));
     }
 
+    // ------ UPDATE METHODS ------
+    
     void FixedUpdate() {
         bloodText.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
     }
 
     // ------ EVENT METHODS ------
 
-    public void StartSelect(int typeId) => StartSelect((SelectType) typeId);
-    public void StartSelect(SelectType type) {
-        if (type is SelectType.None || _currentSelectType is not SelectType.None) return;
-        
-        switch (type) {
-            case SelectType.WeaponTap: gridSelect.Initialize(Weapons.Taps, "Tap Weapon"); break;
-            case SelectType.WeaponSwipe: gridSelect.Initialize(Weapons.Swipes, "Swipe Weapon"); break;
-            case SelectType.WeaponShake: gridSelect.Initialize(Weapons.Shakes, "Shake Weapon"); break;
-            case SelectType.Perk1: gridSelect.Initialize(Perks.Perks, "Perk 1"); break;
-            case SelectType.Perk2: gridSelect.Initialize(Perks.Perks, "Perk 2"); break;
-            case SelectType.Perk3: gridSelect.Initialize(Perks.Perks, "Perk 3"); break;
-        }
-        
-        _currentSelectType = type;
-    }
+    public void StartSelect(int typeId) { if (typeId != 0 && !gridSelect.IsSelecting) gridSelect.Initialize((SelectType) typeId); }
 
-    private void OnSelected(int index) {
-        
-        switch (_currentSelectType) {
+    private void OnSelected(SelectType type, int index) {
+        switch (type) {
             case SelectType.WeaponTap:
-                DataWeaponTap tap = Weapons.Taps[index];
+                DataWeaponTap tap = ManagerData.GetTap(index);
                 ManagerLoadout.Inst.ClearTaps();
                 ManagerLoadout.Inst.AddTap(tap);
                 tapDisplay.SetInfo(tap);
                 break;
             
             case SelectType.WeaponSwipe:
-                DataWeaponSwipe swipe = Weapons.Swipes[index];
+                DataWeaponSwipe swipe = ManagerData.GetSwipe(index);
                 ManagerLoadout.Inst.ClearSwipes();
                 ManagerLoadout.Inst.AddSwipe(swipe);
                 swipeDisplay.SetInfo(swipe);
                 break;
             
             case SelectType.WeaponShake:
-                DataWeaponShake shake = Weapons.Shakes[index];
+                DataWeaponShake shake = ManagerData.GetShake(index);
                 ManagerLoadout.Inst.ClearShakes();
                 ManagerLoadout.Inst.AddShake(shake);
                 shakeDisplay.SetInfo(shake);
                 break;
             
             case SelectType.Perk1:
-                DataPerkPlayer perk1 = Perks.Perks[index];
+                SaveLoadFilePerk perk1 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk1, 0);
-                perk1Display.SetInfo(perk1);
+                perk1Display.SetInfo(perk1.Data);
                 break;
             
             case SelectType.Perk2:
-                DataPerkPlayer perk2 = Perks.Perks[index];
+                SaveLoadFilePerk perk2 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk2, 1);
-                perk2Display.SetInfo(perk2);
+                perk2Display.SetInfo(perk2.Data);
                 break;
             
             case SelectType.Perk3:
-                DataPerkPlayer perk3 = Perks.Perks[index];
+                SaveLoadFilePerk perk3 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk3, 2);
-                perk3Display.SetInfo(perk3);
+                perk3Display.SetInfo(perk3.Data);
                 break;
         }
         
@@ -140,7 +104,6 @@ public class UILoadout : MonoSingleton<UILoadout> {
     }
 
     public void StopSelect() {
-        gridSelect.ClearGrid();
-        _currentSelectType = SelectType.None;
+        gridSelect.Clear();
     }
 }

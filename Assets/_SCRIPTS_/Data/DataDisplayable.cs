@@ -5,6 +5,7 @@ public abstract class DataDisplayable : ScriptableObject, IComparable<DataDispla
     [Header("Display Info")]
     public string displayName;
     public string description;
+    public string elaborateDescription;
     public Sprite icon;
     public int levelToUnlock;
 

@@ -6,4 +6,6 @@ public class DataWeaponTap : DataWeapon {
         displayName = "Tap Weapon";
         description = "A tap weapon.";
     }
+    
+    public override int GetTypeId() => 0;
 }

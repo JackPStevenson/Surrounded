@@ -10,7 +10,6 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
     [Header("References")]
     public GameObject zombieBasePrefab;
     public DataStatusEffect zombieScalarStatusEffect;
-    public DataBundleMaster masterBundle;
 
     [Header("Targeting")]
     public float approachDistance;
@@ -20,7 +19,7 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
 
     [Header("Spawning")]
     public Transform[] spawnPoints;
-    public List<DataZombie> ZombieDataEntries => masterBundle.Zombies.Zombies;
+    private List<DataZombie> ZombieDataEntries => ManagerData.Zombies.Zombies;
     public int ActiveZombieCount => ZombiePool.ActiveZombieCount;
     private int _spawnRandSeed = 0;
 

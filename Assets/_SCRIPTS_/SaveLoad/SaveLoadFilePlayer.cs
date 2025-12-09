@@ -50,7 +50,6 @@ public class SaveLoadPlayer {
 
         // Add gained levels to current level and return how many levels were gained.
         level += levelsGained;
-        Debug.Log("Level: " + level + "  Experience: " + experience);
         return levelsGained;
     }
     
@@ -80,7 +79,7 @@ public class SaveLoadPlayer {
         return true;
     }
     
-    public void AddPerkInstance(string perkName, float perkPower) => perkInstances.Add(new SaveLoadFilePerk(perkName, perkPower));
+    public void AddPerkInstance(int perkIndex, float perkPower) => perkInstances.Add(new SaveLoadFilePerk(perkIndex, perkPower));
     public SaveLoadFilePerk[] GetPerkInstances() => perkInstances.ToArray();
 
     // ------ CAREER METHODS ------
