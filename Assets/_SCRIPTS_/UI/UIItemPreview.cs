@@ -31,19 +31,19 @@ public class UIItemPreview : MonoBehaviour {
 
     // ------ EVENT METHODS ------
 
-    public void PreviewItem(DataDisplayable item, bool displayLevel = false) {
+    public void PreviewItem(IDisplayable item, bool displayLevel = false) {
         gameObject.SetActive(true);
         if(!_awoken) OnAwake();
         
         // Initialize title and description with generic info from item.
-        titleDisplay.SetInfo(item);
-        elaborateDesc.SetText(item.elaborateDescription);
+        titleDisplay.SetInfo(item.GetData());
+        elaborateDesc.SetText(item.GetElaborateDescription());
         
         // Toggle stats panel based on whether item is a weapon.
-        bool isWeapon = item is DataWeapon;
+        bool isWeapon = item.GetData() is DataWeapon;
         statsHolder.gameObject.SetActive(isWeapon);
         if (!isWeapon) return;
-        DataWeapon weapon = (DataWeapon) item;
+        DataWeapon weapon = (DataWeapon) item.GetData();
         
         // If desired, display weapon's unlock level.
         if(displayLevel) _levelDisplay.SetDesc(weapon.levelToUnlock.ToString());

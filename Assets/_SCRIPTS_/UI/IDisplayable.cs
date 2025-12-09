@@ -6,4 +6,5 @@ public interface IDisplayable {
     public string GetElaborateDescription();
     public Sprite GetIcon();
     public int GetLevelToUnlock();
+    public DataDisplayable GetData();
 }
