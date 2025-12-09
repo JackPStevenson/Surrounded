@@ -10,4 +10,6 @@ public class DataWeaponShake : DataWeapon {
         range = -1;
         penetration = -1;
     }
+    
+    public override int GetTypeId() => 2;
 }

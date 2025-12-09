@@ -1,8 +1,12 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+
+
 
 public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
+    public PlayerStats playerStats;
+    public static PlayerStats PlayerStats => Inst.playerStats;
     
     // ------ START METHODS ------
 
@@ -11,12 +15,16 @@ public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
     void Start() {
         ManagerZombies.Inst.ZombiePool.EventZombieReturned += OnZombieReturnedToPool;
         PlayerCore.Inst.EventDeath += OnPlayerDeath;
+        
+        playerStats = new PlayerStats();
     }
 
     // ------ EVENT METHODS ------
     
     void OnPlayerDeath(CharacterCore obj, string deathSource) {
-        ManagerSaveLoad.AddCareerDeathCause(deathSource);
+        playerStats.Finalize(ManagerGame.CurrentWave, deathSource);
+        ManagerRewards.GrantPerformanceRewards(playerStats);
+        ManagerSaveLoad.ForceSave();
     }
     
     void OnZombieReturnedToPool(DataZombie data) {
@@ -25,12 +33,11 @@ public class PlayerStatTracker : MonoSingleton<PlayerStatTracker> {
             return;
         }
         
-        ManagerSaveLoad.AddZombieBlood(data.experienceOnDeath);
-        ManagerSaveLoad.AddExperience(data.experienceOnDeath);
-        ManagerSaveLoad.AddCareerZombieKillCount(data.name);
+        playerStats.AddZombieKill(data);
     }
-
-    void OnDestroy() {
-        ManagerSaveLoad.ForceSave();
+    
+    protected override void OnDestroyed(bool isDeletedInstance) {
+        playerStats.Finalize(ManagerGame.CurrentWave, "");
+        ManagerRewards.GrantPerformanceRewards(playerStats);
     }
 }

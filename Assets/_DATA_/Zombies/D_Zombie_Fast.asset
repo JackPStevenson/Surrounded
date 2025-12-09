@@ -25,4 +25,4 @@ MonoBehaviour:
   hurtSound: SFX_FastZombieHurt
   attackSound: SFX_FastZombieAttack
   deathSound: SFX_FastZombieDeath
-  experienceOnDeath: 10
+  bloodOnDeath: 10

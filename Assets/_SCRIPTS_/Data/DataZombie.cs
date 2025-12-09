@@ -29,5 +29,5 @@ public class DataZombie : ScriptableObject {
     public string deathSound;
 
     [Header("Death")]
-    public int experienceOnDeath;
+    public int bloodOnDeath;
 }

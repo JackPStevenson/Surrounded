@@ -45,7 +45,8 @@ public class ManagerInput : MonoSingleton<ManagerInput> {
         InputSystem.EnableDevice(_accel);
         _accel.samplingFrequency = 60f;
     }
-    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
+
     // ------ UPDATE METHODS ------
 
     void Update() {

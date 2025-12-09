@@ -17,7 +17,7 @@ public class IndividualAudioPlayer : MonoBehaviour {
 
     public virtual void GetAudioIndexes() {
         for (int i = 0; i < clipNames.Length; i++) {
-            int temp = AudioManager.instance.FindSoundIndex(type, clipNames[i]);
+            int temp = ManagerAudio.GetSoundIndex(type, clipNames[i]);
             //Debug.Log(clipNames[i] + " is at index " + temp);
             clipIndexes[i] = temp;
         }
@@ -34,7 +34,7 @@ public class IndividualAudioPlayer : MonoBehaviour {
 
     public void PlaySound(int index) {
         if (index < clipNames.Length)
-            AudioManager.instance.PlaySoundByIndex(type, clipIndexes[index]);
+            ManagerAudio.PlaySound(type, clipIndexes[index]);
     }
 
     private int GetIndex(string soundName) {

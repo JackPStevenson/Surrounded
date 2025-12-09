@@ -10,9 +10,9 @@ public class ManagerShop : MonoSingleton<ManagerShop> {
 
     private Coroutine lowFundsEnumerator;
 
-    [SerializeField] private uint LootBoxCost = 1000;
+    [SerializeField] private int LootBoxCost = 1000;
 
-    [SerializeField] private uint[] TrapCosts = {100, 250, 400, 600};
+    [SerializeField] private int[] TrapCosts = {100, 250, 400, 600};
 
     [SerializeField] private TMP_Text PlayerZombieBlood;
 
@@ -23,6 +23,7 @@ public class ManagerShop : MonoSingleton<ManagerShop> {
     // ------ START METHODS ------
 
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     private void Start() => SetUpShop();
 
@@ -71,11 +72,11 @@ public class ManagerShop : MonoSingleton<ManagerShop> {
     }
 
     public void UpdateZombieBloodDisplay() {
-        PlayerZombieBlood.text = DEPRECATED_PlayerStats.instance.ZombieBlood + " Zombie Blood";
+        PlayerZombieBlood.text = "Zombie Blood: " + ManagerSaveLoad.GetZombieBlood();
     }
 
     public bool PurchaseLootBox() {
-        if (DEPRECATED_PlayerStats.instance.RemoveZombieBlood(LootBoxCost)) {
+        if (ManagerSaveLoad.TrySpendZombieBlood(LootBoxCost)) {
             LootboxManager.instance.OpenLootBoxScreen();
             UpdateZombieBloodDisplay();
             return true;

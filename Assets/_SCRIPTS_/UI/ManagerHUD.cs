@@ -26,6 +26,8 @@ public class ManagerHUD : MonoSingleton<ManagerHUD> {
         swipeDisplay.transform.Find("Slider").TryGetComponent(out _swipeEnergySlider);
         shakeDisplay.transform.Find("Slider").TryGetComponent(out _shakeEnergySlider);
     }
+    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         ManagerWave.Inst.EventHordeSpawnNotify += HordeSpawnNotify;
@@ -68,7 +70,6 @@ public class ManagerHUD : MonoSingleton<ManagerHUD> {
     // ------ EVENT METHODS ------
 
     void OnWeaponEquip(DataWeapon weapon, int slot) {
-        print(1);
         switch (slot) {
             default:
                 tapDisplay.SetIcon(weapon?.icon);

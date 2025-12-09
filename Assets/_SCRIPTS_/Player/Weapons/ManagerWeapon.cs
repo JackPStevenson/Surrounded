@@ -35,6 +35,7 @@ public class ManagerWeapon : MonoSingleton<ManagerWeapon> {
     // ------ START METHODS ------
 
     protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
         _camera = Camera.main;
@@ -121,7 +122,6 @@ public class ManagerWeapon : MonoSingleton<ManagerWeapon> {
         for (int i = 0; i < tapWeapons.Count; i++) tapWeapons[i].ToggleWeapon(i == ActiveTap && !_useFallback);
 
         if(slot > -1) EventWeaponEquip?.Invoke(CurrentTap? CurrentTap.Data : null, 0);
-        print(slot);
     }
     
     public void EquipSwipe(int slot) {
