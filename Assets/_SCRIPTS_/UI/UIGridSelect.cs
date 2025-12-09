@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum SelectType { None = 0, WeaponTap = 1, WeaponSwipe = 2, WeaponShake = 3, Perk1 = 4, Perk2 = 5, Perk3 = 6 }
 
@@ -10,7 +11,7 @@ public class UIGridSelect : MonoBehaviour {
 
     [Header("References")]
     public GameObject displayItemPrefab;
-    public Transform content;
+    public ScrollRect scroller;
     public GameObject confirmButton;
 
     private UIItemPreview _itemPreview;
@@ -36,7 +37,7 @@ public class UIGridSelect : MonoBehaviour {
     // ------ GRID MANAGEMENT METHODS ------
 
     public void Initialize(SelectType selectType) {
-        if (!content) Awake();
+        if (!_itemPreview) Awake();
         _currentSelectType = selectType;
         
         // Get selectables and display them on grid.
@@ -47,6 +48,9 @@ public class UIGridSelect : MonoBehaviour {
         if (_chooseText) _chooseText.text = "Choose a " + SelectableName;
         gameObject.SetActive(true);
         confirmButton.SetActive(false);
+        
+        Debug.Log(1);
+        scroller.verticalScrollbar.value = 1;
     }
 
     private void PreviewItem(int index) {
@@ -79,7 +83,7 @@ public class UIGridSelect : MonoBehaviour {
     
     /// Makes display item from given displayable at given index in items array. Additionally, adds listener to display item's button.
     private void MakeDisplayItem<T>(T[] displayables, int index) where T : DataDisplayable {
-        GameObject e = Instantiate(displayItemPrefab, content);
+        GameObject e = Instantiate(displayItemPrefab, scroller.content);
         e.TryGetComponent(out UIDisplayItem i);
         i.SetInfo(displayables[index], true);
         i.Button.onClick.AddListener(() => PreviewItem(index));

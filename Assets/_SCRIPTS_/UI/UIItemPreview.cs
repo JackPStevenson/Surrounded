@@ -54,21 +54,20 @@ public class UIItemPreview : MonoBehaviour {
         _damageDisplay.SetDesc(weapon.damage.ToString("N0"));
         
         // If weapon has a cooldown, display it.
-        float cooldown = weapon.energyCost / Mathf.Max(weapon.energyRegenRate, 0.001f);
-        if(cooldown > 0) _cooldownDisplay.SetDesc(cooldown.ToString("N1"));
-        _cooldownDisplay.gameObject.SetActive(cooldown <= 0);
+        float cooldown = Mathf.Ceil(weapon.energyCost / Mathf.Max(weapon.energyRegenRate, 0.001f) * 10) / 10;
+        _cooldownDisplay.SetDesc(cooldown > 0 ? cooldown.ToString("N1") : "None");
+        
+        // If weapon is a tap weapon, display its hit type.
+        if(weapon is DataWeaponTap tap)_penetrationDisplay.SetDesc(tap.penetration == 1 ? "Single" : "Multiple");
+        _penetrationDisplay.gameObject.SetActive(weapon.CheckTypeId(0));
 
         // If weapon is a swipe weapon, display its swipe length.
         if(weapon is DataWeaponSwipe swipe) _swipeLengthDisplay.SetDesc(swipe.maxPathDistance.ToString("N1"));
         _swipeLengthDisplay.gameObject.SetActive(weapon.CheckTypeId(1));
 
         // If weapon is not a shake weapon, display its radius and penetration.
-        if (!weapon.CheckTypeId(2)) {
-            _radiusDisplay.SetDesc(weapon.range.ToString("N1"));
-            _penetrationDisplay.SetDesc(weapon.penetration.ToString("N1"));
-        }
+        if (!weapon.CheckTypeId(2)) _radiusDisplay.SetDesc(weapon.range.ToString("N1"));
         _radiusDisplay.gameObject.SetActive(!weapon.CheckTypeId(2));
-        _penetrationDisplay.gameObject.SetActive(!weapon.CheckTypeId(2));
     }
 
     public void Close() => gameObject.SetActive(false);
