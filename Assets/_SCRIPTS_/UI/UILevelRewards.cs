@@ -14,6 +14,9 @@ public class UILevelRewards : MonoBehaviour {
     public int maxLevelToDisplay = 50;
     public bool onlyPending = false;
     public bool displayOnEnable = false;
+    
+    [Header("Inspection")]
+    public UIItemPreview itemPreview;
 
     // ------ START METHODS ------
 
@@ -59,7 +62,11 @@ public class UILevelRewards : MonoBehaviour {
         
         Instantiate(levelRewardPrefab, ScrollerContent).TryGetComponent(out UIDisplayItemLevelReward rewardDisplay);
         rewardDisplay.SetInfo(reward, rewardLevel);
-
-        if (reward is DataLevelGenericReward) rewardDisplay.SetName("Blood (" + ManagerRewards.BloodLevelRewardAmount + ")");
+        
+        if(reward is DataWeapon) rewardDisplay.Button.onClick.AddListener(() => itemPreview.PreviewItem(reward));
+        else {
+            rewardDisplay.SetName("Blood (" + ManagerRewards.BloodLevelRewardAmount + ")");
+            rewardDisplay.Button.enabled = false;
+        }
     }
 }

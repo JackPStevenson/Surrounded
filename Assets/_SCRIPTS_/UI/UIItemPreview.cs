@@ -2,12 +2,13 @@ using TMPro;
 using UnityEngine;
 
 public class UIItemPreview : MonoBehaviour {
-    private UIDisplayItem _titleDisplay;
 
-    private Transform _contextHolder;
-    private Transform _stats;
-    private TMP_Text _elaborateDesc;
+    [Header("References")]
+    public UIDisplayItem titleDisplay;
+    public Transform statsHolder;
+    public TMP_Text elaborateDesc;
 
+    private UIDisplayItem _levelDisplay;
     private UIDisplayItem _damageDisplay;
     private UIDisplayItem _radiusDisplay;
     private UIDisplayItem _swipeLengthDisplay;
@@ -19,36 +20,34 @@ public class UIItemPreview : MonoBehaviour {
     // ------ START METHODS ------
 
     void Awake() { if(!_awoken) OnAwake(); }
-
     private void OnAwake() {
-        _titleDisplay = GetComponentInChildren<UIDisplayItem>();
-
-        _contextHolder = transform.Find("Context");
-        _stats = _contextHolder.Find("Stats");
-        _contextHolder.Find("Elaborate").TryGetComponent(out _elaborateDesc);
-
-        _stats.Find("Damage").TryGetComponent(out _damageDisplay);
-        _stats.Find("Radius").TryGetComponent(out _radiusDisplay);
-        _stats.Find("SwipeLength").TryGetComponent(out _swipeLengthDisplay);
-        _stats.Find("Penetration").TryGetComponent(out _penetrationDisplay);
-        _stats.Find("Cooldown").TryGetComponent(out _cooldownDisplay);
+        statsHolder.Find("Level").TryGetComponent(out _levelDisplay);
+        statsHolder.Find("Damage").TryGetComponent(out _damageDisplay);
+        statsHolder.Find("Radius").TryGetComponent(out _radiusDisplay);
+        statsHolder.Find("SwipeLength").TryGetComponent(out _swipeLengthDisplay);
+        statsHolder.Find("Penetration").TryGetComponent(out _penetrationDisplay);
+        statsHolder.Find("Cooldown").TryGetComponent(out _cooldownDisplay);
     }
 
     // ------ EVENT METHODS ------
 
-    public void PreviewItem(DataDisplayable item) {
-        
+    public void PreviewItem(DataDisplayable item, bool displayLevel = false) {
         gameObject.SetActive(true);
         if(!_awoken) OnAwake();
         
         // Initialize title and description with generic info from item.
-        _titleDisplay.SetInfo(item);
-        _elaborateDesc.SetText(item.elaborateDescription);
+        titleDisplay.SetInfo(item);
+        elaborateDesc.SetText(item.elaborateDescription);
         
         // Toggle stats panel based on whether item is a weapon.
+        bool isWeapon = item is DataWeapon;
+        statsHolder.gameObject.SetActive(isWeapon);
+        if (!isWeapon) return;
         DataWeapon weapon = (DataWeapon) item;
-        _stats.gameObject.SetActive(weapon);
-        if (!weapon) return;
+        
+        // If desired, display weapon's unlock level.
+        if(displayLevel) _levelDisplay.SetDesc(weapon.levelToUnlock.ToString());
+        _levelDisplay.gameObject.SetActive(displayLevel);
         
         // Fill out generic weapon data.
         _damageDisplay.SetDesc(weapon.damage.ToString("N0"));

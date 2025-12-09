@@ -14,17 +14,21 @@ public class UILoadout : MonoBehaviour {
     
     [Header("Selection")]
     public UIGridSelect gridSelect;
+    public UIItemPreview itemPreview;
     
     [Header("Leveling")]
     public TMP_Text levelText;
     public UIDisplayItemLevelReward nextRewardDisplay;
     
-    [Header("Currency")]
-    public TMP_Text bloodText;
+    [Header("Shop")]
+    public TMP_Text currentBlood;
+    public TMP_Text perkBloodCost;
+    
 
     // ------ START METHODS ------
     
     void Start() {
+        ManagerSaveLoad.AddExperience(100000);
         gridSelect.OnSelected += OnSelected;
 
         ManagerLoadout.Inst.ClearTaps();
@@ -51,7 +55,7 @@ public class UILoadout : MonoBehaviour {
     // ------ UPDATE METHODS ------
     
     void FixedUpdate() {
-        bloodText.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
+        currentBlood.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
     }
 
     // ------ EVENT METHODS ------
@@ -82,19 +86,19 @@ public class UILoadout : MonoBehaviour {
                 break;
             
             case SelectType.Perk1:
-                SaveLoadFilePerk perk1 = ManagerSaveLoad.GetPerkInstance(index);
+                SaveLoadPerk perk1 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk1, 0);
                 perk1Display.SetInfo(perk1.Data);
                 break;
             
             case SelectType.Perk2:
-                SaveLoadFilePerk perk2 = ManagerSaveLoad.GetPerkInstance(index);
+                SaveLoadPerk perk2 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk2, 1);
                 perk2Display.SetInfo(perk2.Data);
                 break;
             
             case SelectType.Perk3:
-                SaveLoadFilePerk perk3 = ManagerSaveLoad.GetPerkInstance(index);
+                SaveLoadPerk perk3 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk3, 2);
                 perk3Display.SetInfo(perk3.Data);
                 break;
@@ -103,7 +107,11 @@ public class UILoadout : MonoBehaviour {
         StopSelect();
     }
 
-    public void StopSelect() {
-        gridSelect.Clear();
+    public void StopSelect() => gridSelect.Clear();
+    public void TryBuyPerk() {
+        if (!ManagerRewards.TryBuyPerk(out SaveLoadPerk perk)) return;
+        
+        itemPreview.transform.parent.gameObject.SetActive(true);
+        itemPreview.PreviewItem(perk.Data);
     }
 }

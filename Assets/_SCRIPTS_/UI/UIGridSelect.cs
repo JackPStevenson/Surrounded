@@ -24,7 +24,7 @@ public class UIGridSelect : MonoBehaviour {
     private SelectType _currentSelectType = SelectType.None;
     private int _previewIndex = -1;
     
-    public DataDisplayable[] Selectables => (int) _currentSelectType switch { 1 => ManagerData.Taps, 2 => ManagerData.Swipes, 3 => ManagerData.Shakes, 4 or 5 or 6 => ManagerData.PlayerPerks, _ => null };
+    public DataDisplayable[] Selectables => (int) _currentSelectType switch { 1 => ManagerData.Taps, 2 => ManagerData.Swipes, 3 => ManagerData.Shakes, 4 or 5 or 6 => ManagerSaveLoad.GetPerkInstances(), _ => null };
     public string SelectableName => (int) _currentSelectType switch { 1 => "Tap Weapon", 2 => "Swipe Weapon", 3 => "Shake Weapon", 4 => "Perk 1", 5 => "Perk 2", 6 => "Perk 3", _ => "null" };
 
     // ------ START METHODS ------
@@ -89,5 +89,4 @@ public class UIGridSelect : MonoBehaviour {
         i.Button.onClick.AddListener(() => PreviewItem(index));
         _items[index] = i;
     }
-
 }
