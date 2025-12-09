@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9114152879815078039}
+  - component: {fileID: 2030472463912967321}
   m_Layer: 0
   m_Name: Blizzard
   m_TagString: Untagged
@@ -32,6 +33,21 @@ Transform:
   - {fileID: 3581920313925855397}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2030472463912967321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6359047159459367868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e37cd375433714641ac6109061e2cd4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - {fileID: 3684465176991734989}
+  attached: 0
 --- !u!1 &8872019643324288936
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,8 +90,8 @@ VisualEffect:
   m_GameObject: {fileID: 8872019643324288936}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 9e1e5e31ce8a0ba4dbd7a9d9abd0987e, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1

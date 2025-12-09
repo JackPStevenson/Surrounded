@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Standard Shake
   description: Applies moderate damage to all zombies on screen.
   icon: {fileID: 21300000, guid: 16b2d5caa18ee7742bb747bb357fabbd, type: 3}
-  minWaveToUnlock: 0
+  levelToUnlock: 0
   prefab: {fileID: 5575825521849605147, guid: 7f7c05fe61834be49af206b24374ef80, type: 3}
   damage: 100
   range: -1
@@ -25,3 +25,5 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 64
+  sound: 
+  particleEffect: Rock Wave

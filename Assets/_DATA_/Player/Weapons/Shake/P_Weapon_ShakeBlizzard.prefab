@@ -80,6 +80,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5747536753040484535}
+        m_TargetAssemblyTypeName: PartShakeVFX, Assembly-CSharp
+        m_MethodName: TryInvoke
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1363837326798931218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +227,7 @@ GameObject:
   - component: {fileID: 7631003226100994485}
   - component: {fileID: 7782820107958636486}
   - component: {fileID: 2446767923950130756}
+  - component: {fileID: 5747536753040484535}
   m_Layer: 0
   m_Name: Freeze Applier
   m_TagString: Untagged
@@ -310,7 +323,19 @@ MonoBehaviour:
       m_Calls: []
   EventShake:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5747536753040484535}
+        m_TargetAssemblyTypeName: PartShakeVFX, Assembly-CSharp
+        m_MethodName: PlayShakeVFX
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2446767923950130756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,3 +352,18 @@ MonoBehaviour:
   effectsPermanent: 0
   statusEffects:
   - {fileID: 11400000, guid: 95b22a9a29a4f7e4285462b57b05d6ee, type: 2}
+--- !u!114 &5747536753040484535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334042102037600921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b586552b115ece14f890b404f7360ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions:
+  - part: {fileID: 1363837326798931218}
+    inverseCondition: 0
