@@ -79,7 +79,7 @@ public class SaveLoadPlayer {
         return true;
     }
     
-    public void AddPerkInstance(string perkName, float perkPower) => perkInstances.Add(new SaveLoadFilePerk(perkName, perkPower));
+    public void AddPerkInstance(int perkIndex, float perkPower) => perkInstances.Add(new SaveLoadFilePerk(perkIndex, perkPower));
     public SaveLoadFilePerk[] GetPerkInstances() => perkInstances.ToArray();
 
     // ------ CAREER METHODS ------

@@ -58,7 +58,8 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
     public static bool TrySpendZombieBlood(int cost) => Inst._playerSave.TrySpendZombieBlood(cost);
 
     public static SaveLoadFilePerk[] GetPerkInstances() => Inst._playerSave.GetPerkInstances();
-    public static void AddPerkInstance(string perkName, float perkPower) => Inst._playerSave.AddPerkInstance(perkName, perkPower);
+    public static SaveLoadFilePerk GetPerkInstance(int index) => Inst._playerSave.GetPerkInstances()[index];
+    public static void AddPerkInstance(int perkIndex, float perkPower) => Inst._playerSave.AddPerkInstance(perkIndex, perkPower);
 
     // ------ STATIC CAREER METHODS ------
 

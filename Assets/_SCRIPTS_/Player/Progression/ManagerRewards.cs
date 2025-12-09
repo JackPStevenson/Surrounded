@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class ManagerRewards : MonoSingleton<ManagerRewards> {
     [Header("References")]
-    public DataBundleMaster masterBundle;
     public DataLevelGenericReward bloodRewardDisplayable;
 
     [Header("Waves")]
@@ -50,10 +49,7 @@ public class ManagerRewards : MonoSingleton<ManagerRewards> {
     
     public static int GetBloodFromWaves (int waves) => waves * Inst.bloodPerWaveBonus;
     public static int GetExpFromWaves (int waves) => GetExp(GetBloodFromWaves(waves), waves);
-    public static int GetBloodFromZombies(string name, int count) {
-        Debug.Log(Inst.masterBundle.Zombies.GetZombie(name));
-        return (Inst.masterBundle.Zombies.GetZombie(name) is { } zombie) ? zombie.bloodOnDeath * count : 0;
-    }
+    public static int GetBloodFromZombies(string name, int count) => (ManagerData.GetZombie(name) is { } zombie) ? zombie.bloodOnDeath * count : 0;
     public static int GetExpFromZombies (string name, int count) => GetExp(GetBloodFromZombies(name, count), count);
     
     public static int GetExp(int totalBlood, int bonusCount) => (totalBlood * Inst.bloodToExpMultiplier) + (Inst.bloodToExpBonus * bonusCount);
@@ -82,7 +78,7 @@ public class ManagerRewards : MonoSingleton<ManagerRewards> {
     public static DataDisplayable[] GetLevelRewardsToBeRewarded() => Inst.GetRewardsToBeRewarded();
     
 
-    private DataDisplayable GetRewardAtLevel(int level) => masterBundle.Weapons.HasWeaponAtLevel(level, out DataWeapon weapon) ? weapon : bloodRewardDisplayable;
+    private DataDisplayable GetRewardAtLevel(int level) => ManagerData.HasWeaponAtLevel(level, out DataWeapon weapon) ? weapon : bloodRewardDisplayable;
 
     private DataDisplayable[] GetRewardsInLevelRange(int startLevel, int endLevel) {
         startLevel = Mathf.Max(startLevel, 1);

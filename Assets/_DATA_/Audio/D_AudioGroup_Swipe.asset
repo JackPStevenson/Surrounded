@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 853189a1abb3cd54783f5ceafc410282, type: 3}
-  m_Name: TapAudioGroup
+  m_Name: D_AudioGroup_Swipe
   m_EditorClassIdentifier: 
-  _type: 2
-  _clips: []
+  type: 3
+  clips: []

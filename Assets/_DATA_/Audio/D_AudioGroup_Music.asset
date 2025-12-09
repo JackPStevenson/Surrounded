@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 853189a1abb3cd54783f5ceafc410282, type: 3}
-  m_Name: PerkAudioGroup
+  m_Name: D_AudioGroup_Music
   m_EditorClassIdentifier: 
-  _type: 5
-  _clips:
-  - {fileID: 0}
+  type: 7
+  clips: []

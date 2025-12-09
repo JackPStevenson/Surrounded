@@ -2,12 +2,14 @@ using System;
 
 [Serializable]
 public class SaveLoadFilePerk {
-    public string perkName;
+    public int perkIndex;
     public float perkPower;
-    //public SaveLoadPerkVariance[] perkVariance;
+    public DataPerkPlayer Data => ManagerData.GetPerk(perkIndex);
 
-    public SaveLoadFilePerk(string perkName, float perkPower) {
-        this.perkName = perkName;
+    // ------ CONSTRUCTOR METHODS ------
+    
+    public SaveLoadFilePerk(int perkIndex, float perkPower = 1) {
+        this.perkIndex = perkIndex;
         this.perkPower = perkPower;
     }
 }
