@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e567f85b2dc4233907a0c977873822e, type: 3}
-  m_Name: D_Perk_Player_Health
+  m_Name: D_Perk_MushroomSteak
   m_EditorClassIdentifier: 
-  displayName: Small Health Boost
-  description: Boosts poor soul's health by 3.
+  displayName: Mushroom Steak
+  description: Increases <color=red>maximum health</color>.
+  elaborateDescription: Increases <color=red>maximum health</color> by <color=red>5</color>
+    <color=grey>(+2 per level)</color>.
   icon: {fileID: 21300000, guid: 629f605a0d65e8446be56ac8a989d06f, type: 3}
-  minWaveToUnlock: 2
+  levelToUnlock: 0
   perkPrefab: {fileID: 9166884277504944787, guid: 89a338ff6c62f644ba9b7f040dcb3083,
     type: 3}

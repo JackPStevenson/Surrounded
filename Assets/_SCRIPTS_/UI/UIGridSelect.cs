@@ -60,7 +60,6 @@ public class UIGridSelect : MonoBehaviour {
         gameObject.SetActive(true);
         confirmButton.SetActive(false);
         
-        Debug.Log(1);
         scroller.verticalScrollbar.value = 1;
     }
 

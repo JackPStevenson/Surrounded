@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3404454636600697981}
-  - component: {fileID: 1293584653211403260}
+  - component: {fileID: 4526918487543398123}
+  - component: {fileID: 1732067623641594042}
   m_Layer: 0
-  m_Name: P_Perk_Player_Health
+  m_Name: P_Perk_RustyFork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1293584653211403260
+--- !u!114 &4526918487543398123
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +42,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 9166884277504944787}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56fbbadba10e56b4cb8bd1af59ed23a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e8cebf064bdf984a952b85d02d38c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   partConditions: []
-  healthMod: 3
+  EventCompsHit:
+    m_PersistentCalls:
+      m_Calls: []
+  EventCompsKilled:
+    m_PersistentCalls:
+      m_Calls: []
+  EventTap:
+    m_PersistentCalls:
+      m_Calls: []
+  EventSwipe:
+    m_PersistentCalls:
+      m_Calls: []
+  EventShake:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1732067623641594042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9166884277504944787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95a5097069ad9641afa8c46e2db8fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  effectsPermanent: 0
+  statusEffects: []
+  basePotency: 1
