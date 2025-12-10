@@ -20,7 +20,7 @@ public abstract class DataWeapon : DataDisplayable
 
     [Header("Other")]
     public string sound;
-    public string particleEffect;
+    public GameObject particleEffect;
     public abstract int GetTypeId();
     public bool CheckTypeId(int comparisonId) => comparisonId == GetTypeId();
 }

@@ -25,7 +25,7 @@ public class ParticleParent : MonoBehaviour
     {
         foreach (var effect in effects)
         {
-            Debug.Log("Playing");
+            //Debug.Log("Playing");
             effect.Play();
         }
     }

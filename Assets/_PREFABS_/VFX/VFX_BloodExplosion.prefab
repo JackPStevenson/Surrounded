@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7912995114331743578}
   - component: {fileID: 3590797956941012266}
   m_Layer: 0
-  m_Name: BloodExplosion
+  m_Name: VFX_BloodExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ Transform:
   m_GameObject: {fileID: 4767794523921012230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -0.034}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,7 +91,7 @@ VisualEffect:
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: f0cb9f0dbf8d53c47b05275bae59fe06, type: 3}
   m_InitialEventName: 
-  m_InitialEventNameOverriden: 1
+  m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
@@ -99,18 +99,21 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 1.5
+      - m_Value: 0.2
         m_Name: Particle Size
-        m_Overridden: 0
-      - m_Value: 0.7
+        m_Overridden: 1
+      - m_Value: 0.45
         m_Name: Explosion Size
-        m_Overridden: 0
-      - m_Value: 6
+        m_Overridden: 1
+      - m_Value: 4
         m_Name: Max Velocity
-        m_Overridden: 0
+        m_Overridden: 1
       - m_Value: 5
         m_Name: Trail Size
         m_Overridden: 0
+      - m_Value: 3
+        m_Name: Min Velocity
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -121,9 +124,9 @@ VisualEffect:
       m_Array: []
     m_Int:
       m_Array:
-      - m_Value: 20
+      - m_Value: 30
         m_Name: ParticleCount
-        m_Overridden: 0
+        m_Overridden: 1
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:

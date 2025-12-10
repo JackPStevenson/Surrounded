@@ -36,7 +36,7 @@ public class ParticleEffectPool : MonoBehaviour
 
     public void ActivateParticle(Vector3 pos)
     {
-        Debug.Log("activateParticle " + pos);
+        //Debug.Log("activateParticle " + pos);
         // get a particle
         var particle = PopParticle();
         // place it at the position

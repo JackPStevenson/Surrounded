@@ -7,40 +7,31 @@ public class ParticleManager : MonoSingleton<ParticleManager>
     public ParticleEffectPool slowEffectPool;
 
 
-    private ParticleParent tapEffect;
-    private ParticleParent swipeEffect;
+    public ParticleParent tapEffect;
+    public ParticleParent swipeEffect;
     public ParticleParent shakeEffect;
 
     private void Start()
     {
-        //SetTapEffect(ManagerWeapon.Inst.tapWeapons[0].Data.particleEffect);
-        //SetSwipeEffect(ManagerWeapon.Inst.swipeWeapons[0].Data.particleEffect);
-        //SetShakeEffect(ManagerWeapon.Inst.shakeWeapons[0].Data.particleEffect);
+        SetTapEffect(ManagerWeapon.Inst.tapWeapons[0].Data.particleEffect);
+        SetSwipeEffect(ManagerWeapon.Inst.swipeWeapons[0].Data.particleEffect);
+        SetShakeEffect(ManagerWeapon.Inst.shakeWeapons[0].Data.particleEffect);
     }
 
-    private void SetTapEffect(string effect)
+    private void SetTapEffect(GameObject effect)
     {
-        var particleObject = effectsBundle.GetParticle(effect);
-        if (particleObject != null)
-        {
-            tapEffect = Instantiate(particleObject.GetComponent<ParticleParent>());
-        }
+        if (effect != null)
+            tapEffect = Instantiate(effect).GetComponent<ParticleParent>();
     }
-    private void SetSwipeEffect(string effect)
+    private void SetSwipeEffect(GameObject effect)
     {
-        var particleObject = effectsBundle.GetParticle(effect);
-        if (particleObject != null)
-        {
-            swipeEffect = Instantiate(particleObject.GetComponent<ParticleParent>());
-        }
+        if (effect != null)
+            swipeEffect = Instantiate(effect).GetComponent<ParticleParent>();
     }
-    private void SetShakeEffect(string effect)
+    private void SetShakeEffect(GameObject effect)
     {
-        var particleObject = effectsBundle.GetParticle(effect);
-        if (particleObject != null)
-        {
-            shakeEffect = Instantiate(particleObject.GetComponent<ParticleParent>());
-        }
+        if (effect != null)
+            shakeEffect = Instantiate(effect).GetComponent<ParticleParent>();
     }
 
     public void AttachParticle(ParticleParent effect, Transform parent)
@@ -79,6 +70,7 @@ public class ParticleManager : MonoSingleton<ParticleManager>
     public void PlayShakeEffect()
     {
         shakeEffect.Play();
+        Debug.Log("Shake effect played");
     }
 
     public void StopShakeEffect()
@@ -94,6 +86,11 @@ public class ParticleManager : MonoSingleton<ParticleManager>
     public void PlayBloodEffect(Vector3 pos)
     {
         bloodEffectPool.ActivateParticle(pos);
-        Debug.Log("Played in manager");
+        //Debug.Log("Played in manager");
+    }
+
+    protected override void OnDestroyed(bool isDeletedInstance)
+    {
+
     }
 }
