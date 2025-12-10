@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Poision Shake
   description: Deals no damage, but applies poison to all zombies on screen.
+  elaborateDescription: 
   icon: {fileID: 21300000, guid: 6500a07d2fb3b924cbdba71c93d02597, type: 3}
   levelToUnlock: 4
   prefab: {fileID: 7770101667591404033, guid: b206da4b4946b1242b24afb6702145b8, type: 3}
@@ -25,3 +26,6 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 64
+  sound: 
+  particleEffect: {fileID: 6579130606547120775, guid: ae403932be4728b4598280fe5b3b1c71,
+    type: 3}
