@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Freeze Shake
   description: Summons a blizzard that freezes all enemies on screen, then
+  elaborateDescription: 
   icon: {fileID: 21300000, guid: 16b2d5caa18ee7742bb747bb357fabbd, type: 3}
   levelToUnlock: 9
   prefab: {fileID: 7770101667591404033, guid: 93b34a68013197a46b139f79acdde15c, type: 3}
@@ -25,3 +26,6 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 64
+  sound: 
+  particleEffect: {fileID: 6359047159459367868, guid: 47e8612244eb9e64e9c97e246582fac8,
+    type: 3}

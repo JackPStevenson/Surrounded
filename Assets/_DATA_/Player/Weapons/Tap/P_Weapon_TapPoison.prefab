@@ -58,6 +58,8 @@ GameObject:
   - component: {fileID: 4370429011404354632}
   - component: {fileID: 6701473355653724654}
   - component: {fileID: 6359451405773505320}
+  - component: {fileID: 7916174684717049465}
+  - component: {fileID: 7500160310437333471}
   m_Layer: 0
   m_Name: Poision Applier
   m_TagString: Untagged
@@ -122,7 +124,31 @@ MonoBehaviour:
         m_CallState: 2
   EventTap:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8663868632052632310}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7916174684717049465}
+        m_TargetAssemblyTypeName: PartVFXInterface, Assembly-CSharp
+        m_MethodName: PlayVFX
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   EventSwipe:
     m_PersistentCalls:
       m_Calls: []
@@ -145,3 +171,34 @@ MonoBehaviour:
   effectsPermanent: 0
   statusEffects:
   - {fileID: 11400000, guid: 8a7de62c4bbcc424f9bdc9698ea87785, type: 2}
+--- !u!114 &7916174684717049465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8663868632052632310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d383ab5fe46789948973ceac51d7df47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  type: 0
+--- !u!114 &7500160310437333471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8663868632052632310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b0bc6b1ba6f4a43a6f00c30d77669b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  spawnablePrefab: {fileID: 0}
+  EventSpawned:
+    m_PersistentCalls:
+      m_Calls: []

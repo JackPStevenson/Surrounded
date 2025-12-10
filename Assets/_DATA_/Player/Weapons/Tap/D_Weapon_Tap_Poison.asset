@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Poison Tap
   description: Lower damage, but applies poision in a small area.
+  elaborateDescription: 
   icon: {fileID: 21300000, guid: d48ef3a8a541c844a9a9c921306c3f60, type: 3}
   levelToUnlock: 6
   prefab: {fileID: 6711824401304372354, guid: 03678fccb0d5cc54a9e06b66f4316760, type: 3}
@@ -25,3 +26,6 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 64
+  sound: 
+  particleEffect: {fileID: 3127647320853031008, guid: 91e12b54b1524ae44900636c36e9aeb7,
+    type: 3}
