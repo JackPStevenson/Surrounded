@@ -110,7 +110,7 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
         if (SaveLoadUtils.TryLoad(PlayerSavePath, out SaveLoadPlayer player)) _playerSave = player;
         else {
             Debug.Log("Making new player save...");
-            _playerSave ??= new SaveLoadPlayer();
+            _playerSave = new SaveLoadPlayer();
             SaveData();
         }
     }
@@ -119,7 +119,7 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
         if (SaveLoadUtils.TryLoad(PlayerSettingsPath, out SaveLoadSettings settings)) _playerSettings = settings;
         else {
             Debug.Log("Making new player settings...");
-            _playerSettings ??= new SaveLoadSettings();
+            _playerSettings = new SaveLoadSettings();
             SaveData();
         }
     }

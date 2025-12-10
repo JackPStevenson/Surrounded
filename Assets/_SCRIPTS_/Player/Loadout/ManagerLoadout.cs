@@ -24,6 +24,7 @@ public class ManagerLoadout : MonoSingleton<ManagerLoadout> {
     // --- PERKS ---
     private readonly SaveLoadPerk[] _playerPerks = new SaveLoadPerk[3];
     public void SetPerkPlayer(SaveLoadPerk data, int index) => _playerPerks[index] = data;
+    public SaveLoadPerk GetPerk(int index) => _playerPerks[index];
 
     private bool loadOnNextScene;
 

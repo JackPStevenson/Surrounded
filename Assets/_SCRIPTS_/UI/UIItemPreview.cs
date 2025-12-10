@@ -37,6 +37,10 @@ public class UIItemPreview : MonoBehaviour {
         
         // Initialize title and description with generic info from item.
         titleDisplay.SetInfo(item.GetData());
+        
+        if (item is SaveLoadPerk perk) titleDisplay.SetInfoFromPerk(perk, false);
+        else titleDisplay.SetInfo(item.GetData(), true);
+        
         elaborateDesc.SetText(item.GetElaborateDescription());
         
         // Toggle stats panel based on whether item is a weapon.

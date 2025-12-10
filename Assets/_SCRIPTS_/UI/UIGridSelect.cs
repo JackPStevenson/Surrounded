@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,7 +27,8 @@ public class UIGridSelect : MonoBehaviour {
     
     public IDisplayable[] Selectables => (int) _currentSelectType switch { 1 => ManagerData.Taps, 2 => ManagerData.Swipes, 3 => ManagerData.Shakes, 4 or 5 or 6 => ManagerSaveLoad.GetPerkInstances(), _ => null };
     public string SelectableName => (int) _currentSelectType switch { 1 => "Tap Weapon", 2 => "Swipe Weapon", 3 => "Shake Weapon", 4 => "Perk 1", 5 => "Perk 2", 6 => "Perk 3", _ => "null" };
-
+    public bool IsPerkSelect => (int) _currentSelectType is 4 or 5 or 6;
+    
     // ------ START METHODS ------
 
     void Awake() {
@@ -36,13 +38,22 @@ public class UIGridSelect : MonoBehaviour {
 
     // ------ GRID MANAGEMENT METHODS ------
 
-    public void Initialize(SelectType selectType) {
+    public void Initialize(SelectType selectType, IDisplayable[] usedSelectables = null) {
         if (!_itemPreview) Awake();
         _currentSelectType = selectType;
         
         // Get selectables and display them on grid.
         _items = new UIDisplayItem[Selectables.Length];
-        for (int i = 0; i < Selectables.Length; i++) MakeDisplayItem(Selectables, i);
+        for (int i = 0; i < Selectables.Length; i++) {
+            IDisplayable selectable = Selectables[i];
+            
+            bool isUsed = false;
+            if (IsPerkSelect && usedSelectables != null)
+                for (int j = 0; j < usedSelectables.Length && !isUsed; j++)
+                    isUsed = selectable == usedSelectables[j];
+            
+            MakeDisplayItem(selectable, i, isUsed);
+        }
 
         // Enable display.
         if (_chooseText) _chooseText.text = "Choose a " + SelectableName;
@@ -82,11 +93,14 @@ public class UIGridSelect : MonoBehaviour {
     // ------ EVENT METHODS ------
     
     /// Makes display item from given displayable at given index in items array. Additionally, adds listener to display item's button.
-    private void MakeDisplayItem<T>(T[] displayables, int index) where T : IDisplayable {
+    private void MakeDisplayItem(IDisplayable displayable, int selectIndex, bool isUsed = false) {
         GameObject e = Instantiate(displayItemPrefab, scroller.content);
         e.TryGetComponent(out UIDisplayItem i);
-        i.SetInfo(displayables[index].GetData(), true);
-        i.Button.onClick.AddListener(() => PreviewItem(index));
-        _items[index] = i;
+        
+        if (IsPerkSelect) i.SetInfoFromPerk(displayable as SaveLoadPerk, isUsed);
+        else i.SetInfo(displayable.GetData(), true);
+        
+        i.Button.onClick.AddListener(() => PreviewItem(selectIndex));
+        _items[selectIndex] = i;
     }
 }
