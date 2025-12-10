@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class ManagerRewards : MonoSingleton<ManagerRewards> {
+    public const int perkCost = 500;
+    
     [Header("References")]
     public DataLevelGenericReward bloodRewardDisplayable;
 
@@ -43,6 +46,19 @@ public class ManagerRewards : MonoSingleton<ManagerRewards> {
             
         ManagerSaveLoad.UpdateLastRewardLevel();
         ManagerSaveLoad.ForceSave();
+    }
+
+    public static bool TryBuyPerk(out SaveLoadPerk perk) {
+        perk = null;
+        if (!ManagerSaveLoad.TrySpendZombieBlood(perkCost)) return false;
+        
+        float perkPower = Mathf.Round(Inst.perkQualityCurve.Evaluate(Random.value) * 10) / 10;
+        perk = new SaveLoadPerk(ManagerData.GetRandomPerkIndex(), perkPower);
+        
+        ManagerSaveLoad.AddPerkInstance(perk);
+        ManagerSaveLoad.ForceSave();
+
+        return true;
     }
 
     // ------ BLOOD REWARD METHODS ------

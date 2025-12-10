@@ -15,7 +15,7 @@ public class SaveLoadPlayer {
     public int lastRewardLevel;
     public int zombieBlood;
 
-    public List<SaveLoadFilePerk> perkInstances;
+    public List<SaveLoadPerk> perkInstances;
 
     // --- CAREER ---
     public int careerMaxWave;
@@ -32,7 +32,7 @@ public class SaveLoadPlayer {
         this.lastRewardLevel = lastRewardLevel;
         this.zombieBlood = zombieBlood;
         
-        perkInstances = new List<SaveLoadFilePerk>();
+        perkInstances = new List<SaveLoadPerk>();
         
         this.careerMaxWave = careerMaxWave;
         this.careerZombieBloodEarned = careerZombieBloodEarned;
@@ -79,8 +79,9 @@ public class SaveLoadPlayer {
         return true;
     }
     
-    public void AddPerkInstance(int perkIndex, float perkPower) => perkInstances.Add(new SaveLoadFilePerk(perkIndex, perkPower));
-    public SaveLoadFilePerk[] GetPerkInstances() => perkInstances.ToArray();
+    public void AddPerkInstance(int perkIndex, float perkPower) => perkInstances.Add(new SaveLoadPerk(perkIndex, perkPower));
+    public void AddPerkInstance(SaveLoadPerk perk) => perkInstances.Add(perk);
+    public SaveLoadPerk[] GetPerkInstances() => perkInstances.ToArray();
 
     // ------ CAREER METHODS ------
 

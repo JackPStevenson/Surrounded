@@ -40,6 +40,7 @@ public class ManagerData : MonoSingleton<ManagerData> {
     
     public static DataPerkPlayer[] PlayerPerks => Perks.Perks;
     public static DataPerkPlayer GetPerk(int index) => PlayerPerks[index];
+    public static int GetRandomPerkIndex() => Random.Range(0, PlayerPerks.Length);
 
     // --- AUDIO DATA ---
     

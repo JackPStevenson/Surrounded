@@ -121,6 +121,9 @@ public class UIGameOver : MonoBehaviour {
         }
         
         yield return new WaitForSeconds(microDelay);
-        nextLevelReward.SetInfo(ManagerRewards.GetLevelReward(ManagerSaveLoad.GetLevel(1)));
+        DataDisplayable nextReward = ManagerRewards.GetLevelReward(ManagerSaveLoad.GetLevel(1));
+        
+        nextLevelReward.SetInfo(nextReward);
+        if(nextReward is DataWeapon) nextLevelReward.Button.onClick.AddListener(() => levelRewards.itemPreview.PreviewItem(nextReward));
     }
 }

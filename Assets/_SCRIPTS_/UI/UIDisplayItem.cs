@@ -9,6 +9,9 @@ public class UIDisplayItem : MonoBehaviour {
     private TMP_Text _descText;
     protected TMP_Text Desc => ChildAutoFetch(_descText, "Desc");
     
+    private TMP_Text _extraText;
+    protected TMP_Text ExtraText => ChildAutoFetch(_descText, "ExtraText");
+    
     private Button _button;
     public Button Button => AutoFetch(_button);
     
@@ -19,7 +22,9 @@ public class UIDisplayItem : MonoBehaviour {
     // ------ SETUP METHODS ------
     
     public virtual void SetInfo(DataDisplayable d, bool allowLock = false) => SetInfo(d.displayName, d.description, d.icon, d.levelToUnlock, allowLock);
-    public void SetInfo(string name, string desc, Sprite icon = null, int level = 0, bool allowLock = false) { gameObject.SetActive(true); SetName(name); SetDesc(desc, level, allowLock); SetIcon(icon); SetButton(level, allowLock); }
+    public void SetInfo(IDisplayable d, bool allowLock = false) => SetInfo(d.GetDisplayName(), d.GetDescription(), d.GetIcon(), d.GetLevelToUnlock(), allowLock);
+    public void SetInfo(string name, string desc, Sprite icon = null, int level = 0, bool allowLock = false) { gameObject.SetActive(true); SetName(name); SetDesc(desc, level, allowLock); SetIcon(icon); SetButton(level, allowLock); SetExtraText(""); }
+    public void SetInfoFromPerk(SaveLoadPerk perk, bool usedInOtherSlot) { SetInfo(perk); SetButton(!usedInOtherSlot); if(usedInOtherSlot) SetDesc("(In Use)"); SetExtraText(perk.perkPower * 2 + ""); }
 
     // ------ SINGLE SETUP METHODS ------
 
@@ -29,6 +34,7 @@ public class UIDisplayItem : MonoBehaviour {
     public void SetButton(bool active) { if(Button) Button.interactable = active; }
     public void SetIcon(Sprite icon) { if (Icon) { Icon.enabled = icon; Icon.sprite = icon; } }
     public void SetDescColor(Color color) { if (Desc) Desc.color = color; }
+    public void SetExtraText(string text) => ExtraText?.SetText(text);
 
     // ------ HELPER METHODS ------
     

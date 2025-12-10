@@ -14,13 +14,16 @@ public class UILoadout : MonoBehaviour {
     
     [Header("Selection")]
     public UIGridSelect gridSelect;
+    public UIItemPreview itemPreview;
     
     [Header("Leveling")]
     public TMP_Text levelText;
     public UIDisplayItemLevelReward nextRewardDisplay;
     
-    [Header("Currency")]
-    public TMP_Text bloodText;
+    [Header("Shop")]
+    public TMP_Text currentBlood;
+    public TMP_Text perkBloodCost;
+    
 
     // ------ START METHODS ------
     
@@ -42,21 +45,40 @@ public class UILoadout : MonoBehaviour {
         perk1Display.SetInfo("None", "", null);
         perk2Display.SetInfo("None", "", null);
         perk3Display.SetInfo("None", "", null);
-
-        int level = ManagerSaveLoad.GetLevel();
-        levelText.text = "Level " + level;
-        nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1));
     }
 
     // ------ UPDATE METHODS ------
     
     void FixedUpdate() {
-        bloodText.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
+        int level = ManagerSaveLoad.GetLevel();
+        levelText.text = "Level " + level;
+        print(ManagerSaveLoad.GetLevel());
+        nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1));
+        nextRewardDisplay.SetDesc((level + 1) + "");
+        
+        currentBlood.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
     }
 
     // ------ EVENT METHODS ------
 
-    public void StartSelect(int typeId) { if (typeId != 0 && !gridSelect.IsSelecting) gridSelect.Initialize((SelectType) typeId); }
+    public void StartSelect(int typeId) {
+        if (typeId == 0 || gridSelect.IsSelecting) return;
+
+        switch (typeId) {
+            case 4:
+                gridSelect.Initialize((SelectType) typeId, new IDisplayable[] { ManagerLoadout.Inst.GetPerk(1), ManagerLoadout.Inst.GetPerk(2) });
+                break;
+            case 5:
+                gridSelect.Initialize((SelectType) typeId, new IDisplayable[] { ManagerLoadout.Inst.GetPerk(0), ManagerLoadout.Inst.GetPerk(2) });
+                break;
+            case 6:
+                gridSelect.Initialize((SelectType) typeId, new IDisplayable[] { ManagerLoadout.Inst.GetPerk(0), ManagerLoadout.Inst.GetPerk(1) });
+                break;
+            default:
+                gridSelect.Initialize((SelectType) typeId);
+                break;
+        }
+    }
 
     private void OnSelected(SelectType type, int index) {
         switch (type) {
@@ -82,28 +104,32 @@ public class UILoadout : MonoBehaviour {
                 break;
             
             case SelectType.Perk1:
-                SaveLoadFilePerk perk1 = ManagerSaveLoad.GetPerkInstance(index);
+                SaveLoadPerk perk1 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk1, 0);
-                perk1Display.SetInfo(perk1.Data);
+                perk1Display.SetInfoFromPerk(perk1, false);
                 break;
             
             case SelectType.Perk2:
-                SaveLoadFilePerk perk2 = ManagerSaveLoad.GetPerkInstance(index);
+                SaveLoadPerk perk2 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk2, 1);
-                perk2Display.SetInfo(perk2.Data);
+                perk2Display.SetInfoFromPerk(perk2, false);
                 break;
             
             case SelectType.Perk3:
-                SaveLoadFilePerk perk3 = ManagerSaveLoad.GetPerkInstance(index);
+                SaveLoadPerk perk3 = ManagerSaveLoad.GetPerkInstance(index);
                 ManagerLoadout.Inst.SetPerkPlayer(perk3, 2);
-                perk3Display.SetInfo(perk3.Data);
+                perk3Display.SetInfoFromPerk(perk3, false);
                 break;
         }
         
         StopSelect();
     }
 
-    public void StopSelect() {
-        gridSelect.Clear();
+    public void StopSelect() => gridSelect.Clear();
+    public void TryBuyPerk() {
+        if (!ManagerRewards.TryBuyPerk(out SaveLoadPerk perk)) return;
+        
+        itemPreview.transform.parent.gameObject.SetActive(true);
+        itemPreview.PreviewItem(perk);
     }
 }
