@@ -8,7 +8,7 @@ public class PartAffectorDamage : PartAffector {
     [Header("Damage")]
     public float damage;
     public bool oneHitPerComp;
-    public bool ownedByPlayer;
+    public bool reportBackToPlayer;
     readonly List<Health> _hitCompTracker = new List<Health>();
     
     // --- EVENTS ---
@@ -21,7 +21,11 @@ public class PartAffectorDamage : PartAffector {
             if (_hitCompTracker.Any(c => c == comp)) return;
             _hitCompTracker.Add(comp);
         }
-        comp.DealDamage(ownedByPlayer ? PlayerCore.Inst.Status.ModConst(AffectorConstType.Damage, damage) : damage);
+        float remainingHp = comp.DealDamage(reportBackToPlayer ? PlayerCore.Inst.Status.ModConst(AffectorConstType.Damage, damage) : damage);
+        EventDamageApplied?.Invoke(_hitCompTracker.Count);
+        if (!reportBackToPlayer) return;
+        ManagerWeapon.Inst.ForceEventOnHit(new Health[] { comp });
+        if(remainingHp <= 0) ManagerWeapon.Inst.ForceEventOnKill(new Health[] { comp });
     }
     
     public override void Reset() {

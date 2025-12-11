@@ -10,18 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57dada39fda8c014c9f88de2c6d0a059, type: 3}
-  m_Name: D_Status_Shock
+  m_Name: D_Status_MushroomSteak
   m_EditorClassIdentifier: 
-  name: Shock
-  duration: 1
-  stackable: 0
+  name: Mushroom Steak
+  duration: 9999999
+  stackable: 1
   potencyScalar: 1
   constantAffectors:
-  - type: 2
-    additive: 0
-    baseModifier: 0.1
-    statusInfluence: 0
-  dynamicAffectors:
   - type: 0
-    basePotency: 15
-    statusInfluence: 1
+    additive: 1
+    baseModifier: 5
+    statusInfluence: 0.4
+  dynamicAffectors: []

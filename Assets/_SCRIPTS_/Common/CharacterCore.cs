@@ -70,7 +70,7 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
     public void TryAddEffect(DataStatusEffect newEffect, bool isTemp = true, float potency = 1) => Status.TryAddEffect(newEffect, isTemp, potency);
 
     public void TryAddPerk(DataPerkPlayer dataPerkPlayer, float scalar) {
-        PartLogicValue part = Instantiate(dataPerkPlayer.perkPrefab, transform).GetComponents<PartLogicValue>().FirstOrDefault(p => p.Compare(PerkScalarTag));
+        PartLogicValue part = Instantiate(dataPerkPlayer.perkPrefab, transform).GetComponents<PartLogicValue>().FirstOrDefault(p => p.CompareName(PerkScalarTag));
         if (part) part.SetValue(scalar);
     }
 

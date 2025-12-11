@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPerks:
   - {fileID: 11400000, guid: 9f9427410aa891f4a8053daaaf771694, type: 2}
-  - {fileID: 11400000, guid: a24598c29eb10e64fa739bc80ba02d88, type: 2}
+  - {fileID: 11400000, guid: 13d6cc4da82a4324bbc1e67a236e3222, type: 2}
+  - {fileID: 11400000, guid: 50be2cea8ab6fe04e8f7176a97f8241c, type: 2}
+  - {fileID: 11400000, guid: bcb5f16238136384489c809991542c69, type: 2}
+  - {fileID: 11400000, guid: 33476ab0137eafe4c9dfd3b636c7ad91, type: 2}

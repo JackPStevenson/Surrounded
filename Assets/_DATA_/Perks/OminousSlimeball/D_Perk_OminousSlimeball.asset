@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e567f85b2dc4233907a0c977873822e, type: 3}
-  m_Name: D_Perk_Player_HealthBig
+  m_Name: D_Perk_OminousSlimeball
   m_EditorClassIdentifier: 
-  displayName: Large Health Boost
-  description: Boosts poor soul's health by 6.
-  icon: {fileID: 21300000, guid: 629f605a0d65e8446be56ac8a989d06f, type: 3}
-  minWaveToUnlock: 4
-  perkPrefab: {fileID: 9166884277504944787, guid: 66fe77602d28835499c9b145f604dfcb,
+  displayName: Ominous Slimeball
+  description: Creates a slowing slime puddle every 5 kills.
+  elaborateDescription: 
+  icon: {fileID: 0}
+  levelToUnlock: 0
+  perkPrefab: {fileID: 9166884277504944787, guid: 66b871623e63f9d428fb4429c24c5da6,
     type: 3}
