@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: D_Status_Shock
   m_EditorClassIdentifier: 
   name: Shock
-  duration: 0.5
+  duration: 1
   stackable: 0
   potencyScalar: 1
   constantAffectors:
