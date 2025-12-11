@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Rusty Fork
   description: Chance to cause bleed on hit.
-  elaborateDescription: 
-  icon: {fileID: 0}
+  elaborateDescription: Gives <color=yellow>taps</color>, <color=yellow>swipes</color>,
+    and <color=yellow>shakes</color> a 10% chance <color=grey>(+5% per level)</color>
+    chance to <color=red>bleed</color> zombies on hit, dealing 60 damage over 3 seconds.
+  icon: {fileID: 21300000, guid: 31258fd0156ef5a44a34473ee3aab106, type: 3}
   levelToUnlock: 0
   perkPrefab: {fileID: 9166884277504944787, guid: ac73c23953d5c544a8a115b1d048e92f,
     type: 3}

@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Temu Guitar
   description: And his music was ass...
-  elaborateDescription: Grants a 10% chance (+5% per level) to shock ALL zombies
-    on hit within 3 meters of victim. (I feel like I've seen this before...)
-  icon: {fileID: 0}
+  elaborateDescription: Grants a 10% chance <color=grey>(+5% per level)</color> to
+    <color=#66f0ff>shock</color> ALL zombies on hit within 3 meters of victim, dealing
+    30 damage and slowing by 90% for 1 second.<br><br><color=grey>(I feel like I've
+    seen this before...)</color>
+  icon: {fileID: 21300000, guid: 463908e1db6144748a0185f3cc045719, type: 3}
   levelToUnlock: 0
   perkPrefab: {fileID: 9166884277504944787, guid: e4179abe66d0b2548b65f897f10b1e02,
     type: 3}

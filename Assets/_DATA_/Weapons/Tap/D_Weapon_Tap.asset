@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: D_Weapon_Tap
   m_EditorClassIdentifier: 
   displayName: Standard Tap
-  description: Taps single zombies at a time with moderate damage.
-  elaborateDescription: funky monkey
+  description: Ol' Reliable.
+  elaborateDescription: Damages zombies 1 at a time with moderate damage.
   icon: {fileID: 21300000, guid: a62d2fb0a6af70f41aa2976fdc16f608, type: 3}
   levelToUnlock: 0
   prefab: {fileID: 9011236457265295441, guid: 4060b4139f2ee204ea44d0079ee4fead, type: 3}
@@ -26,3 +26,5 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 64
+  sound: 
+  particleEffect: {fileID: 0}

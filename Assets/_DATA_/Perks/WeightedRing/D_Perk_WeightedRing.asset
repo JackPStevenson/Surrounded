@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Weighted Ring
   description: Improves tap, swipe, and shake damage.
-  elaborateDescription: Increases the base damage of taps, swipes, and shakes by
-    10%. Does not affect status effects.
-  icon: {fileID: 0}
+  elaborateDescription: Increases the base damage of <color=yellow>taps</color>,
+    <color=yellow>swipes</color>, and <color=yellow>shakes</color> by 20% <color=grey>(+5%
+    per level)</color>. Does not affect status effects.
+  icon: {fileID: 21300000, guid: 80c6563125c0e8f47b653b643f1969d2, type: 3}
   levelToUnlock: 0
   perkPrefab: {fileID: 9166884277504944787, guid: e235874c2e3abf9499bc6eb83c2447b8,
     type: 3}
