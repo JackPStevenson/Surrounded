@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PartAffectorAttachVFX : PartAffector
+public class PartAffectorSpawnVFX : PartAffector
 {
     // --- STATUS ---
     [Header("Characteristics")]
@@ -19,17 +19,7 @@ public class PartAffectorAttachVFX : PartAffector
 
     protected override void OnCompAffect(Health comp)
     {
-        ParticleParent particle = comp.GetComponentInChildren<ParticleParent>();
-        ParticleEffectPool pool = ParticleManager.Inst.attachedEffectPools[indexOfPool];
-        if (particle != null)
-        {
-            particle.SetEndTime(effect.duration);
-        }
-        else
-        {
-            pool.ActivateParticle(comp.transform, effect.duration);
-        }
-
+        ParticleManager.Inst.attachedEffectPools[indexOfPool].ActivateParticle(comp.transform.position);
     }
 
     public void AffectComp(Health comp)

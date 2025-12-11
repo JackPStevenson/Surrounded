@@ -21,6 +21,8 @@ public class ParticleManager : MonoSingleton<ParticleManager>
         SetTapEffect(ManagerWeapon.Inst.tapWeapons[0].Data.particleEffect);
         SetSwipeEffect(ManagerWeapon.Inst.swipeWeapons[0].Data.particleEffect);
         SetShakeEffect(ManagerWeapon.Inst.shakeWeapons[0].Data.particleEffect);
+
+        bloodEffectPool.StartPoolProcesses();
     }
 
     private void Update()

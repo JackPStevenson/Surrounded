@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6579632776219493140}
   - component: {fileID: 2413272610112945701}
+  - component: {fileID: 7254497841969585182}
   m_Layer: 0
   m_Name: BloodApplier
   m_TagString: Untagged
@@ -45,11 +46,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partConditions: []
+  EventAppliedEffect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7254497841969585182}
+        m_TargetAssemblyTypeName: PartAffectorAttachVFX, Assembly-CSharp
+        m_MethodName: AffectComp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   baseApplicationChance: 0
   effectsPermanent: 0
   statusEffects:
   - {fileID: 11400000, guid: 670eb6527ea0a6349a4145e1d8d49a09, type: 2}
   basePotency: 1
+--- !u!114 &7254497841969585182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336873915724719842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3e104d81b297d44b0340470afa6927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  EventAppliedEffect:
+    m_PersistentCalls:
+      m_Calls: []
+  baseApplicationChance: 0
+  indexOfPool: -1
+  effect: {fileID: 11400000, guid: 670eb6527ea0a6349a4145e1d8d49a09, type: 2}
 --- !u!1 &9166884277504944787
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,6 +134,7 @@ MonoBehaviour:
   partConditions: []
   valueName: PerkScalar
   valueModifier: 15
+  valueOffset: 0
   EventValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -144,6 +180,30 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2413272610112945701}
         m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
+        m_MethodName: TryInvoke
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7254497841969585182}
+        m_TargetAssemblyTypeName: PartAffectorAttachVFX, Assembly-CSharp
+        m_MethodName: SetTargetComps
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7254497841969585182}
+        m_TargetAssemblyTypeName: PartAffectorAttachVFX, Assembly-CSharp
         m_MethodName: TryInvoke
         m_Mode: 1
         m_Arguments:

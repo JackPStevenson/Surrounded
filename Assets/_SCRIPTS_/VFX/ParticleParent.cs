@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -56,6 +57,16 @@ public class ParticleParent : MonoBehaviour
         {
             effect.Play();
         }
+    }
+
+    public IEnumerator PlayFor(float duration)
+    {
+        foreach (var effect in effects)
+        {
+            effect.Play();
+        }
+        yield return new WaitForSeconds(duration);
+        Destroy(gameObject);
     }
 
     public void Stop()
