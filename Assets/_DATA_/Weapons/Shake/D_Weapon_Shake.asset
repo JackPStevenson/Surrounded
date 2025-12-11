@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Standard Shake
   description: Applies moderate damage to all zombies on screen.
-  elaborateDescription: 
+  elaborateDescription: Applies the most damage of all shake weapons at the cost
+    of no elemental effects.
   icon: {fileID: 21300000, guid: 16b2d5caa18ee7742bb747bb357fabbd, type: 3}
   levelToUnlock: 0
   prefab: {fileID: 5575825521849605147, guid: 7f7c05fe61834be49af206b24374ef80, type: 3}
-  damage: 100
+  damage: 80
   range: -1
   penetration: -1
   energyRegenRate: 0.08333334

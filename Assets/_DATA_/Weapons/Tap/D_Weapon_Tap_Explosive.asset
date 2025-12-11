@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Explosive Tap
   description: Lower damage, but damages all zombies in an area.
-  elaborateDescription: 
+  elaborateDescription: Hits all zombies in an area around tapped point.
   icon: {fileID: 21300000, guid: 6c480921bd7d57c4aa34f64188aecd2a, type: 3}
   levelToUnlock: 1
   prefab: {fileID: 9217203093066365076, guid: 8f1167cadcc66f24fae6581bfa2da76f, type: 3}

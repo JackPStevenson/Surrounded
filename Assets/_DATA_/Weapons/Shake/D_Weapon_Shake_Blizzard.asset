@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Freeze Shake
   description: Summons a blizzard that freezes all enemies on screen, then
-  elaborateDescription: 
-  icon: {fileID: 21300000, guid: 16b2d5caa18ee7742bb747bb357fabbd, type: 3}
+  elaborateDescription: <color=#003cff>Freezes</color> all zombies on screen for
+    5 seconds. Continuously applies a 10 second 50% <color=#003cff>slow</color> to
+    new and existing zombies over the same 5 seconds.
+  icon: {fileID: 21300000, guid: 56d649a96b49ce141a0474bfea29e83b, type: 3}
   levelToUnlock: 9
   prefab: {fileID: 7770101667591404033, guid: 93b34a68013197a46b139f79acdde15c, type: 3}
   damage: 0

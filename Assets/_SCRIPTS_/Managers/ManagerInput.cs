@@ -50,8 +50,10 @@ public class ManagerInput : MonoSingleton<ManagerInput> {
     // ------ UPDATE METHODS ------
 
     void Update() {
-        if (Touchscreen.current == null)
+        if (Touchscreen.current == null || Time.timeScale <= 0 || (ManagerGame.Inst && ManagerGame.Inst.GetGameState() is GameState.Dead)) {
+            IsTouching = false;
             return;
+        }
 
         
         TouchControl touch = Touchscreen.current.primaryTouch;

@@ -21,6 +21,10 @@ MonoBehaviour:
     additive: 0
     baseModifier: 0.1
     statusInfluence: 0
+  - type: 4
+    additive: 0
+    baseModifier: 0.1
+    statusInfluence: 0
   dynamicAffectors:
   - type: 0
     basePotency: 15
