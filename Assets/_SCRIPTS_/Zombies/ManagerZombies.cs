@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ZombiesPool))]
-public class ManagerZombies : MonoSingleton<ManagerZombies> {
+public class ManagerZombies : MonoSingleton<ManagerZombies>
+{
     public ZombiesPool ZombiePool => _zombiePool;
     private ZombiesPool _zombiePool;
-    
+
     [Header("References")]
     public GameObject zombieBasePrefab;
     public DataStatusEffect zombieScalarStatusEffect;
@@ -24,28 +25,32 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
     private int _spawnRandSeed = 0;
 
     private int _tick;
-    
+
     // ------ START FUNCTIONS ------
 
-    protected override void OnAwake() {
+    protected override void OnAwake()
+    {
         TryGetComponent(out _zombiePool);
     }
-    
+
     protected override void OnDestroyed(bool isDeletedInstance) { }
 
-    void Start() {
+    void Start()
+    {
         ManagerWave.Inst.OnHordeSpawn += SpawnZombieHorde;
         ManagerWave.Inst.EventTrickleSpawn += SpawnZombieRandom;
-        ManagerWave.Inst.OnAllZombiesDead += DepletePool;
+        //ManagerWave.Inst.OnAllZombiesDead += DepletePool;
     }
-    
+
     // ------ UPDATE FUNCTIONS ------
 
-    void Update() {
+    void Update()
+    {
         ZombiePool.UpdateCustom(Time.deltaTime);
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         ZombiePool.FixedUpdateCustom(Time.deltaTime, _tick);
         _tick++;
     }
@@ -54,49 +59,55 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
 
     /// Destroys all zombies in or made from pool.
     public void DepletePool() => ZombiePool.Deplete();
-    
+
     // ------ ZOMBIE SPAWNING/RETURNING ------
-    
+
     /// Spawns a zombie with random data from entries based on current wave.
     public void SpawnZombieRandom(int currentWave = 1) => SpawnZombieRandomWithReturn(currentWave);
     public ZombieCore SpawnZombieRandomWithReturn(int currentWave = 1) => GetZombieData(currentWave, out int index) ? SpawnZombieSpecific(index, currentWave) : null;
-    
+
     /// Spawns a zombie type with data at given data index.
-    private ZombieCore SpawnZombieSpecific(int dataIndex, int currentWave) {
+    private ZombieCore SpawnZombieSpecific(int dataIndex, int currentWave)
+    {
         ZombieCore z = ZombiePool.Get(ZombieDataEntries[dataIndex], spawnPoints[Random.Range(0, spawnPoints.Length)].position);
         z.TryAddEffect(zombieScalarStatusEffect, false, currentWave - 1);
         return z;
     }
-    
+
     public void SpawnZombieHorde(int currentWave, int count, float delayBetweenSpawns) => StartCoroutine(SpawnHordeTapered(currentWave, count, delayBetweenSpawns));
-    
-    private IEnumerator SpawnHordeTapered(int currentWave, int count, float delayBetweenSpawns) {
-        for (int i = 0; i < count; i++) {
+
+    private IEnumerator SpawnHordeTapered(int currentWave, int count, float delayBetweenSpawns)
+    {
+        for (int i = 0; i < count; i++)
+        {
             SpawnZombieRandom(currentWave);
             yield return new WaitForSeconds(delayBetweenSpawns);
         }
     }
-    
+
     // ------ HELPER FUNCTIONS ------
-    
+
     /// Attempts to get a random zombie data entry that can be spawned this wave.
-    private DataZombie GetZombieData(int currentWave, out int selectedIndex) {
+    private DataZombie GetZombieData(int currentWave, out int selectedIndex)
+    {
         selectedIndex = -1;
         float totalWeight = 0;
         List<int> validEntries = new List<int>();
-        
+
         // Find all data entries that can be spawned this wave.
-        for (int i = 0; i < ZombieDataEntries.Count; i++) {
+        for (int i = 0; i < ZombieDataEntries.Count; i++)
+        {
             if (ZombieDataEntries[i].minimumSpawnWave > currentWave) continue;
             totalWeight += ZombieDataEntries[i].spawnWeight;
             validEntries.Add(i);
         }
-        
+
         // If at least 1 entry was found, select a random number and loop through each valid entry.
-        if(validEntries.Count <= 0) return null;
+        if (validEntries.Count <= 0) return null;
         float rand = Rand(0, totalWeight);
 
-        foreach (int i in validEntries) {
+        foreach (int i in validEntries)
+        {
             // If currently examined entry's weight exceeds rand, return it.
             rand -= ZombieDataEntries[i].spawnWeight;
             if (rand > 0) continue;
@@ -108,12 +119,13 @@ public class ManagerZombies : MonoSingleton<ManagerZombies> {
         selectedIndex = validEntries.Count - 1;
         return ZombieDataEntries[validEntries[^1]];
     }
-    
-    private float Rand(float min, float max) {
+
+    private float Rand(float min, float max)
+    {
         Random.InitState(_spawnRandSeed);
         _spawnRandSeed++;
         return Random.Range(min, max);
     }
-    
+
     public void SetMainTarget(Health newTarget) => _mainTarget = newTarget;
 }

@@ -21,3 +21,5 @@ MonoBehaviour:
   - type: 0
     basePotency: 10
     statusInfluence: 1
+  particleEffect: {fileID: 1750721977306746774, guid: 483997d891034584188bdf58d112ebb4,
+    type: 3}

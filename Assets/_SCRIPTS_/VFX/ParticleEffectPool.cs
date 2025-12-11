@@ -13,20 +13,23 @@ public class ParticleEffectPool : MonoBehaviour
         }
     }
 
-    public List<ParticleParent> ActiveParticles;
-    public List<ParticleParent> InactiveParticles;
+    public List<ParticleParent> ActiveParticles = new List<ParticleParent>();
+    public List<ParticleParent> InactiveParticles = new List<ParticleParent>();
 
     public float timeBetweenCleanups = 0.1f;
 
-    private void Start()
+    public bool isAttacherPool = false;
+    public int poolIndex = 0;
+
+    public void StartPool()
     {
-        StartCleaning();
         CreateNewParticle(5);
+        StartPoolProcesses();
     }
 
     private void OnDisable()
     {
-        StopCleaning();
+        StopPoolProcesses();
     }
 
     public void SetParticle(GameObject particle)
@@ -36,7 +39,6 @@ public class ParticleEffectPool : MonoBehaviour
 
     public void ActivateParticle(Vector3 pos)
     {
-        //Debug.Log("activateParticle " + pos);
         // get a particle
         var particle = PopParticle();
         // place it at the position
@@ -47,22 +49,27 @@ public class ParticleEffectPool : MonoBehaviour
         ActiveParticles.Add(particle);
     }
 
-    public void ActivateParticle(Transform parent)
+    public void ActivateParticle(Transform objectToFollow, float duration)
     {
         // get a particle
         var particle = PopParticle();
-        // place it at the position
-        particle.transform.SetParent(parent, false);
-        particle.attached = true;
+        // assign the object to follow
+        particle.objectToFollow = objectToFollow;
+        particle.transform.SetParent(objectToFollow, false);
+
         // play it
         particle.Play();
+        // set the end time
+        particle.SetEndTime(duration);
+        // add particle to active particle list
+        ActiveParticles.Add(particle);
     }
 
     public ParticleParent PopParticle()
     {
         if (InactiveParticles.Count <= 0)
         {
-            CreateNewParticle(ActiveParticles.Count);
+            CreateNewParticle(5);
         }
         ParticleParent temp = InactiveParticles[0];
         InactiveParticles.RemoveAt(0);
@@ -74,44 +81,74 @@ public class ParticleEffectPool : MonoBehaviour
         for (int i = 0; i < count && poolParticle != null; i++)
         {
             var temp = Instantiate(poolParticle).GetComponent<ParticleParent>();
-            temp.Stop();
+            temp.poolIndex = poolIndex;
             InactiveParticles.Add(temp);
         }
     }
 
     public void ReturnParticleToPool(ParticleParent particle)
     {
+        Debug.Log("returning particle to pool");
         ActiveParticles.Remove(particle);
         InactiveParticles.Add(particle);
-        if (particle.attached)
-        {
-            particle.transform.SetParent(null);
-        }
+        particle.Reset();
     }
 
-    public void StartCleaning()
+    public void StartPoolProcesses()
     {
+        Debug.Log("isAttacherPool: " + isAttacherPool);
         InvokeRepeating(nameof(CleanUpParticles), 0.5f, timeBetweenCleanups);
     }
 
-    public void StopCleaning()
+    public void UpdateParticlePositions()
     {
-        CancelInvoke();
+        //Debug.Log("updating positions");
+        foreach (var particle in ActiveParticles)
+        {
+            if (particle.objectToFollow != null)
+            {
+                particle.transform.position = particle.objectToFollow.position;
+            }
+        }
     }
 
     public void CleanUpParticles()
     {
+        float currentTime = Time.time;
         if (ActiveParticles.Count > 0)
         {
             for (int i = 0; i < ActiveParticles.Count && ActiveParticles.Count > 0; i++)
             {
                 ParticleParent particle = ActiveParticles[i];
-                if (!particle.IsPlaying)
+                if (particle != null)
                 {
-                    ReturnParticleToPool(particle);
+                    if (particle.endTime == -1 && !particle.IsPlaying
+                        || particle.endTime <= Time.time
+                        || particle.objectToFollow == null && particle.endTime != -1)
+                    {
+                        ReturnParticleToPool(particle);
+                        i--;
+                    }
+                    //else if (particle.endTime <= Time.time)
+                    //{
+                    //    ReturnParticleToPool(particle);
+                    //    i--;
+                    //}
+                }
+                else
+                {
+                    Debug.LogError("particle at index " + i + " is null. Check that particles are not being destroyed before returning");
+                    ActiveParticles.RemoveAt(i);
                     i--;
                 }
             }
         }
     }
+
+    public void StopPoolProcesses()
+    {
+        CancelInvoke();
+    }
+
+
 }
