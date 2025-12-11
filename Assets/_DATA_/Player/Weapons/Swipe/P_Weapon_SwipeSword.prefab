@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 2763386033470672857}
   - component: {fileID: 7326065191933778706}
   - component: {fileID: 3094260293665271384}
+  - component: {fileID: 3675387481969229847}
   m_Layer: 0
   m_Name: Sword Spawner
   m_TagString: Untagged
@@ -252,4 +253,33 @@ MonoBehaviour:
     type: 3}
   onSpawned:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3675387481969229847}
+        m_TargetAssemblyTypeName: IndividualAudioPlayer, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3675387481969229847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8928675730790971258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696dfddcd95a47f43a6324ef8e044a3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
+  clipNames:
+  - SwordSwipe
+  clipIndexes: 
+  getAudioIndexAtStart: 1

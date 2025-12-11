@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: D_AudioGroup_Shake
   m_EditorClassIdentifier: 
   type: 4
-  clips: []
+  clips:
+  - {fileID: 8300000, guid: 49037c2eb1ce0a64e85df159091e47b9, type: 3}
+  - {fileID: 8300000, guid: 9cbb8d84e8bbf9a428a6d2a45fdfa57f, type: 3}
+  - {fileID: 8300000, guid: ecbc26c3849e57245bfafd5934af91dd, type: 3}

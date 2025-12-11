@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4630845273627588771}
   - component: {fileID: 9147807826219347850}
   - component: {fileID: 6051321827675499672}
-  - component: {fileID: 8821778539210116079}
   m_Layer: 0
   m_Name: ParticleManager
   m_TagString: Untagged
@@ -47,9 +46,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bloodEffectPool: {fileID: 6051321827675499672}
-  slowEffectPool: {fileID: 8821778539210116079}
+  attachedEffectPools: []
+  tapEffect: {fileID: 0}
+  swipeEffect: {fileID: 0}
   shakeEffect: {fileID: 2030472463912967321, guid: 47e8612244eb9e64e9c97e246582fac8,
     type: 3}
+  slowEffect: {fileID: 9148437069917932326, guid: d5d0c954f97d80d4ab1ccc01f5f1f90d,
+    type: 3}
+  poisonEffect: {fileID: 0}
+  currentTime: 0
 --- !u!114 &6051321827675499672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,23 +68,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolParticle: {fileID: 4067843411926117103, guid: 4ddd8b7349c448f41838859e27dbe613,
-    type: 3}
-  ActiveParticles: []
-  InactiveParticles: []
-  timeBetweenCleanups: 0.1
---- !u!114 &8821778539210116079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2566135786339793751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1df49e25272d5f48b7b36129d5770cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolParticle: {fileID: 9148437069917932326, guid: d5d0c954f97d80d4ab1ccc01f5f1f90d,
     type: 3}
   ActiveParticles: []
   InactiveParticles: []

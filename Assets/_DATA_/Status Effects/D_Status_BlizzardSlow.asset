@@ -26,3 +26,5 @@ MonoBehaviour:
     baseModifier: 0.5
     statusInfluence: 1
   dynamicAffectors: []
+  particleEffect: {fileID: 9148437069917932326, guid: d5d0c954f97d80d4ab1ccc01f5f1f90d,
+    type: 3}

@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: D_AudioGroup_Swipe
   m_EditorClassIdentifier: 
   type: 3
-  clips: []
+  clips:
+  - {fileID: 8300000, guid: 1df88689828d3b8469c2648a2ae6822f, type: 3}
+  - {fileID: 8300000, guid: 22c78f7494844734f9ebcae35b17cdbf, type: 3}

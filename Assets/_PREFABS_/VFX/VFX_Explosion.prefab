@@ -47,6 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effects:
   - {fileID: 2610026677631094197}
+  objectToFollow: {fileID: 0}
+  endTime: -1
+  poolIndex: -1
 --- !u!1 &7418063115069862085
 GameObject:
   m_ObjectHideFlags: 0
@@ -73,13 +76,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7418063115069862085}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.35355338, y: -0.35355338, z: -0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.32917607, y: -0.3575689, z: -0.13634919, w: 0.8632477}
+  m_LocalPosition: {x: 3.2, y: 4, z: -3.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6803960875307226386}
-  m_LocalEulerAnglesHint: {x: -45, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: -41.746, y: -45, z: 0}
 --- !u!2083052967 &2610026677631094197
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -89,8 +92,8 @@ VisualEffect:
   m_GameObject: {fileID: 7418063115069862085}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 4ae34a7a1b59df7469820c45d5a5926e, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1

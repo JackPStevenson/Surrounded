@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class IndividualAudioPlayer : MonoBehaviour {
+public class IndividualAudioPlayer : MonoBehaviour
+{
     [SerializeField] protected SoundType type;
 
     [SerializeField] protected string[] clipNames;
@@ -8,15 +9,19 @@ public class IndividualAudioPlayer : MonoBehaviour {
 
     [SerializeField] protected bool getAudioIndexAtStart = true;
 
-    private void Start() {
+    private void Start()
+    {
         clipIndexes = new int[clipNames.Length];
-        if (getAudioIndexAtStart) {
+        if (getAudioIndexAtStart)
+        {
             GetAudioIndexes();
         }
     }
 
-    public virtual void GetAudioIndexes() {
-        for (int i = 0; i < clipNames.Length; i++) {
+    public virtual void GetAudioIndexes()
+    {
+        for (int i = 0; i < clipNames.Length; i++)
+        {
             int temp = ManagerAudio.GetSoundIndex(type, clipNames[i]);
             //Debug.Log(clipNames[i] + " is at index " + temp);
             clipIndexes[i] = temp;
@@ -24,22 +29,28 @@ public class IndividualAudioPlayer : MonoBehaviour {
     }
 
 
-    public void DoSomething() {
+    public void DoSomething()
+    {
         PlaySound(clipNames[0]);
     }
 
-    public void PlaySound(string soundName) {
+    public void PlaySound(string soundName)
+    {
         PlaySound(GetIndex(soundName));
     }
 
-    public void PlaySound(int index) {
+    public void PlaySound(int index)
+    {
         if (index < clipNames.Length)
             ManagerAudio.PlaySound(type, clipIndexes[index]);
     }
 
-    private int GetIndex(string soundName) {
-        for (int i = 0; i < clipNames.Length; i++) {
-            if (clipNames[i] == soundName) {
+    private int GetIndex(string soundName)
+    {
+        for (int i = 0; i < clipNames.Length; i++)
+        {
+            if (clipNames[i] == soundName)
+            {
                 return clipIndexes[i];
             }
         }

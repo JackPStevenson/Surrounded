@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1295894774672546268
+--- !u!1 &2396770826081098787
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8373256516933759026}
-  - component: {fileID: 2247661235863001983}
-  - component: {fileID: 2962712313968132118}
+  - component: {fileID: 1032722990402764053}
+  - component: {fileID: 3133666392365277683}
+  - component: {fileID: 630215453624369354}
   m_Layer: 0
-  m_Name: Poison Cloud
+  m_Name: Bleed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8373256516933759026
+--- !u!4 &1032722990402764053
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295894774672546268}
+  m_GameObject: {fileID: 2396770826081098787}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1784089538749015867}
+  m_Father: {fileID: 3289059853854115280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &2247661235863001983
+--- !u!2083052967 &3133666392365277683
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295894774672546268}
+  m_GameObject: {fileID: 2396770826081098787}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: d0a2e80dd8ec8c74fb9e4cd0c3a33aa2, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 9e6793580ea7f6d4fbafda5daff31f40, type: 3}
   m_InitialEventName: 
   m_InitialEventNameOverriden: 1
   m_StartSeed: 0
@@ -50,97 +50,35 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array:
-      - m_Value: 1
-        m_Name: Max Speed
-        m_Overridden: 1
-      - m_Value: 1
-        m_Name: Signed Distance Field Radius
-        m_Overridden: 1
-      - m_Value: 6.03
-        m_Name: Sphere Radius
-        m_Overridden: 1
-      - m_Value: 1
-        m_Name: Box Size
-        m_Overridden: 0
-      - m_Value: 4
-        m_Name: Max Lifetime
-        m_Overridden: 1
+      m_Array: []
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array:
-      - m_Value: {x: 20, y: 1, z: 15}
-        m_Name: Box Size
-        m_Overridden: 1
+      m_Array: []
     m_Vector4f:
       m_Array: []
     m_Uint:
       m_Array: []
     m_Int:
-      m_Array:
-      - m_Value: 400
-        m_Name: Particle Count
-        m_Overridden: 1
+      m_Array: []
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
       m_Array: []
     m_Gradient:
-      m_Array:
-      - m_Value:
-          serializedVersion: 2
-          key0: {r: 1.1137255, g: 2.1333334, b: 0, a: 0.40784314}
-          key1: {r: 1.1137255, g: 2.1333334, b: 0, a: 0.2784314}
-          key2: {r: 0, g: 0, b: 0, a: 0.4392157}
-          key3: {r: 0, g: 0, b: 0, a: 0}
-          key4: {r: 0, g: 0, b: 0, a: 0}
-          key5: {r: 0, g: 0, b: 0, a: 0}
-          key6: {r: 0, g: 0, b: 0, a: 0}
-          key7: {r: 0, g: 0, b: 0, a: 0}
-          ctime0: 0
-          ctime1: 65535
-          ctime2: 0
-          ctime3: 0
-          ctime4: 0
-          ctime5: 0
-          ctime6: 0
-          ctime7: 0
-          atime0: 7421
-          atime1: 19720
-          atime2: 36743
-          atime3: 65535
-          atime4: 65535
-          atime5: 0
-          atime6: 0
-          atime7: 0
-          m_Mode: 0
-          m_ColorSpace: 1
-          m_NumColorKeys: 2
-          m_NumAlphaKeys: 4
-        m_Name: Gradient
-        m_Overridden: 0
+      m_Array: []
     m_NamedObject:
       m_Array: []
     m_Bool:
-      m_Array:
-      - m_Value: 1
-        m_Name: Repeat
-        m_Overridden: 0
-      - m_Value: 1
-        m_Name: Sphere or Field
-        m_Overridden: 1
-      - m_Value: 1
-        m_Name: Box or Field
-        m_Overridden: 1
---- !u!73398921 &2962712313968132118
+      m_Array: []
+--- !u!73398921 &630215453624369354
 VFXRenderer:
   serializedVersion: 1
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1295894774672546268}
+  m_GameObject: {fileID: 2396770826081098787}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -176,7 +114,7 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &6579130606547120775
+--- !u!1 &8748182620147109508
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,45 +122,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1784089538749015867}
-  - component: {fileID: 8971066973942377072}
+  - component: {fileID: 3289059853854115280}
+  - component: {fileID: 1050481553044871504}
   m_Layer: 0
-  m_Name: VFX_Poison_Cloud_Large
+  m_Name: VFX_Bleed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1784089538749015867
+--- !u!4 &3289059853854115280
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6579130606547120775}
+  m_GameObject: {fileID: 8748182620147109508}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8373256516933759026}
+  - {fileID: 1032722990402764053}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8971066973942377072
+--- !u!114 &1050481553044871504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6579130606547120775}
+  m_GameObject: {fileID: 8748182620147109508}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e37cd375433714641ac6109061e2cd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   effects:
-  - {fileID: 2247661235863001983}
+  - {fileID: 3133666392365277683}
   objectToFollow: {fileID: 0}
   endTime: -1
   poolIndex: -1

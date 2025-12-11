@@ -47,7 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effects:
   - {fileID: 9058265328313890948}
-  attached: 0
+  objectToFollow: {fileID: 0}
+  endTime: -1
+  poolIndex: -1
 --- !u!1 &4767794523921012230
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +93,7 @@ VisualEffect:
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: f0cb9f0dbf8d53c47b05275bae59fe06, type: 3}
   m_InitialEventName: 
-  m_InitialEventNameOverriden: 0
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1

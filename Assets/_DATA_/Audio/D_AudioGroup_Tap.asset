@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: D_AudioGroup_Tap
   m_EditorClassIdentifier: 
   type: 2
-  clips: []
+  clips:
+  - {fileID: 8300000, guid: 559a30ea9a173da4abb5d847d69f8c6a, type: 3}
+  - {fileID: 8300000, guid: ed64cf24b937be545a9f213f35b96ad4, type: 3}
+  - {fileID: 8300000, guid: c0e7e30613a3d6243931e17459025b3c, type: 3}
