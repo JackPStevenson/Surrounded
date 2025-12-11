@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6336873915724719842
+--- !u!1 &7279399257421455671
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6579632776219493140}
-  - component: {fileID: 2413272610112945701}
+  - component: {fileID: 3965845887298876614}
+  - component: {fileID: 803557910059572482}
+  - component: {fileID: 1698622626745775450}
   m_Layer: 0
-  m_Name: BloodApplier
+  m_Name: ShockSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6579632776219493140
+--- !u!4 &3965845887298876614
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6336873915724719842}
+  m_GameObject: {fileID: 7279399257421455671}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,24 +33,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3404454636600697981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2413272610112945701
+--- !u!114 &803557910059572482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6336873915724719842}
+  m_GameObject: {fileID: 7279399257421455671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95a5097069ad9641afa8c46e2db8fd6, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d0afcd3518ede54aa3c1bf7c38c41c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   partConditions: []
-  baseApplicationChance: 0
-  effectsPermanent: 0
-  statusEffects:
-  - {fileID: 11400000, guid: 670eb6527ea0a6349a4145e1d8d49a09, type: 2}
-  basePotency: 1
+  EventIndividualComp:
+    m_PersistentCalls:
+      m_Calls: []
+  EventIndividualCompPos:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1698622626745775450}
+        m_TargetAssemblyTypeName: PartSpawnerObj, Assembly-CSharp
+        m_MethodName: SetSpawnPos
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1698622626745775450}
+        m_TargetAssemblyTypeName: PartSpawnerObj, Assembly-CSharp
+        m_MethodName: TryInvoke
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1698622626745775450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7279399257421455671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2b0bc6b1ba6f4a43a6f00c30d77669b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  spawnablePrefab: {fileID: 5765654100651586364, guid: 2f8663b2305e72446bc6f7c4dd6ecf89,
+    type: 3}
+  spawnableExtraValue: 0
+  EventSpawned:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9166884277504944787
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,10 +104,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3404454636600697981}
-  - component: {fileID: 6164549535077290393}
-  - component: {fileID: 4526918487543398123}
+  - component: {fileID: 1922513383312110359}
+  - component: {fileID: -275609116798153907}
   m_Layer: 0
-  m_Name: P_Perk_RustyFork
+  m_Name: P_Perk_TemuGuitar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,10 +126,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6579632776219493140}
+  - {fileID: 3965845887298876614}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6164549535077290393
+--- !u!114 &1922513383312110359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,13 +143,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partConditions: []
   valueName: PerkScalar
-  valueModifier: 15
+  valueModifier: 0.1
+  valueOffset: 0
   EventValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2413272610112945701}
-        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
-        m_MethodName: SetBonusChance
+      - m_Target: {fileID: 1698622626745775450}
+        m_TargetAssemblyTypeName: PartSpawnerObj, Assembly-CSharp
+        m_MethodName: SetSpawnableExtraValue
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -114,7 +160,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4526918487543398123
+--- !u!114 &-275609116798153907
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,22 +176,10 @@ MonoBehaviour:
   EventCompsHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2413272610112945701}
-        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
-        m_MethodName: SetTargetComps
+      - m_Target: {fileID: 803557910059572482}
+        m_TargetAssemblyTypeName: PartLogicLoopThroughComps, Assembly-CSharp
+        m_MethodName: LoopThroughComps
         m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2413272610112945701}
-        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
-        m_MethodName: TryInvoke
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

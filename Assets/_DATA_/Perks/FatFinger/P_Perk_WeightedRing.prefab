@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3404454636600697981}
+  - component: {fileID: -4510896360705993612}
   - component: {fileID: 6462053597303501346}
   m_Layer: 0
-  m_Name: P_Perk_Beefy
+  m_Name: P_Perk_WeightedRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,6 +33,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-4510896360705993612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9166884277504944787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20a16ddcc58f7b48a7f49072691ba51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partConditions: []
+  valueName: PerkScalar
+  valueModifier: 1
+  valueOffset: 0
+  EventValueChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6462053597303501346}
+        m_TargetAssemblyTypeName: PartAffectorStatus, Assembly-CSharp
+        m_MethodName: SetPotency
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6462053597303501346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,7 +77,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partConditions: []
+  baseApplicationChance: 100
   effectsPermanent: 1
   statusEffects:
-  - {fileID: 11400000, guid: 3bfcc721095053a41a78ad8886ebb489, type: 2}
+  - {fileID: 11400000, guid: f8f4f8fe7153cd54c81b84a0dbdee287, type: 2}
   basePotency: 1

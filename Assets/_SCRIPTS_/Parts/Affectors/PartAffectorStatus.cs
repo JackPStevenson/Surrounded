@@ -7,9 +7,7 @@ public class PartAffectorStatus : PartAffector {
     [Header("Effect")]
     public bool effectsPermanent = false;
     public DataStatusEffect[] statusEffects;
-
     public float basePotency = 1;
-    
     private float _potencyMod = 1;
     
     public void SetPotency(float potency) => _potencyMod = potency;

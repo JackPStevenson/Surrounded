@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ManagerWeapon : MonoSingleton<ManagerWeapon> {
+    public void ForceEventOnHit(Health[] healths) => EventOnHit?.Invoke(healths);
+    public void ForceEventOnKill(Health[] healths) => EventOnKill?.Invoke(healths);
     public event Action<Health[]> EventOnHit;
+    private void OnHit(Health[] comps) => EventOnHit?.Invoke(comps);
     public event Action<Health[]> EventOnKill;
+    private void OnKill(Health[] comps) => EventOnKill?.Invoke(comps);
     public event Action<Vector3> EventOnTap;
+    private void OnTap(Vector3 point) => EventOnTap?.Invoke(point);
     public event Action<Vector3[]> EventOnSwipe;
+    private void OnSwipe(Vector3[] points) => EventOnSwipe?.Invoke(points);
     public event Action EventOnShake;
+    private void OnShake() => EventOnShake?.Invoke();
     public event Action<DataWeapon, int> EventWeaponEquip;
+    
     private ManagerInput _managerInput;
 
     [Header("Tapping")]
@@ -98,33 +106,33 @@ public class ManagerWeapon : MonoSingleton<ManagerWeapon> {
 
     public void AddTap(DataWeaponTap d) {
         if (!Instantiate(d.prefab, transform).TryGetComponent(out WeaponTap w)) return;
-        w.EventOnHit += EventOnHit;
-        w.EventOnKill += EventOnKill;
-        w.EventOnTap += EventOnTap;
-        w.EventOnSwipe += EventOnSwipe;
-        w.EventOnShake += EventOnShake;
+        w.EventOnHit += OnHit;
+        w.EventOnKill += OnKill;
+        w.EventOnTap += OnTap;
+        w.EventOnSwipe += OnSwipe;
+        w.EventOnShake += OnShake;
         tapWeapons.Add(w);
         EquipTap(0);
     }
     
     public void AddSwipe(DataWeaponSwipe d) {
         if (!Instantiate(d.prefab, transform).TryGetComponent(out WeaponSwipe w)) return;
-        w.EventOnHit += EventOnHit;
-        w.EventOnKill += EventOnKill;
-        w.EventOnTap += EventOnTap;
-        w.EventOnSwipe += EventOnSwipe;
-        w.EventOnShake += EventOnShake;
+        w.EventOnHit += OnHit;
+        w.EventOnKill += OnKill;
+        w.EventOnTap += OnTap;
+        w.EventOnSwipe += OnSwipe;
+        w.EventOnShake += OnShake;
         swipeWeapons.Add(w);
         EquipSwipe(0);
     }
     
     public void AddShake(DataWeaponShake d) {
         if (!Instantiate(d.prefab, transform).TryGetComponent(out WeaponShake w)) return;
-        w.EventOnHit += EventOnHit;
-        w.EventOnKill += EventOnKill;
-        w.EventOnTap += EventOnTap;
-        w.EventOnSwipe += EventOnSwipe;
-        w.EventOnShake += EventOnShake;
+        w.EventOnHit += OnHit;
+        w.EventOnKill += OnKill;
+        w.EventOnTap += OnTap;
+        w.EventOnSwipe += OnSwipe;
+        w.EventOnShake += OnShake;
         shakeWeapons.Add(w);
         EquipShake(0);
     }

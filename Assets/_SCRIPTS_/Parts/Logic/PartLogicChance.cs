@@ -4,21 +4,13 @@ public class PartLogicChance : Part
 {
     // --- COUNTING ---
     [Header("Randomness")]
-    [Range(0.0f, 1.0f)]
-    public float activationChance = 0.5f;
+    [Range(0, 1)]
+    public float baseActivationChance = 0.5f;
     
-    public new bool Activated => AllConditionsTrue && Random.value < activationChance;
+    public new bool Activated => AllConditionsTrue && Random.value < (baseActivationChance + _bonusActivationChance);
+    private float _bonusActivationChance; 
     
-    protected override void InvokeLogic() {
-        throw new System.NotImplementedException();
-    }
-    public override void Reset() {
-        throw new System.NotImplementedException();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void SetBonusChance(float bonus) => _bonusActivationChance = bonus;
+    protected override void InvokeLogic() { }
+    public override void Reset() => _bonusActivationChance = 0;
 }

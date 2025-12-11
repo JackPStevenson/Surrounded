@@ -10195,6 +10195,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Apartment_Level1
       objectReference: {fileID: 0}
+    - target: {fileID: 6256952432974584091, guid: 2d1b121b8b55e604a87c34c65f97425e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1419
+      objectReference: {fileID: 0}
     - target: {fileID: 6368016039232504085, guid: 2d1b121b8b55e604a87c34c65f97425e,
         type: 3}
       propertyPath: m_Mesh
