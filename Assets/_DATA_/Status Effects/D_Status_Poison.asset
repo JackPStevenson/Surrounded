@@ -19,5 +19,5 @@ MonoBehaviour:
   constantAffectors: []
   dynamicAffectors:
   - type: 0
-    basePotency: 15
+    basePotency: 10
     statusInfluence: 1

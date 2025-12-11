@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Ominous Slimeball
   description: Creates a slowing slime puddle every 5 kills.
-  elaborateDescription: 
-  icon: {fileID: 0}
+  elaborateDescription: Every 5th kill with <color=yellow>taps</color>, <color=yellow>swipes</color>,
+    and <color=yellow>shakes</color> spawns a slime puddle, <color=#2b632f>slowing</color>
+    zombies by 30% for 4 seconds <color=grey>(+1 per level)</color>.
+  icon: {fileID: 21300000, guid: 72b1e4cf2bf3a044bb62627e19b97165, type: 3}
   levelToUnlock: 0
   perkPrefab: {fileID: 9166884277504944787, guid: 66b871623e63f9d428fb4429c24c5da6,
     type: 3}
