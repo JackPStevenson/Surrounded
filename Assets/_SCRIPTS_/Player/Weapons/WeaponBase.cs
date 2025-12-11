@@ -20,12 +20,12 @@ public abstract class WeaponBase : MonoBehaviour {
 
     // --- DATA REFERENCES ---
     public LayerMask HitMask => weaponData.hitMask;
-    public float Damage => weaponData.damage;
-    public float Range => weaponData.range;
-    public int Penetration => weaponData.penetration;
+    public float Damage => PlayerCore.Inst.Status.ModConst(AffectorConstType.Damage, weaponData.damage);
+    public float Range => PlayerCore.Inst.Status.ModConst(AffectorConstType.Range, weaponData.range);
+    public int Penetration => Mathf.CeilToInt(PlayerCore.Inst.Status.ModConst(AffectorConstType.Penetration, weaponData.penetration));
 
-    public float EnergyRegenRate => weaponData.energyRegenRate;
-    public float EnergyCost => weaponData.energyCost;
+    public float EnergyRegenRate => PlayerCore.Inst.Status.ModConst(AffectorConstType.EnergyRegen, weaponData.energyRegenRate);
+    public float EnergyCost => weaponData.energyCost / PlayerCore.Inst.Status.ModConst(AffectorConstType.MaxEnergy, 1);
 
     // --- CURRENT STATE ---
     public bool Active { get; private set; }

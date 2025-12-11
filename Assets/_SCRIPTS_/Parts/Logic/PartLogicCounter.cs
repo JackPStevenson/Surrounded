@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class PartLogicCounter : Part {
     // --- COUNTING ---
@@ -12,11 +10,17 @@ public class PartLogicCounter : Part {
 
     // ------ PART FUNCTIONS ------
     
+    public void SetMaxCount(float count) => maxCount = Mathf.RoundToInt(count);
+    
     protected override void InvokeLogic() => ModCount(1);
     public void ModCount(int modifier) {
         _currentCount = Mathf.Clamp(_currentCount + modifier, 0, maxCount);
-        if (loopCounter) _currentCount %= (maxCount + 1);
-        Activated = _currentCount >= (minCountForActivation > 0 ? Mathf.Min(maxCount, minCountForActivation) : maxCount);
+        Activated = _currentCount >= maxCount;
+        print(1);
+        if (Activated && loopCounter) _currentCount = 0;
     }
-    public override void Reset() => ModCount(-maxCount);
+    public override void Reset() {
+        Activated = false;
+        ModCount(-maxCount);
+    }
 }

@@ -9,7 +9,10 @@ public class PartSpawnerObj : Part {
     private Vector3 _spawnPos;
     private Quaternion _spawnRot;
     private Vector3 _spawnScale = Vector3.one;
+
+    public float spawnableExtraValue = 0;
     
+    public void SetSpawnableExtraValue(float value) => spawnableExtraValue = value;
     public void SetSpawnPos(Vector3 pos) => _spawnPos = pos;
     public void SetSpawnRot(Vector3 rot) => _spawnRot = Quaternion.Euler(rot);
     public void SetSpawnScale(Vector3 scale) => _spawnScale = scale;
@@ -23,7 +26,14 @@ public class PartSpawnerObj : Part {
     protected override void InvokeLogic() {
         Transform t = Instantiate(spawnablePrefab, _spawnPos, _spawnRot).transform;
         t.localScale = _spawnScale;
+        
+        if (t.TryGetComponent(out PartLogicValue part) && part.CompareName("Extra"))
+            part.SetValue(spawnableExtraValue);
+        
         EventSpawned.Invoke(t);
     }
-    public override void Reset() {}
+    
+    public override void Reset() {
+        spawnableExtraValue = 0;
+    }
 }

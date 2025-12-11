@@ -47,18 +47,17 @@ public class UILoadout : MonoBehaviour
         perk1Display.SetInfo("None", "", null);
         perk2Display.SetInfo("None", "", null);
         perk3Display.SetInfo("None", "", null);
+        
+        int level = ManagerSaveLoad.GetLevel();
+        levelText.text = "Level " + level;
+        nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1), level + 1);
+        nextRewardDisplay.SetDesc((level + 1) + "");
     }
 
     // ------ UPDATE METHODS ------
-
-    void FixedUpdate()
-    {
-        int level = ManagerSaveLoad.GetLevel();
-        levelText.text = "Level " + level;
-        //print(ManagerSaveLoad.GetLevel());
-        nextRewardDisplay.SetInfo(ManagerRewards.GetLevelReward(level + 1));
-        nextRewardDisplay.SetDesc((level + 1) + "");
-
+    
+    void FixedUpdate() {
+        
         currentBlood.text = ManagerSaveLoad.GetZombieBlood().ToString("N0");
     }
 
