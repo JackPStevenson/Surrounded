@@ -7,6 +7,8 @@ public class ManagerAudio : MonoSingleton<ManagerAudio>
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioSource _musicAudioSource;
 
+    [SerializeField] private float musicVolumeMod = 0.7f;
+
     public int currentTrack = 2;
 
     [Header("Debug")]
@@ -60,7 +62,7 @@ public class ManagerAudio : MonoSingleton<ManagerAudio>
 
     public static void UpdateMusicVolume()
     {
-        ManagerAudio.Inst._musicAudioSource.volume = ManagerSaveLoad.GetMusicVolume() * 0.7f;
+        ManagerAudio.Inst._musicAudioSource.volume = ManagerSaveLoad.GetMusicVolume() * ManagerAudio.Inst.musicVolumeMod;
     }
 
     public static void FadeMusicOut() => Inst.FadeMusicOutStart();
