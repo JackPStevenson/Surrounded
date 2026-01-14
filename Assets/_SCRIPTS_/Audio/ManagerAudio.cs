@@ -1,9 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 
 public class ManagerAudio : MonoSingleton<ManagerAudio>
 {
-    private AudioSource _audioSource;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioSource _musicAudioSource;
+
+    public int currentTrack = 2;
 
     [Header("Debug")]
     public bool playSound;
@@ -14,34 +18,16 @@ public class ManagerAudio : MonoSingleton<ManagerAudio>
 
     protected override void OnAwake()
     {
-        _audioSource = GetComponent<AudioSource>();
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        PlaySound(SoundType.Music, currentTrack);
     }
 
     protected override void OnDestroyed(bool isDeletedInstance) { }
 
-    // ------ UPDATE METHODS ------
-
-    private void FixedUpdate()
-    {
-        if (playSound)
-        {
-            playSound = false;
-            PlaySoundByIndex(SoundType.Zombie, 0);
-        }
-
-        if (printList1)
-        {
-            printList1 = false;
-            DisplayClips(SoundType.Zombie);
-        }
-
-        if (printList2)
-        {
-            printList2 = false;
-            DisplayClips(SoundType.UI);
-        }
-    }
 
     // ------ SOUND EVENT METHODS ------
 
@@ -54,7 +40,60 @@ public class ManagerAudio : MonoSingleton<ManagerAudio>
         if (type == SoundType.Zombie) volume *= 0.4f;
 
         // Get the group, then the audio, then play it.
-        _audioSource.PlayOneShot(ManagerData.GetAudioClip(type, index), volume);
+        if (type == SoundType.Music)
+        {
+            _musicAudioSource.Stop();
+            _musicAudioSource.clip = ManagerData.GetAudioClip(type, index);
+            _musicAudioSource.Play();
+        }
+        else
+        {
+            _audioSource.PlayOneShot(ManagerData.GetAudioClip(type, index), volume);
+        }
+    }
+
+    public static void SetCurrentTrack(int index)
+    {
+        ManagerAudio.Inst.currentTrack = index;
+        PlaySound(SoundType.Music, ManagerAudio.Inst.currentTrack);
+    }
+
+    public static void UpdateMusicVolume()
+    {
+        ManagerAudio.Inst._musicAudioSource.volume = ManagerSaveLoad.GetMusicVolume() * 0.7f;
+    }
+
+    public static void FadeMusicOut() => Inst.FadeMusicOutStart();
+
+    public void FadeMusicOutStart()
+    {
+        Coroutine coroutine = StartCoroutine(ManagerAudio.Inst.MusicFade());
+    }
+
+    public IEnumerator MusicFade()
+    {
+        for (float i = 0; i < 1; i += 0.1f)
+        {
+            _musicAudioSource.volume *= 0.8f;
+            if (_musicAudioSource.volume < 0.2f)
+            {
+                _musicAudioSource.volume = 0.2f;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public static void ToggleMusic()
+    {
+        AudioSource source = ManagerAudio.Inst._musicAudioSource;
+        if (source.isPlaying)
+        {
+            source.Pause();
+        }
+        else
+        {
+            source.UnPause();
+        }
     }
 
     // ------ HELPER METHODS ------

@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
 
-public class ManagerGame : MonoSingleton<ManagerGame> {
+public class ManagerGame : MonoSingleton<ManagerGame>
+{
     public event Action<GameState, int> OnGameStateChanged;
-    
+
     [Header("General")]
     public float intermissionTime = 5;
-    
+
     [Header("UI")]
     public UILayoutManager hudLayout;
     public int gameOverCanvasIndex;
@@ -14,7 +15,7 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
 
     private int _startingLevel;
     private int _startingExperience;
-    
+
     private GameState _gameState = GameState.Intermission;
     private int _currentWave;
     private float _lastIntermission;
@@ -25,7 +26,8 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
 
     protected override void OnAwake() { }
 
-    void Start() {
+    void Start()
+    {
         PlayerCore.Inst.Health.EventDeath += EventPlayerDeath;
         ManagerWave.Inst.OnAllZombiesDead += OnAllZombiesDead;
         ManagerWave.Inst.SetMainTarget(PlayerCore.Inst.Health);
@@ -35,12 +37,13 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
 
         SetGameState(GameState.Intermission);
     }
-    
+
     protected override void OnDestroyed(bool isDeletedInstance) { }
 
     // ------ UPDATE FUNCTIONS ------
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         if (_gameState is not GameState.Intermission) return;
         if (_lastIntermission + intermissionTime < Time.time) SetGameState(GameState.InProgress);
     }
@@ -48,17 +51,21 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
     // ------ EVENT FUNCTIONS ------
 
     private void OnAllZombiesDead() => SetGameState(GameState.Intermission);
-    private void EventPlayerDeath(string deathSource = "") {
+    private void EventPlayerDeath(string deathSource = "")
+    {
         SetGameState(GameState.Dead);
         hudLayout.SwitchCanvas(gameOverCanvasIndex);
         gameOver.StartDisplay();
+        ManagerAudio.FadeMusicOut();
     }
 
-    private void SetGameState(GameState newState) {
+    private void SetGameState(GameState newState)
+    {
         _gameState = newState;
 
 
-        switch (newState) {
+        switch (newState)
+        {
             case GameState.Intermission:
                 _currentWave = Mathf.Max(_currentWave + 1, 1);
                 PlayerPrefs.SetInt("MaxWaveReached", Mathf.Max(PlayerPrefs.GetInt("MaxWaveReached", 1), _currentWave));
@@ -74,12 +81,16 @@ public class ManagerGame : MonoSingleton<ManagerGame> {
         OnGameStateChanged?.Invoke(_gameState, _currentWave);
     }
 
-    public void Pause() {
+    public void Pause()
+    {
         Time.timeScale = 0;
+        ManagerAudio.ToggleMusic();
     }
 
-    public void Resume() {
+    public void Resume()
+    {
         Time.timeScale = 1;
+        ManagerAudio.ToggleMusic();
     }
 
     // ------ HELPER FUNCTIONS ------

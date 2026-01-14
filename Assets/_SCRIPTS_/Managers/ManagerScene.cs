@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ManagerScene : MonoSingleton<ManagerScene> {
+public class ManagerScene : MonoSingleton<ManagerScene>
+{
     public event Action<int> OnAboutToLoadScene;
 
     // ------ START METHODS ------
@@ -12,8 +12,14 @@ public class ManagerScene : MonoSingleton<ManagerScene> {
 
     // ------ EVENT METHODS ------
 
-    public void LoadScene(int sceneId) {
+    public void LoadScene(int sceneId)
+    {
         OnAboutToLoadScene?.Invoke(sceneId);
         SceneManager.LoadScene(sceneId);
+        if (sceneId == 0)
+        {
+            ManagerAudio.SetCurrentTrack(2);
+            ManagerAudio.UpdateMusicVolume();
+        }
     }
 }
