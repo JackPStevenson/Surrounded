@@ -26,6 +26,7 @@ public class ManagerAudio : MonoSingleton<ManagerAudio>
     private void Start()
     {
         PlaySound(SoundType.Music, currentTrack);
+        UpdateMusicVolume();
     }
 
     protected override void OnDestroyed(bool isDeletedInstance) { }
