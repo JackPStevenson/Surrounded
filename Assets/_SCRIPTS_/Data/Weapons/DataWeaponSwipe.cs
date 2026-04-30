@@ -11,4 +11,6 @@ public class DataWeaponSwipe : DataWeapon {
         
         penetration = -1;
     }
+
+    public override int GetTypeId() => 1;
 }

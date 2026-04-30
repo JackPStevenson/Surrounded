@@ -1,13 +1,18 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))] [RequireComponent(typeof(StatusHandler))]
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(StatusHandler))]
 public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
-    public event Action<CharacterCore> EventDeath;
+    public const string PerkScalarTag = "PerkScalar";
+
+    public event Action<CharacterCore, string> EventDeath;
 
     // --- CORE REFERENCES ---
     private Health _health;
     private StatusHandler _status;
+    public CharacterAudioPlayer _audioPlayer;
 
     public Health Health => _health;
     public StatusHandler Status => _status;
@@ -19,6 +24,7 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
     protected void Initialize() {
         TryGetComponent(out _health);
         TryGetComponent(out _status);
+        TryGetComponent(out _audioPlayer);
 
         _health.EventDeath += Deactivate;
         _status.EventDynamicModifierApplied += OnDynamicModifier;
@@ -41,25 +47,34 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
     // ------ EVENT METHODS ------
 
     protected virtual void OnDeactivate() { }
-    public void Deactivate() {
-        OnDeactivate();
-
+    public void Deactivate(string deathSource = "") {
         _status.Reset();
         gameObject.SetActive(false);
-        EventDeath?.Invoke(this);
+        _audioPlayer?.PlayDeathSound();
+        for (int i = 0; i < transform.childCount; i++) {
+            var child = transform.GetChild(i).GetComponent<ParticleParent>();
+            if (child != null) {
+                child.ReturnToPool();
+                i--;
+            }
+
+        }
+        EventDeath?.Invoke(this, deathSource);
+        OnDeactivate();
     }
 
     protected virtual void OnActivate() { }
     public void Activate() {
-        OnActivate();
         _health.Reset();
         gameObject.SetActive(true);
+        OnActivate();
     }
 
     public void TryAddEffect(DataStatusEffect newEffect, bool isTemp = true, float potency = 1) => Status.TryAddEffect(newEffect, isTemp, potency);
 
-    public void AddPerk(DataPerkPlayer dataPerkPlayer) {
-        Instantiate(dataPerkPlayer.perkPrefab, transform);
+    public void TryAddPerk(DataPerkPlayer dataPerkPlayer, float scalar) {
+        PartLogicValue part = Instantiate(dataPerkPlayer.perkPrefab, transform).GetComponents<PartLogicValue>().FirstOrDefault(p => p.CompareName(PerkScalarTag));
+        if (part) part.SetValue(scalar);
     }
 
     private void OnDynamicModifier(StatusModifiersList modifiers) {

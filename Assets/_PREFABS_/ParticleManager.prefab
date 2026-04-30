@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2566135786339793751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4630845273627588771}
+  - component: {fileID: 9147807826219347850}
+  - component: {fileID: 6051321827675499672}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4630845273627588771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2566135786339793751}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.710709, y: 7.1862392, z: -3.4423862}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9147807826219347850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2566135786339793751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3750d2fea80c14dae4c289b2e71d77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodEffectPool: {fileID: 6051321827675499672}
+  attachedEffectPools: []
+  tapEffect: {fileID: 0}
+  swipeEffect: {fileID: 0}
+  shakeEffect: {fileID: 2030472463912967321, guid: 47e8612244eb9e64e9c97e246582fac8,
+    type: 3}
+  slowEffect: {fileID: 9148437069917932326, guid: d5d0c954f97d80d4ab1ccc01f5f1f90d,
+    type: 3}
+  poisonEffect: {fileID: 0}
+  currentTime: 0
+--- !u!114 &6051321827675499672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2566135786339793751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1df49e25272d5f48b7b36129d5770cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolParticle: {fileID: 4067843411926117103, guid: 4ddd8b7349c448f41838859e27dbe613,
+    type: 3}
+  ActiveParticles: []
+  InactiveParticles: []
+  timeBetweenCleanups: 0.1

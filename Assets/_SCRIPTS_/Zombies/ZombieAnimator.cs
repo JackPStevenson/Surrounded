@@ -1,10 +1,10 @@
-using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(HealthFlash))]
 public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
+    private const float corpseLifetime = 5;
+    
     private readonly static int UseRunningAnim = Animator.StringToHash("UseRunningAnim");
     private readonly static int MoveState = Animator.StringToHash("MoveState");
     private readonly static int MoveSpeedScalar = Animator.StringToHash("MoveSpeedScalar");
@@ -13,14 +13,15 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
     private readonly static int Damaged = Animator.StringToHash("OnDamaged");
     private readonly static int AttackSpeedScalar = Animator.StringToHash("AttackSpeedScalar");
     private const float AnimSmoothing = 0.000001f;
-
-    public bool useRunningAnimation = false;
     
+    public bool useRunningAnimation = false;
+
     // --- PERMANENT REFERENCES ---
     protected ZombieCore Core;
     protected Animator Anim;
     protected HealthFlash Flash;
-    
+    protected CharacterVisualDamage VisualDamage;
+
     // --- STATE PARAMETERS ---
     private float _moveState = 0;
 
@@ -28,10 +29,13 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
 
     public void Initialize(ZombieCore core) {
         Core = core;
+
+        foreach (Transform child in transform)
+            if (child.TryGetComponent(out Anim)) break;
         
-        foreach (Transform child in transform) if (child.TryGetComponent(out Anim)) break;
         TryGetComponent(out Flash);
-        
+        TryGetComponent(out VisualDamage);
+
         Flash.Initialize(core.Health);
         core.Nav.OnAttack += OnAttack;
         core.Health.EventHealthChange += EventHealthChange;
@@ -51,30 +55,46 @@ public class ZombieAnimator : MonoBehaviour, IUpdateCustom {
         bool isMoving = Core.IsMoving;
         float moveStateTarget = isMoving ? 1 : 0;
         float moveSpeedScalar = Mathf.Max(isMoving ? Core.CurrentSpeed : Core.AttackSpeed);
-        
+
         // Update animator parameters.
         _moveState = Common.SmoothLerp(_moveState, moveStateTarget, AnimSmoothing, Time.fixedDeltaTime);
-        
+
         Anim.SetFloat(MoveState, _moveState);
-        
+
         Anim.SetFloat(MoveSpeedScalar, moveSpeedScalar);
         Anim.SetFloat(UseRunningAnim, useRunningAnimation ? 1 : 0);
-        
+
         Anim.SetFloat(AttackSpeedScalar, Core.AttackSpeed);
+        
+        VisualDamage?.FixedUpdateCustom(deltaTime, tick);
     }
 
     // ------ EVENT METHODS ------
 
-    void OnAttack() => Anim.SetTrigger(Attack);
-    void EventHealthChange(float healthChange) {
-        if(healthChange < 0) Anim.SetTrigger(Damaged);
+    void OnAttack() {
+        Anim.SetTrigger(Attack);
+        Core._audioPlayer.PlayAttackSound();
     }
-    void EventDeath() => Anim.SetTrigger(Death);
 
-    private void OnDestroy() {
-        if(!Core) return;
-        Core.Nav.OnAttack -= OnAttack;
-        Core.Health.EventHealthChange -= EventHealthChange;
-        Core.Health.EventDeath -= EventDeath;
+    void EventHealthChange(float healthChange) {
+        if (healthChange < 0) Anim.SetTrigger(Damaged);
+        VisualDamage?.ChangeHealth(Core.Health.HealthCurrent / Core.MaxHealth);
+    }
+
+    void EventDeath(string deathSource = "") {
+        if (Core) {
+            Core.Nav.OnAttack -= OnAttack;
+            Core.Health.EventHealthChange -= EventHealthChange;
+            Core.Health.EventDeath -= EventDeath;
+        }
+        
+        Anim.SetTrigger(Death);
+        transform.SetParent(null);
+        StartCoroutine(DeathCoroutine());
+    }
+
+    private IEnumerator DeathCoroutine() {
+        yield return new WaitForSeconds(corpseLifetime);
+        Destroy(gameObject);
     }
 }

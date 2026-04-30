@@ -113,8 +113,6 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
 
     /// Returns whether zombie should perform physics checks this tick.
     bool CheckIfPhysicsTick(int tick) {
-        if (TicksPerPhysicsCheck < 2) return true;
-        
         int offset = _core.Id % TicksPerPhysicsCheck;
         return (tick + offset) % TicksPerPhysicsCheck == 0;
     }
@@ -205,7 +203,7 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
         if (_lastAttack + _core.AttackInterval > Time.time) return -1; // Only deal damage if attack interval has fully elapsed.
         
         // Damage target, reset hit timer, and return health left of hit target.
-        float healthLeft = _currentTarget.DealDamage(_core.Damage);
+        float healthLeft = _currentTarget.DealDamage(_core.Damage, _core.Data.name);
         _lastAttack = Time.time;
         OnAttack?.Invoke();
         return healthLeft;

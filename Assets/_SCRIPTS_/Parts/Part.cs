@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [Serializable]
 public struct PartCondition {
@@ -15,7 +14,7 @@ public abstract class Part : MonoBehaviour {
     
     // --- CONDITIONS ---
     public List<PartCondition> partConditions;
-    protected bool AllConditionsTrue => partConditions.All(condPart => condPart.part.Activated != condPart.inverseCondition);
+    protected bool AllConditionsTrue => partConditions.Count == 0 || partConditions.All(condPart => condPart.part.Activated != condPart.inverseCondition);
 
     private void Start() => OnStart();
     protected virtual void OnStart(){ }

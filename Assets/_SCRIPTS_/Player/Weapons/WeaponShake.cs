@@ -20,7 +20,7 @@ public class WeaponShake : WeaponBase {
     }
     
     protected override void OnAwake() {
-        _player = PlayerCore.Instance;
+        _player = PlayerCore.Inst;
     }
 
     // ------ EVENT FUNCTIONS ------

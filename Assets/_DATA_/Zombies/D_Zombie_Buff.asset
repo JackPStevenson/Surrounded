@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualPrefab: {fileID: 9058431072282217707, guid: 2d14a657ec496d347a592b1aa205f0ce,
     type: 3}
-  health: 600
+  name: Buff Zombie
+  health: 450
   speed: 1
-  attackDamage: 50
-  attackRange: 0.3
-  attackSpeed: 0.6
+  attackDamage: 30
+  attackRange: 0.35
+  attackSpeed: 0.7
   minimumSpawnWave: 5
-  spawnWeight: 0.2
+  spawnWeight: 0.25
+  hurtSound: SFX_BuffZombieHurt
+  attackSound: SFX_BuffZombieAttack
+  deathSound: SFX_BuffZombieDeath
+  bloodOnDeath: 30

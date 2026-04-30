@@ -3,15 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ManagerWave : MonoBehaviour {
+public class ManagerWave : MonoSingleton<ManagerWave> {
     public event Action<int> EventTrickleSpawn;
     public event Action<int, bool> EventHordeSpawnNotify; // True if horde is last one of this wave.
     public event Action<int, int, float> OnHordeSpawn;
     public event Action OnAllZombiesDead;
-
-    public static ManagerWave Instance;
-    private ManagerGame _managerGame;
-    private ManagerZombies _managerZombies;
 
     private Health _mainTarget;
     
@@ -44,16 +40,12 @@ public class ManagerWave : MonoBehaviour {
     private int _hordesSpawned = 0;
 
     // ------ START FUNCTIONS ------
-
-    void Awake() {
-        Instance = this;
-    }
+    
+    protected override void OnAwake() { }
+    protected override void OnDestroyed(bool isDeletedInstance) { }
 
     void Start() {
-        _managerGame = ManagerGame.Instance;
-        _managerZombies = ManagerZombies.Instance;
-
-        _managerGame.OnGameStateChanged += OnManagerGameStateChanged;
+        ManagerGame.Inst.OnGameStateChanged += OnManagerGameStateChanged;
         
         ToggleWave(false);
     }
@@ -94,7 +86,7 @@ public class ManagerWave : MonoBehaviour {
         // Calculate when final horde will fully spawn.
         if (_waveStartTime + currentWaveDuration + hordeTimeToFullySpawn <= Time.time) {
             // If all zombies are dead, send a message through OnAllZombiesDead delegate.
-            if (_managerZombies.ActiveZombieCount <= 0) {
+            if (ManagerZombies.Inst.ActiveZombieCount <= 0) {
                 ToggleWave(false);
                 OnAllZombiesDead?.Invoke();
             }
@@ -155,11 +147,7 @@ public class ManagerWave : MonoBehaviour {
     
     public void SetMainTarget(Health mainTarget) {
         _mainTarget = mainTarget;
-        
-        // Do this just in case this class's start method is called after GameManager's.
-        if(!_managerZombies) _managerZombies = ManagerZombies.Instance;
-        
-        _managerZombies.SetMainTarget(_mainTarget);
+        ManagerZombies.Inst.SetMainTarget(_mainTarget);
     }
 
     public float GetWaveProgress() => Mathf.Clamp01((Time.time - _waveStartTime) / (GetWaveDuration() + GetHordeSpawnTime()));

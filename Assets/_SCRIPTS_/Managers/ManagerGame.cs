@@ -1,71 +1,62 @@
 using System;
 using UnityEngine;
 
-public class ManagerGame : MonoBehaviour
+public class ManagerGame : MonoSingleton<ManagerGame>
 {
     public event Action<GameState, int> OnGameStateChanged;
-    public static ManagerGame Instance;
 
-    private ManagerWave _managerWave;
-    private PlayerCore _player;
+    [Header("General")]
+    public float intermissionTime = 5;
+
+    [Header("UI")]
+    public UILayoutManager hudLayout;
+    public int gameOverCanvasIndex;
+    public UIGameOver gameOver;
+
+    private int _startingLevel;
+    private int _startingExperience;
 
     private GameState _gameState = GameState.Intermission;
     private int _currentWave;
     private float _lastIntermission;
 
-    [Header("General")]
-    public MenuBase loseMenu;
-
-    // Parameters
-    [Header("General")]
-    public float intermissionTime = 5;
-
+    public static int CurrentWave => Inst._currentWave;
 
     // ------ START FUNCTIONS ------
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    protected override void OnAwake() { }
 
     void Start()
     {
-        _managerWave = ManagerWave.Instance;
-        _managerWave.OnAllZombiesDead += OnAllZombiesDead;
+        PlayerCore.Inst.Health.EventDeath += EventPlayerDeath;
+        ManagerWave.Inst.OnAllZombiesDead += OnAllZombiesDead;
+        ManagerWave.Inst.SetMainTarget(PlayerCore.Inst.Health);
 
-        _player = PlayerCore.Instance;
-        _player.Health.EventDeath += EventPlayerDeath;
-        _player.Health.EventDeath += loseMenu.Enable;
-
-        _managerWave.SetMainTarget(_player.Health);
+        _startingLevel = ManagerSaveLoad.GetLevel();
+        _startingExperience = ManagerSaveLoad.GetExperience();
 
         SetGameState(GameState.Intermission);
     }
 
+    protected override void OnDestroyed(bool isDeletedInstance) { }
+
     // ------ UPDATE FUNCTIONS ------
-
-    void Update()
-    {
-
-    }
 
     void FixedUpdate()
     {
         if (_gameState is not GameState.Intermission) return;
-
         if (_lastIntermission + intermissionTime < Time.time) SetGameState(GameState.InProgress);
     }
 
     // ------ EVENT FUNCTIONS ------
 
-    private void OnAllZombiesDead()
-    {
-        SetGameState(GameState.Intermission);
-    }
-
-    private void EventPlayerDeath()
+    private void OnAllZombiesDead() => SetGameState(GameState.Intermission);
+    private void EventPlayerDeath(string deathSource = "")
     {
         SetGameState(GameState.Dead);
+        hudLayout.SwitchCanvas(gameOverCanvasIndex);
+        gameOver.StartDisplay();
+        ManagerAudio.FadeMusicOut();
     }
 
     private void SetGameState(GameState newState)
@@ -93,11 +84,13 @@ public class ManagerGame : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0;
+        ManagerAudio.ToggleMusic();
     }
 
     public void Resume()
     {
         Time.timeScale = 1;
+        ManagerAudio.ToggleMusic();
     }
 
     // ------ HELPER FUNCTIONS ------
@@ -105,7 +98,4 @@ public class ManagerGame : MonoBehaviour
     public float GetRemainingIntermission() => Mathf.Max(intermissionTime - (Time.time - _lastIntermission));
     public GameState GetGameState() => _gameState;
     public int GetCurrentWave() => Mathf.Max(_currentWave, 1);
-    public PlayerCore GetPoorSoul() => _player;
-
-
 }

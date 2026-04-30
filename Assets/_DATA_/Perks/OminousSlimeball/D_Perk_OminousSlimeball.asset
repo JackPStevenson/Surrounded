@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e567f85b2dc4233907a0c977873822e, type: 3}
+  m_Name: D_Perk_OminousSlimeball
+  m_EditorClassIdentifier: 
+  displayName: Ominous Slimeball
+  description: Creates a slowing slime puddle every 5 kills.
+  elaborateDescription: Every 5th kill with <color=yellow>taps</color>, <color=yellow>swipes</color>,
+    and <color=yellow>shakes</color> spawns a slime puddle, <color=#2b632f>slowing</color>
+    zombies by 30% for 4 seconds <color=grey>(+1 per level)</color>.
+  icon: {fileID: 21300000, guid: 72b1e4cf2bf3a044bb62627e19b97165, type: 3}
+  levelToUnlock: 0
+  perkPrefab: {fileID: 9166884277504944787, guid: 66b871623e63f9d428fb4429c24c5da6,
+    type: 3}

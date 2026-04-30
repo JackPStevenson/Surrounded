@@ -3,73 +3,91 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ManagerHUD : MonoBehaviour
-{
-    public static ManagerHUD Instance;
-
-    ManagerGame _managerGame;
-    ManagerWave _managerWave;
-    PlayerCore _player;
-    ManagerZombies _managerZombies;
+public class ManagerHUD : MonoSingleton<ManagerHUD> {
 
     [Header("HUD Elements")]
-    public GameObject _HordeText;
-    public Slider _waveProgressSlider;
-    public TMP_Text _waveProgressText;
-    public Slider _healthSlider;
+    public GameObject hordeText;
+    public Slider waveProgressSlider;
+    public TMP_Text waveProgressText;
+    public Slider healthSlider;
 
-    void Awake()
-    {
-        Instance = this;
+    [Header("Weapons")]
+    public UIDisplayItem tapDisplay;
+    private Slider _tapEnergySlider;
+    public UIDisplayItem swipeDisplay;
+    private Slider _swipeEnergySlider;
+    public UIDisplayItem shakeDisplay;
+    private Slider _shakeEnergySlider;
+    
+    // ------ START METHODS ------
+    
+    protected override void OnAwake() {
+        tapDisplay.transform.Find("Slider").TryGetComponent(out _tapEnergySlider);
+        swipeDisplay.transform.Find("Slider").TryGetComponent(out _swipeEnergySlider);
+        shakeDisplay.transform.Find("Slider").TryGetComponent(out _shakeEnergySlider);
+    }
+    
+    protected override void OnDestroyed(bool isDeletedInstance) { }
+
+    void Start() {
+        ManagerWave.Inst.EventHordeSpawnNotify += HordeSpawnNotify;
+        ManagerWeapon.Inst.EventWeaponEquip += OnWeaponEquip;
+        
+        OnWeaponEquip(ManagerWeapon.Inst.CurrentTap?.Data, 0);
+        OnWeaponEquip(ManagerWeapon.Inst.CurrentSwipe?.Data, 1);
+        OnWeaponEquip(ManagerWeapon.Inst.CurrentShake?.Data, 2);
     }
 
-    void Start()
-    {
-        _managerGame = ManagerGame.Instance;
-        _managerWave = ManagerWave.Instance;
-        _player = PlayerCore.Instance;
-        _managerZombies = ManagerZombies.Instance;
-
-        _managerWave.EventHordeSpawnNotify += HordeSpawnNotify;
-    }
-
-    void Update()
-    {
-        _healthSlider.value = _player.Health.HealthRatio;
-        switch (_managerGame.GetGameState())
-        {
+    // ------ UPDATE METHODS ------
+    
+    void Update() {
+        healthSlider.value = PlayerCore.Inst.Health.HealthRatio;
+        switch (ManagerGame.Inst.GetGameState()) {
+            default:
             case GameState.Intermission:
-                _waveProgressText.text = "Wave " + _managerGame.GetCurrentWave() + " in " + Mathf.Ceil(_managerGame.GetRemainingIntermission());
-                _waveProgressSlider.value = _managerGame.GetRemainingIntermission() / _managerGame.intermissionTime;
+                waveProgressText.text = "Wave " + ManagerGame.Inst.GetCurrentWave() + " in " + Mathf.Ceil(ManagerGame.Inst.GetRemainingIntermission());
+                waveProgressSlider.value = ManagerGame.Inst.GetRemainingIntermission() / ManagerGame.Inst.intermissionTime;
                 break;
 
             case GameState.InProgress:
-                _waveProgressText.text = "Wave " + _managerGame.GetCurrentWave();
-                _waveProgressSlider.value = _managerWave.GetWaveProgress();
+                waveProgressText.text = "Wave " + ManagerGame.Inst.GetCurrentWave();
+                waveProgressSlider.value = ManagerWave.Inst.GetWaveProgress();
                 break;
 
             case GameState.Dead:
                 break;
         }
+
+        UpdateSliders();
     }
 
-    private void HordeSpawnNotify(int intval, bool boolval)
-    {
-        StartCoroutine(DisplayText());
+    void UpdateSliders() {
+        _tapEnergySlider.value = ManagerWeapon.Inst.CurrentTapEnergy;
+        _swipeEnergySlider.value = ManagerWeapon.Inst.CurrentSwipeEnergy;
+        _shakeEnergySlider.value = ManagerWeapon.Inst.CurrentShakeEnergy;
     }
+    
+    // ------ EVENT METHODS ------
 
-    IEnumerator DisplayText()
-    {
-        _HordeText.SetActive(true);
-        yield return new WaitForSeconds(_managerWave.hordeStartDelay);
-        _HordeText.SetActive(false);
+    void OnWeaponEquip(DataWeapon weapon, int slot) {
+        switch (slot) {
+            default:
+                tapDisplay.SetIcon(weapon?.icon);
+                break;
+            case 1:
+                swipeDisplay.SetIcon(weapon?.icon);
+                break;
+            case 2:
+                shakeDisplay.SetIcon(weapon?.icon);
+                break;
+        }
     }
+    
+    private void HordeSpawnNotify(int intval, bool boolval) => StartCoroutine(DisplayText());
 
-    public void Pause(bool pause)
-    {
-        if (pause)
-            Time.timeScale = 0f;
-        else
-            Time.timeScale = 1f;
+    IEnumerator DisplayText() {
+        hordeText.SetActive(true);
+        yield return new WaitForSeconds(ManagerWave.Inst.hordeStartDelay);
+        hordeText.SetActive(false);
     }
 }

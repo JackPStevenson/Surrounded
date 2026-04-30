@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491fecf7db3c0a14a9e3abe9c8e53119, type: 3}
   m_Name: D_Bundle_Master
   m_EditorClassIdentifier: 
-  BundleWeapons: {fileID: 11400000, guid: 14ae5023fe4a7ca4c818640b5b34e47c, type: 2}
-  BundlePerksPlayer: {fileID: 11400000, guid: bc6edf5dddfc7874a8a865bba44a8245, type: 2}
-  BundleZombies: {fileID: 11400000, guid: c970eade7a0b6dd429763ae2334773d7, type: 2}
+  weapons: {fileID: 11400000, guid: 690e5a3f5fc137e46be88e43330262d5, type: 2}
+  defaultTap: {fileID: 11400000, guid: 491100b42d27a8c40b8084ae14a00531, type: 2}
+  defaultSwipe: {fileID: 11400000, guid: b5b573ece82407c428abbfa1f19d7dd4, type: 2}
+  defaultShake: {fileID: 11400000, guid: 530360fab6cb373448419deec47e92e9, type: 2}
+  perks: {fileID: 11400000, guid: bc6edf5dddfc7874a8a865bba44a8245, type: 2}
+  zombies: {fileID: 11400000, guid: c970eade7a0b6dd429763ae2334773d7, type: 2}
+  dataBundleAudio: {fileID: 11400000, guid: 13640ffbacc16c147b516ea91305c305, type: 2}

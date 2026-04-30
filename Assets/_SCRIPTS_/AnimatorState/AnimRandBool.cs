@@ -7,6 +7,7 @@ public class AnimRandBool : AnimRand {
     public float chanceForTrue = 0.5f;
     public bool oneShot = false;
     private bool _performed;
+    
     // Called when a transition starts and the state machine starts to evaluate this state.
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (oneShot && _performed) return;

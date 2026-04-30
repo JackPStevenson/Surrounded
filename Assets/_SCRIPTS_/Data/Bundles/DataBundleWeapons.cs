@@ -6,17 +6,34 @@ using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "D_Bundle_Weapons", menuName = "Data/Bundle/Weapons")]
 public class DataBundleWeapons : DataBundle {
-    [Header("Weapons")]
-    public List<DataWeapon> Weapons;
-
-    [Header("Defaults")]
-    public int defaultTapIndex = 0;
-    public int defaultSwipeIndex = 1;
-    public int defaultShakeIndex = 2;
     
-    public DataWeaponTap DefaultTap => Weapons[defaultTapIndex] as DataWeaponTap;
-    public DataWeaponSwipe DefaultSwipe => Weapons[defaultSwipeIndex] as DataWeaponSwipe;
-    public DataWeaponShake DefaultShake => Weapons[defaultShakeIndex] as DataWeaponShake;
-
-    public T[] GetItems<T>() where T : DataWeapon => GetItems<T, DataWeapon>(Weapons);
+    [Header("Weapons")]
+    public List<DataWeapon> weapons;
+    
+    // ------ FETCH METHODS ------
+    
+    private T[] GetWeapons<T>(bool sorted = false) where T : DataWeapon => GetItems<T, DataWeapon>(weapons, sorted);
+    private T First<T>(bool sorted = false) where T : DataWeapon => GetFirst<T, DataWeapon>(weapons, sorted);
+    
+    public DataWeapon GetWeaponAtLevel(int weaponLevel) => GetFirst<DataWeapon, DataWeapon>(weapons, weaponLevel);
+    public bool HasWeaponAtLevel(int weaponLevel) => GetFirst<DataWeapon, DataWeapon>(weapons, weaponLevel);
+    public bool HasWeaponAtLevel(int weaponLevel, out DataWeapon weapon) { weapon = GetFirst<DataWeapon, DataWeapon>(weapons, weaponLevel); return weapon; }
+    
+    // ------ TAP FETCH METHODS ------
+    
+    public DataWeaponTap[] Taps => GetWeapons<DataWeaponTap>(true);
+    public DataWeaponTap[] TapsUnsorted => GetWeapons<DataWeaponTap>();
+    public DataWeaponTap FirstTap => First<DataWeaponTap>(true);
+    
+    // ------ SWIPE FETCH METHODS ------
+    
+    public DataWeaponSwipe[] Swipes => GetWeapons<DataWeaponSwipe>(true);
+    public DataWeaponSwipe[] SwipesUnsorted => GetWeapons<DataWeaponSwipe>();
+    public DataWeaponSwipe FirstSwipe => First<DataWeaponSwipe>(true);
+    
+    // ------ SHAKE FETCH METHODS ------
+    
+    public DataWeaponShake[] Shakes => GetWeapons<DataWeaponShake>(true);
+    public DataWeaponShake[] ShakesUnsorted => GetWeapons<DataWeaponShake>();
+    public DataWeaponShake FirstShake => First<DataWeaponShake>(true);
 }
