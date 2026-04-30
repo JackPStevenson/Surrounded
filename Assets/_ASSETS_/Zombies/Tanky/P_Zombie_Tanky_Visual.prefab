@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2447292140737213415}
+  m_Father: {fileID: 1721526682864865925}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &5434080666967225221
 SkinnedMeshRenderer:
@@ -224,6 +224,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1925994004598495617}
+  - {fileID: 6495147748087110534}
   m_Father: {fileID: 4064938799020094485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &715881332583804394
@@ -408,7 +409,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3261324549207785349}
   m_Father: {fileID: 8320779784497249881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6582320176086905695
@@ -1926,6 +1928,37 @@ Transform:
   - {fileID: 4599943946964763450}
   m_Father: {fileID: 5912083093377809602}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+--- !u!1 &4921106716981024502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6495147748087110534}
+  m_Layer: 0
+  m_Name: helmetSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6495147748087110534
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4921106716981024502}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1.0340552e-14, z: 5.93542e-14, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3739059102345272687}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5016179466471827978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,8 +2527,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3261324549207785349}
+  m_Children: []
   m_Father: {fileID: 8320779784497249881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &933408371184577888
@@ -3706,6 +3738,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &8018114016146806155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4592521150296892438}
+  m_Layer: 0
+  m_Name: DummyPart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4592521150296892438
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018114016146806155}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5462223570822938909}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8111146467909967850
 GameObject:
   m_ObjectHideFlags: 0
@@ -3767,6 +3830,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4592521150296892438}
   - {fileID: 8408484951418365217}
   - {fileID: 758861499252564200}
   m_Father: {fileID: 4894689293689566612}
@@ -4060,7 +4124,8 @@ MonoBehaviour:
     - {fileID: 6109282595048340812}
     - {fileID: 6657627357097615819}
   - parts:
-    - {fileID: 379072470269569891}
+    - {fileID: 4921106716981024502}
+    - {fileID: 835703407579723348}
   gibs:
   - parts:
     - {fileID: 8239099713352598606}
@@ -4073,7 +4138,8 @@ MonoBehaviour:
     - {fileID: 2554406059232321169}
     - {fileID: 7792209572695164779}
   - parts:
-    - {fileID: 5349400398934154691}
+    - {fileID: 2820540589066397286}
+    - {fileID: 8018114016146806155}
 --- !u!1 &9088238568006743057
 GameObject:
   m_ObjectHideFlags: 0

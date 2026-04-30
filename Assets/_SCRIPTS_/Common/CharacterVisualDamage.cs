@@ -7,27 +7,29 @@ public class CharacterVisualDamage : MonoBehaviour, IUpdateCustom {
     public struct Limb{
         // --- LIMBS ---
         public GameObject[] parts;
-        public Transform PartTs(int index) => parts[index].transform;
+        public Transform PartTransforms(int index) => parts[index].transform;
         
-        public Vector3 Pos { get => PartTs(0).position; set => PartTs(0).position = value; }
-        public Vector3 PosLocal { get => PartTs(0).localPosition; set => PartTs(0).localPosition = value; }
-        public Quaternion Rot { get => PartTs(0).rotation; set => PartTs(0).rotation = value; }
-        public Quaternion RotLocal { get => PartTs(0).localRotation; set => PartTs(0).localRotation = value; }
+        public Vector3 Pos { get => PartTransforms(0).position; set => PartTransforms(0).position = value; }
+        public Vector3 PosLocal { get => PartTransforms(0).localPosition; set => PartTransforms(0).localPosition = value; }
+        public Quaternion Rot { get => PartTransforms(0).rotation; set => PartTransforms(0).rotation = value; }
+        public Quaternion RotLocal { get => PartTransforms(0).localRotation; set => PartTransforms(0).localRotation = value; }
         
-        public float Size { get => PartTs(0).localScale.x; set => PartTs(0).localScale = new Vector3(value, value, value); }
+        public float Size { get => PartTransforms(0).localScale.x; set => PartTransforms(0).localScale = new Vector3(value, value, value); }
     
         // ------ HELPER FUNCTIONS ------
     
         public void Toggle(bool isEnabled) {
             parts[0].SetActive(isEnabled);
             Size = isEnabled ? 1 : 0;
+            for (int i = 1; i < parts.Length; i++)
+                PartTransforms(i).gameObject.SetActive(isEnabled);
         }
         
         public void Copy(Limb other) {
             Pos = other.Pos;
             Rot = other.Rot;
             for (int i = 1; i < parts.Length; i++)
-                PartTs(i).localRotation = other.PartTs(i).localRotation;
+                PartTransforms(i).localRotation = other.PartTransforms(i).localRotation;
         }
     }
     
@@ -95,7 +97,7 @@ public class CharacterVisualDamage : MonoBehaviour, IUpdateCustom {
             gibs[i].Toggle(shouldBeEjected);
             limbs[i].Toggle(!shouldBeEjected);
             gibs[i].Copy(limbs[i]);
-            gibs[i].PartTs(0).SetParent(shouldBeEjected ? null : transform);
+            gibs[i].PartTransforms(0).SetParent(shouldBeEjected ? null : transform);
             
             // Set gib's speed based on whether it should be moving.
             if (shouldBeEjected) {

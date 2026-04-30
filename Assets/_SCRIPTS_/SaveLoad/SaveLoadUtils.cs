@@ -10,9 +10,10 @@ public static class SaveLoadUtils {
             writer.Write(JsonUtility.ToJson(info));
         }
         catch (Exception e) {
+            Debug.LogWarning("Error saving " + typeof(T) + ": " + e);
             return false;
         }
-        
+
         //Debug.Log("Success! Saved " + typeof(T) + ".");
         return true;
     }
@@ -25,6 +26,7 @@ public static class SaveLoadUtils {
             result = JsonUtility.FromJson<T>(reader.ReadToEnd());
         }
         catch (Exception e) {
+            Debug.LogWarning("Error loading " + typeof(T) + ": " + e);
             return false;
         }
         

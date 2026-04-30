@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 public class ManagerInput : MonoSingleton<ManagerInput> {
     public readonly static float MinSwipeDistance = 0.75f;
 
+    public bool IsLastInputMNK { get; private set; } = false;
+    
     // General
     public bool IsTouching { get; private set; }
     public Vector2 TouchPos { get; private set; }
@@ -60,15 +62,24 @@ public class ManagerInput : MonoSingleton<ManagerInput> {
 
             return;
         }
+
+        TouchInputData inputData = TouchInputData.GetGameTouchInput();
         
-        Mouse mouse = Mouse.current;
-        if (mouse != null && (mouse.leftButton.isPressed || mouse.leftButton.wasReleasedThisFrame))
+        if (inputData.touchInputUsed is not TouchInputUsed.None)
+            UpdateTouch(inputData.wasPressedThisFrame, inputData.isPressed, inputData.touchPos);
+        
+        /*Mouse mouse = Mouse.current;
+        if (mouse != null && (mouse.leftButton.isPressed || mouse.leftButton.wasReleasedThisFrame)) {
+            IsLastInputMNK = true;
             UpdateTouch(mouse.leftButton.wasPressedThisFrame, mouse.leftButton.isPressed, mouse.position.ReadValue());
-        
+        }
+
         TouchControl touch = (Touchscreen.current != null) ? Touchscreen.current.primaryTouch : null;
-        if (touch != null && (touch.press.isPressed || touch.press.wasReleasedThisFrame))
+        if (touch != null && (touch.press.isPressed || touch.press.wasReleasedThisFrame)) {
+            IsLastInputMNK = false;
             UpdateTouch(touch.press.wasPressedThisFrame, touch.press.isPressed, touch.position.ReadValue());
-        
+        }*/
+
         Keyboard keyboard = Keyboard.current;
         if (keyboard != null && (keyboard.leftShiftKey.wasPressedThisFrame))
             OnShakeDebug();
