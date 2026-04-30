@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 public class DataZombie : ScriptableObject {
     [Header("References")]
     public GameObject visualPrefab;
+    public GameObject gibPrefab;
 
     [Header("General")]
     public new string name;

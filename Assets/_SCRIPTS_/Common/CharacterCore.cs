@@ -4,8 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(StatusHandler))]
-public abstract class CharacterCore : MonoBehaviour, IUpdateCustom
-{
+public abstract class CharacterCore : MonoBehaviour, IUpdateCustom {
     public const string PerkScalarTag = "PerkScalar";
 
     public event Action<CharacterCore, string> EventDeath;
@@ -22,8 +21,7 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom
 
     // ------ START METHODS ------
 
-    protected void Initialize()
-    {
+    protected void Initialize() {
         TryGetComponent(out _health);
         TryGetComponent(out _status);
         TryGetComponent(out _audioPlayer);
@@ -35,15 +33,13 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom
     // ------ UPDATE METHODS ------
 
     protected virtual void OnUpdateCustom(float deltaTime) { }
-    public void UpdateCustom(float deltaTime)
-    {
+    public void UpdateCustom(float deltaTime) {
         OnUpdateCustom(deltaTime);
         _status.UpdateCustom(deltaTime);
     }
 
     protected virtual void OnFixedUpdateCustom(float deltaTime, int tick) { }
-    public void FixedUpdateCustom(float deltaTime, int tick)
-    {
+    public void FixedUpdateCustom(float deltaTime, int tick) {
         OnFixedUpdateCustom(deltaTime, tick);
         _status.FixedUpdateCustom(deltaTime, tick);
     }
@@ -51,16 +47,13 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom
     // ------ EVENT METHODS ------
 
     protected virtual void OnDeactivate() { }
-    public void Deactivate(string deathSource = "")
-    {
+    public void Deactivate(string deathSource = "") {
         _status.Reset();
         gameObject.SetActive(false);
         _audioPlayer?.PlayDeathSound();
-        for (int i = 0; i < transform.childCount; i++)
-        {
+        for (int i = 0; i < transform.childCount; i++) {
             var child = transform.GetChild(i).GetComponent<ParticleParent>();
-            if (child != null)
-            {
+            if (child != null) {
                 child.ReturnToPool();
                 i--;
             }
@@ -71,8 +64,7 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom
     }
 
     protected virtual void OnActivate() { }
-    public void Activate()
-    {
+    public void Activate() {
         _health.Reset();
         gameObject.SetActive(true);
         OnActivate();
@@ -85,8 +77,7 @@ public abstract class CharacterCore : MonoBehaviour, IUpdateCustom
         if (part) part.SetValue(scalar);
     }
 
-    private void OnDynamicModifier(StatusModifiersList modifiers)
-    {
+    private void OnDynamicModifier(StatusModifiersList modifiers) {
         float healthModifier = modifiers.GetDynamicModifier(AffectorDynamicType.CurrentHealth);
         if (!Mathf.Approximately(healthModifier, 0)) _health.DealDamage(healthModifier);
     }

@@ -771,7 +771,7 @@
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
-    "m_RenderFace": 2,
+    "m_RenderFace": 0,
     "m_AlphaClip": false,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
@@ -1052,8 +1052,8 @@
     "m_ObjectId": "2e612b764dc04620b2a09516feee57dc",
     "m_Title": "Base Albedo",
     "m_Position": {
-        "x": -480.99993896484377,
-        "y": -473.9999694824219
+        "x": -481.0000915527344,
+        "y": -474.0
     }
 }
 
@@ -1063,8 +1063,8 @@
     "m_ObjectId": "31c2ab46e5c143468511e612a1488ea7",
     "m_Title": "Normal",
     "m_Position": {
-        "x": -656.9999389648438,
-        "y": 398.00006103515627
+        "x": -657.0001220703125,
+        "y": 398.0000305175781
     }
 }
 
@@ -2480,8 +2480,8 @@
     "m_ObjectId": "b67ed2ea37194f7a9ee7cc8d786947ef",
     "m_Title": "Current Flash Alpha",
     "m_Position": {
-        "x": -681.0,
-        "y": -94.0
+        "x": -681.0001220703125,
+        "y": -93.99998474121094
     }
 }
 
@@ -2491,8 +2491,8 @@
     "m_ObjectId": "b762571f571847b9b534a82f76eed666",
     "m_Title": "Emission",
     "m_Position": {
-        "x": -658.9999389648438,
-        "y": 784.0000610351563
+        "x": -659.0001220703125,
+        "y": 783.9999389648438
     }
 }
 
