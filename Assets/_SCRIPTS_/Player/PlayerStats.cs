@@ -20,8 +20,8 @@ public class PlayerStats {
     public readonly int StartLevel = ManagerSaveLoad.GetLevel(), StartExp = ManagerSaveLoad.GetExperience();
     public string KilledBy {get; private set;} = "";
 
-    public readonly PlayerStat WaveReached = new PlayerStat("Wave Reached");
-    public readonly PlayerStat TotalZombieKills = new PlayerStat("Zombie Kills");
+    public readonly PlayerStat WaveReached = new PlayerStat("Wave");
+    public readonly PlayerStat TotalZombieKills = new PlayerStat("Kills");
     public readonly List<PlayerStat> SpecificZombieKills = new List<PlayerStat>();
     public readonly PlayerStat TotalEarnings = new PlayerStat("Total");
 

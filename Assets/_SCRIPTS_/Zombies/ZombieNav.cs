@@ -113,8 +113,6 @@ public class ZombieNav : MonoBehaviour, IUpdateCustom {
 
     /// Returns whether zombie should perform physics checks this tick.
     bool CheckIfPhysicsTick(int tick) {
-        if (TicksPerPhysicsCheck < 2) return true;
-        
         int offset = _core.Id % TicksPerPhysicsCheck;
         return (tick + offset) % TicksPerPhysicsCheck == 0;
     }

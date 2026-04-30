@@ -130,18 +130,24 @@ public class ManagerSaveLoad : MonoSingleton<ManagerSaveLoad> {
         if (!PlayerSaveLoaded) return;
         
         try { File.Delete(PlayerSavePath); }
-        catch (Exception e) { /* ignore */ }
-        
+        catch (Exception e) {
+            Debug.LogWarning("Error deleting save" + ": " + e);
+        }
+
         _playerSave = null;
         LoadPlayerSave();
     }
     
     private void ResetSettings() {
         if (!SettingsLoaded) return;
-        
-        try { File.Delete(PlayerSettingsPath); }
-        catch (Exception e) { /* ignore */ }
-        
+
+        try {
+            File.Delete(PlayerSettingsPath);
+        }
+        catch (Exception e) {
+            Debug.LogWarning("Error deleting settings" + ": " + e);
+        }
+
         _playerSettings = null;
         LoadSettings();
     }
