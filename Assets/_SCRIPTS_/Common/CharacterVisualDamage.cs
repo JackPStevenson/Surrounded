@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CharacterVisualDamage : MonoBehaviour, IUpdateCustom {
     [Serializable]
@@ -68,10 +69,11 @@ public class CharacterVisualDamage : MonoBehaviour, IUpdateCustom {
         
         // Update pos and size of each gib.
         gibs[i].Pos += _gibSpeeds[i] * deltaTime;
-        gibs[i].Size = Mathf.MoveTowards(gibs[i].Size, 0, deltaTime * 0.5f);
+        gibs[i].Size = Mathf.MoveTowards(gibs[i].Size, 0, deltaTime * 0.175f);
+        gibs[i].Rot *= Quaternion.Euler(new Vector3(15, 35, -15) * (deltaTime * 3));
         
         // Update gib speed after transforms.
-        _gibSpeeds[i] += (Physics.gravity * deltaTime);
+        _gibSpeeds[i] += (Physics.gravity * deltaTime * 0.25f);
     }
 
     // ------ EVENT FUNCTIONS ------
@@ -79,6 +81,8 @@ public class CharacterVisualDamage : MonoBehaviour, IUpdateCustom {
     public void ChangeHealth(float newHealth) {
         // Update health to given value.
         currentHealth = newHealth;
+        Debug.Log(1);
+        Debug.Log(gibs.Length);
         
         // Loop through each gib.
         for (int i = 0; i < gibs.Length; i++) {
@@ -94,7 +98,14 @@ public class CharacterVisualDamage : MonoBehaviour, IUpdateCustom {
             gibs[i].PartTs(0).SetParent(shouldBeEjected ? null : transform);
             
             // Set gib's speed based on whether it should be moving.
-            _gibSpeeds[i] = shouldBeEjected ? Vector3.up * 4 : Vector3.zero;
+            if (shouldBeEjected) {
+                Vector2 HorizRand = Random.insideUnitCircle * .7f;
+                float VertRand = Random.Range(2, 3f);
+                _gibSpeeds[i] = new Vector3(HorizRand.x, VertRand, HorizRand.y);
+            }
+            else {
+                _gibSpeeds[i] = Vector3.zero;
+            }
         }
     }
 

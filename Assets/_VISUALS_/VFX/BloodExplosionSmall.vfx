@@ -63,10 +63,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -442
-    y: -382
+    x: -443
+    y: -381
     width: 708
-    height: 2362
+    height: 2365
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: BloodExplosion
+  m_Name: BloodExplosionSmall
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
@@ -256,7 +256,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BloodExplosion
+  m_Name: BloodExplosionSmall
   m_Graph: {fileID: 114350483966674976}
   m_Infos:
     m_RendererSettings:
@@ -791,7 +791,8 @@ MonoBehaviour:
     - outputSlot: {fileID: 8926484042661618021}
       inputSlot: {fileID: 8926484042661618191}
     position: {x: -364, y: 371.2}
-    expandedSlots: []
+    expandedSlots:
+    - {fileID: 8926484042661618021}
     expanded: 1
     supecollapsed: 0
 --- !u!114 &8926484042661618021
@@ -1600,7 +1601,7 @@ MonoBehaviour:
   particlePerStripCount: 16
   needsComputeBounds: 0
   boundsMode: 0
-  m_Space: 1
+  m_Space: 0
 --- !u!114 &8926484042661618059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3097,7 +3098,7 @@ MonoBehaviour:
   enableRayTracing: 0
   decimationFactor: 1
   raytracedScaleMode: 0
-  needsOwnSort: 0
+  needsOwnSort: 1
   needsOwnAabbBuffer: 0
   shaderGraph: {fileID: 0}
   materialSettings:

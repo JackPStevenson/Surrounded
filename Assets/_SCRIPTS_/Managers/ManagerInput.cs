@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 public class ManagerInput : MonoSingleton<ManagerInput> {
     public readonly static float MinSwipeDistance = 0.75f;
-    
+
     // General
     public bool IsTouching { get; private set; }
     public Vector2 TouchPos { get; private set; }
@@ -50,22 +50,43 @@ public class ManagerInput : MonoSingleton<ManagerInput> {
     // ------ UPDATE METHODS ------
 
     void Update() {
-        if (Touchscreen.current == null || Time.timeScale <= 0 || (ManagerGame.Inst && ManagerGame.Inst.GetGameState() is GameState.Dead)) {
-            IsTouching = false;
+        bool IsGameOver = ManagerGame.Inst && ManagerGame.Inst.GetGameState() is GameState.Dead;
+        bool IsPaused = Time.timeScale <= 0;
+        if (IsGameOver || IsPaused) {
+            if (IsTouching) {
+                OnTouchReleaseInput?.Invoke(TouchPos);
+                IsTouching = false;
+            }
+
             return;
         }
-
         
-        TouchControl touch = Touchscreen.current.primaryTouch;
-        TouchPressControl touchPress = touch.press;
-        TouchPos = touch.position.ReadValue();
+        Mouse mouse = Mouse.current;
+        if (mouse != null && (mouse.leftButton.isPressed || mouse.leftButton.wasReleasedThisFrame))
+            UpdateTouch(mouse.leftButton.wasPressedThisFrame, mouse.leftButton.isPressed, mouse.position.ReadValue());
+        
+        TouchControl touch = (Touchscreen.current != null) ? Touchscreen.current.primaryTouch : null;
+        if (touch != null && (touch.press.isPressed || touch.press.wasReleasedThisFrame))
+            UpdateTouch(touch.press.wasPressedThisFrame, touch.press.isPressed, touch.position.ReadValue());
+        
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard != null && (keyboard.leftShiftKey.wasPressedThisFrame))
+            OnShakeDebug();
+        
+        if (_accel != null)
+            OnShakeCustom(_accel.acceleration.ReadValue());
+    }
 
-        if (touchPress.wasPressedThisFrame) {
+    private void UpdateTouch(bool wasPressedThisFrame, bool isPressed, Vector2 touchPos) {
+        TouchPos = touchPos;
+
+        // Only enable touching if input was activated this frame (prevents multi-input conflicts).
+        if (wasPressedThisFrame) {
             IsTouching = true;
             OnTouchPressInput?.Invoke(TouchPos);
         }
         else if (IsTouching) {
-            if (touchPress.isPressed) {
+            if (isPressed) {
                 OnTouchPositionInput?.Invoke(TouchPos);
             }
             else {
@@ -73,9 +94,6 @@ public class ManagerInput : MonoSingleton<ManagerInput> {
                 IsTouching = false;
             }
         }
-
-        // Send Messages doesn't seem to work for accelerometer. This serves as a crude workaround.
-        if (_accel != null) OnShakeCustom(_accel.acceleration.ReadValue());
     }
 
     // ------ EVENT METHODS ------
@@ -109,5 +127,13 @@ public class ManagerInput : MonoSingleton<ManagerInput> {
         _lastShakeTime = Time.time;
         _accumulatedShakeTime = 0;
     }
-    
+
+
+    private void OnApplicationFocus(bool hasFocus) {
+        if (hasFocus || !IsTouching)
+            return;
+        
+        OnTouchReleaseInput?.Invoke(TouchPos);
+        IsTouching = false;
+    }
 }

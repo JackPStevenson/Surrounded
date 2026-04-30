@@ -88,7 +88,7 @@ public class ParticleEffectPool : MonoBehaviour
 
     public void ReturnParticleToPool(ParticleParent particle)
     {
-        Debug.Log("returning particle to pool");
+        //Debug.Log("returning particle to pool");
         ActiveParticles.Remove(particle);
         InactiveParticles.Add(particle);
         particle.Reset();
@@ -96,7 +96,7 @@ public class ParticleEffectPool : MonoBehaviour
 
     public void StartPoolProcesses()
     {
-        Debug.Log("isAttacherPool: " + isAttacherPool);
+        //Debug.Log("isAttacherPool: " + isAttacherPool);
         InvokeRepeating(nameof(CleanUpParticles), 0.5f, timeBetweenCleanups);
     }
 
@@ -111,7 +111,7 @@ public class ParticleEffectPool : MonoBehaviour
             }
         }
     }
-
+    
     public void CleanUpParticles()
     {
         float currentTime = Time.time;
@@ -137,7 +137,7 @@ public class ParticleEffectPool : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("particle at index " + i + " is null. Check that particles are not being destroyed before returning");
+                    //Debug.LogError("particle at index " + i + " is null. Check that particles are not being destroyed before returning");
                     ActiveParticles.RemoveAt(i);
                     i--;
                 }
