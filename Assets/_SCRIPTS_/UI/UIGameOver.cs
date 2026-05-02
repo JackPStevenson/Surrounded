@@ -60,6 +60,10 @@ public class UIGameOver : MonoBehaviour {
             yield return new WaitForSeconds(microDelay);
             Instantiate(performanceStatPrefab, zombiesSubDisplayHolder).TryGetComponent(out temp);
             temp.SetInfo(zombieKillStat);
+            
+            string editedName = temp.GetName();
+            editedName = editedName.Replace(" Zombie", "");
+            temp.SetName(editedName);
         }
         
         // Show total earnings. After, start level panel display.

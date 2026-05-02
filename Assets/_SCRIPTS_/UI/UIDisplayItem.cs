@@ -29,6 +29,7 @@ public class UIDisplayItem : MonoBehaviour {
     // ------ SINGLE SETUP METHODS ------
 
     public void SetName(string name) => Name?.SetText(name);
+    public string GetName() => Name?.text;
     public void SetDesc(string desc, int level = 0, bool allowLock = false) => Desc?.SetText(!allowLock || ManagerSaveLoad.CheckLevel(level) ? desc : "Locked (Level " + level  + ")");
     public void SetButton(int level, bool allowLock) => SetButton(!allowLock || ManagerSaveLoad.CheckLevel(level));
     public void SetButton(bool active) { if(Button) Button.interactable = active; }
